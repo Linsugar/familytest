@@ -52,7 +52,9 @@ class myuistate extends State<myui>{
             ),
             height: 350,
             child: Column(children: [
-                ListTile(leading: Icon(Icons.event,color: Colors.deepOrange,),title: Text("任务大厅"),trailing: Icon(Icons.chevron_right),),
+                ListTile(onTap: (){
+                  Application.router.navigateTo(context, '/taskcpn');
+                },leading: Icon(Icons.event,color: Colors.deepOrange,),title: Text("任务大厅"),trailing: Icon(Icons.chevron_right),),
                 ListTile(leading: Icon(Icons.star,color: Colors.deepOrange,),title: Text("我的积分"),trailing: Icon(Icons.chevron_right),),
                 ListTile(leading: Icon(Icons.assessment,color: Colors.deepOrange,),title: Text("我的动态"),trailing: Icon(Icons.chevron_right),),
                 ListTile(leading: Icon(Icons.audiotrack,color: Colors.deepOrange,),title: Text("家族职位"),trailing: Icon(Icons.chevron_right),),

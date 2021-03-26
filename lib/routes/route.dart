@@ -7,6 +7,8 @@ class Routes{
   static String register = '/register';
   static String childfamily = '/childfamily';
   static String myseting = '/myseting';
+  static String MainHome = '/MainHome';
+  static String taskcpn = '/taskcpn';
 
   static void configureRoutes(FluroRouter router){
     router.notFoundHandler = Handler(
@@ -19,6 +21,7 @@ class Routes{
     router.define(register, handler: registerHander);
     router.define(childfamily, handler: childfamilyHander);
     router.define(myseting, handler:mysetinghander);
+    router.define(MainHome, handler:MainHomeHandler);
+    router.define(taskcpn, handler:taskcpnHandler);
   }
-
 }

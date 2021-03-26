@@ -37,6 +37,8 @@ dependencies:
   flutter_swiper: ^1.1.6
   web_socket_channel: ^1.2.0
   fl_chart: ^0.20.1
+  rive: ^0.6.8
+  fluttertoast: ^8.0.3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -62,6 +64,8 @@ flutter:
   assets:
     - images/login.jpg
     - images/idcard.png
+    - assets/buggy.riv
+    - assets/flag.riv
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

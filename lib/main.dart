@@ -1,10 +1,9 @@
-import 'package:familytest/pages/mine/childcpns/mysetting.dart';
+import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/mine/myui.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/routes/application.dart';
 import 'package:familytest/pages/chat/Chat.dart';
 import 'package:familytest/pages/family/FamilyData.dart';
-import 'package:familytest/pages/family/childcpns/ChildFamily.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/routes/route.dart';
 import 'package:fluro/fluro.dart';
@@ -27,7 +26,12 @@ class MyApp  extends StatefulWidget{
 }
 
 class MyAppState extends State<MyApp>{
- static int _index = 0;
+
+ @override
+ void initState() {
+   // TODO: implement initState
+   super.initState();
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -37,17 +41,27 @@ class MyAppState extends State<MyApp>{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Application.router.generator,
-      home: Scaffold(
+      home: context.watch<GlobalState>().globalToken==false?Login():MainHome());
+  }
+}
+
+class MainHome extends StatefulWidget {
+  @override
+  _MainHomeState createState() => _MainHomeState();
+}
+
+class _MainHomeState extends State<MainHome> {
+  static int _index = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body:IndexedStack(key: UniqueKey(),index: _index,children: [
         Home(),
         Chat(),
         Family(),
-//        childfamily(),
-        myui()
-//        mysetting()
-        // Login()
+        myui(),
       ],),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar:BottomNavigationBar(
         onTap: (value){print("value:$value");
         setState(() {
           _index = value;
@@ -62,6 +76,7 @@ class MyAppState extends State<MyApp>{
           BottomNavigationBarItem(icon: Icon(Icons.apps),label: "我的"),
         ],
       ),
-    ),);
+    );
   }
 }
+
