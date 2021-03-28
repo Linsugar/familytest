@@ -7,7 +7,7 @@ class task extends StatefulWidget{
 }
 
 class _taskState extends State<task> with SingleTickerProviderStateMixin{
-  List<dynamic> _DataList = [];
+
   TabController _tabController;
   TextStyle _textStyle = TextStyle(color: Colors.blue,fontSize: 20);
   @override
@@ -22,14 +22,14 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
   @override
   void dispose() {
     _tabController.dispose();
-    this._DataList.clear();
     // TODO: implement dispose
     super.dispose();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("任务大厅"),),
+      
+        appBar: AppBar(title: Text("任务大厅"),actions: [Popuitemwidget()],),
         body:Container(
             constraints: BoxConstraints.expand(),
             child: Flex(direction: Axis.vertical,children: [
@@ -47,46 +47,53 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
               TabBarView(
                   controller: _tabController,
                   children: [
-                    ListView.builder(itemCount: 20,itemBuilder: (context,index){
+                    ListView.separated(itemBuilder: (context,index){
                       return ListTile(
-                        leading: Text("$index"),title: Text("今夜训练场200圈"),
+                        leading: Text("${index}"),title: Text("今夜训练场200圈"),
                         subtitle: Text("今夜训练场200圈"*4),
-                        trailing: Text("详情"),);
-                    }),
+                        trailing: Text("详情"),
+                      );
+                    }, separatorBuilder: (context,index){
+                      return Divider();
+                    }, itemCount:20),
                     RefreshIndicator(
                       onRefresh: (){
-                        print("刷新数据：${this._DataList}");
-                        return data_s();
+//                        print("刷新数据：${this._DataList}");
+                        return data_3();
                       },
                       child: Container(
                         child:
-                        FutureBuilder(
-                          future: data_s(),
-                          builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              print("当前状态：${snapshot.connectionState}");
-                              print("当前状态：${snapshot.data}");
-                              if(this._DataList.isEmpty){
-                                return Center(child: CircularProgressIndicator());
+                        Center(
+                          child: FutureBuilder(
+                            future: data_3(),
+                            builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              print("当前状态1：${snapshot.connectionState}");
+                              print("当前状态1：${snapshot}");
+                              if(snapshot.connectionState ==ConnectionState.waiting){
+                                return CircularProgressIndicator();
                               }
-                              if (snapshot.hasError) {
-                                return Text("Error:1");
-                              } else {
-                                return ListView.separated(itemBuilder: (context,index){
-                                  return ListTile(
-                                    leading: Text("${index}"),title: Text("今夜训练场200圈"),
-                                    subtitle: Text("今夜训练场200圈"*4),
-                                    trailing: Text("详情"),
-                                  );
-                                }, separatorBuilder: (context,index){
-                                  return Divider();
-                                }, itemCount: this._DataList.length);
+                              if (snapshot.connectionState == ConnectionState.done) {
+                                print("当前状态：${snapshot.data}");
+                                if(snapshot.hasData){
+                                  return ListView.separated(itemBuilder: (context,index){
+                                    return ListTile(
+                                      leading: Text("${index}"),title: Text("今夜训练场200圈"),
+                                      subtitle: Text("今夜训练场200圈"*4),
+                                      trailing: Text("详情"),
+                                    );
+                                  }, separatorBuilder: (context,index){
+                                    return Divider();
+                                  }, itemCount:snapshot.data.length);
+                                }
+                                else{
+                                  return Text("Error:1");
+                                }
                               }
-                            }
-                            else {
-                              return CircularProgressIndicator();
-                            }
-                          },
+                              else {
+                                return CircularProgressIndicator();
+                              }
+                            },
+                          ),
                         ) ,
                       ),
                     ),
@@ -99,12 +106,43 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
   }
 
 
-  Future data_s()async{
-    Future.delayed(Duration(seconds: 2),(){
+  Future data_3()async{
+
+    var Data = Future.delayed(Duration(seconds: 3),(){
+      List _DataList =[];
       for(var i=0;i<3;i++){
-        this._DataList.add(i);
+        _DataList.add(1);
       }
+      return _DataList;
     });
-    return this._DataList;
+    return await Data;
+  }
+
+
+
+
+}
+
+class Popuitemwidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+        padding: EdgeInsets.all(8),
+        offset: Offset(0,5.0),
+        onSelected: (value){
+          print("选中的值:$value");
+        },
+        itemBuilder:(BuildContext context) => <PopupMenuItem<String>>[
+          PopupMenuItem<String>(
+              value: '选项一的值',
+              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.account_circle,color: Colors.lightBlue,),Text("添加好友")],)
+          ),
+          PopupMenuItem<String>(
+              value: '选项二的值',
+              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("搜索好友")],)
+
+          )
+        ]
+    );
   }
 }

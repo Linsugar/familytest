@@ -31,41 +31,52 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
     var _size = MediaQuery.of(context).size;
     // TODO: implement build
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(title: Text("聊天3"), actions: [
-        PopupMenuButton(
-          padding: EdgeInsets.all(8),
-          offset: Offset(0,5.0),
-          onSelected: (value){
-            print("选中的值:$value");
-          },
-          itemBuilder:(BuildContext context) => <PopupMenuItem<String>>[
-    PopupMenuItem<String>(
-        value: '选项一的值',
-        child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.account_circle,color: Colors.lightBlue,),Text("添加好友")],)
-    ),
-    PopupMenuItem<String>(
-    value: '选项二的值',
-    child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("搜索好友")],)
-
-    )
-    ]
-    )
-      ],),
-      body: Container(padding: EdgeInsets.only(top: 10),width: _size.width,height: _size.height,child: ListView.separated(
-        itemCount: 20,
-        itemBuilder: (context,index){
-          return ListTile(
-            key: UniqueKey(),
-            subtitle: Text("一段凄美而无奈的感人肺腑的爱情",overflow: TextOverflow.ellipsis,maxLines: 1,),
-            leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(_imagrurl),),title: Text("九尾妖狐"),trailing: MaterialButton(onPressed: (){
+          PopuWidget()
+        ],),
+        body: Container(padding: EdgeInsets.only(top: 10),width: _size.width,height: _size.height,child: ListView.separated(
+          itemCount: 20,
+          itemBuilder: (context,index){
+            return ListTile(
+              key: UniqueKey(),
+              subtitle: Text("一段凄美而无奈的感人肺腑的爱情",overflow: TextOverflow.ellipsis,maxLines: 1,),
+              leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(_imagrurl),),title: Text("九尾妖狐"),trailing: MaterialButton(onPressed: (){
               print("点击$index");
               _Amc.forward();
               Application.router.navigateTo(context, '/chatchild');
-              },child: Icon(Icons.tab)),);
-        },separatorBuilder: (context,index){
+            },child: Icon(Icons.tab)),);
+          },separatorBuilder: (context,index){
           return Divider();
-      },),)
+        },),)
+    );
+  }
+}
+
+class PopuWidget extends StatelessWidget {
+  const PopuWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+        padding: EdgeInsets.all(8),
+        offset: Offset(0,5.0),
+        onSelected: (value){
+          print("选中的值:$value");
+        },
+        itemBuilder:(BuildContext context) => <PopupMenuItem<String>>[
+          PopupMenuItem<String>(
+              value: '选项一的值',
+              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.account_circle,color: Colors.lightBlue,),Text("添加好友")],)
+          ),
+          PopupMenuItem<String>(
+              value: '选项二的值',
+              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("搜索好友")],)
+
+          )
+        ]
     );
   }
 }
