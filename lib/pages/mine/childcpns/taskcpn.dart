@@ -109,11 +109,11 @@ class Popuitemwidget extends StatelessWidget {
         itemBuilder:(BuildContext context) => <PopupMenuItem<String>>[
           PopupMenuItem<String>(
               value: '选项一的值',
-              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.account_circle,color: Colors.lightBlue,),Text("添加好友")],)
+              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.account_circle,color: Colors.lightBlue,),Text("仅看已完成")],)
           ),
           PopupMenuItem<String>(
               value: '选项二的值',
-              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("搜索好友")],)
+              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("仅看未完成")],)
 
           )
         ]
@@ -142,6 +142,8 @@ class _FuturwigetState extends State<Futurwiget> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return FutureBuilder(
       future: widget.data,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -153,15 +155,23 @@ class _FuturwigetState extends State<Futurwiget> {
         if (snapshot.connectionState == ConnectionState.done) {
           print("当前状态：${snapshot.data}");
           if(snapshot.hasData){
-            return ListView.separated(itemBuilder: (context,index){
-              return ListTile(
-                leading: Text("${index}"),title: Text("今夜训练场200圈"),
-                subtitle: Text("今夜训练场200圈"*4),
-                trailing: MaterialButton(child: Text(this.widget.dataStutes==1?'领取':this.widget.dataStutes==2?'已领取':'已完成'),onPressed: (){},),
+            return ListView.separated( itemCount:snapshot.data.length,itemBuilder: (context,index){
+              return GestureDetector(
+                onTap: (){
+
+                },
+                child: Dismissible(
+                  key: ValueKey(index),
+                  child: ListTile(
+                    leading: Text("${index}"),title: Text("今夜训练场200圈"),
+                    subtitle: Text("今夜训练场200圈"*4),
+                    trailing: MaterialButton(child: Text(this.widget.dataStutes==1?'领取':this.widget.dataStutes==2?'已领取':'已完成'),onPressed: (){},),
+                  ),
+                ),
               );
             }, separatorBuilder: (context,index){
               return Divider();
-            }, itemCount:snapshot.data.length);
+            });
           }
           else{
             return Text("Error:1");
