@@ -10,6 +10,7 @@ class Routes{
   static String MainHome = '/MainHome';
   static String taskcpn = '/taskcpn';
 
+
   static void configureRoutes(FluroRouter router){
     router.notFoundHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> parameters){
@@ -23,5 +24,6 @@ class Routes{
     router.define(myseting, handler:mysetinghander);
     router.define(MainHome, handler:MainHomeHandler);
     router.define(taskcpn, handler:taskcpnHandler);
+
   }
 }

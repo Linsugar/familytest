@@ -1,4 +1,7 @@
+
 import 'package:flutter/material.dart';
+import 'package:familytest/routes/application.dart';
+
 class task extends StatefulWidget{
 
 
@@ -29,33 +32,30 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
   Widget build(BuildContext context) {
     return Scaffold(
       
-        appBar: AppBar(title: Text("任务大厅"),actions: [Popuitemwidget()],),
+        appBar: AppBar(title: Text("任务大厅"),actions: [MaterialButton(onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>GetManger(data_3(),2)));
+        },child: Text("领取记录"),)],),
         body:Container(
             constraints: BoxConstraints.expand(),
             child: Flex(direction: Axis.vertical,children: [
               Flexible(flex: 0,child: Container(
-                color: Colors.cyan,
                 child: TabBar(
                     controller: _tabController,
                     tabs: [
-                      Text("初级",style: _textStyle),
-                      Text("VIP",style: _textStyle),
-                      Text("SVIP",style:_textStyle),
+                      Text("初级任务",style: _textStyle),
+                      Text("中级任务",style: _textStyle),
+                      Text("高级任务",style:_textStyle),
                     ] ),
               )),
               Flexible(flex: 9,child: Container(child:
               TabBarView(
                   controller: _tabController,
                   children: [
-                    ListView.separated(itemBuilder: (context,index){
-                      return ListTile(
-                        leading: Text("${index}"),title: Text("今夜训练场200圈"),
-                        subtitle: Text("今夜训练场200圈"*4),
-                        trailing: Text("详情"),
-                      );
-                    }, separatorBuilder: (context,index){
-                      return Divider();
-                    }, itemCount:20),
+                    Container(
+                      child: Center(
+                        child: Futurwiget(data_3(),1),
+                      ),
+                    ),
                     RefreshIndicator(
                       onRefresh: (){
 //                        print("刷新数据：${this._DataList}");
@@ -64,40 +64,16 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
                       child: Container(
                         child:
                         Center(
-                          child: FutureBuilder(
-                            future: data_3(),
-                            builder: (BuildContext context, AsyncSnapshot snapshot) {
-                              print("当前状态1：${snapshot.connectionState}");
-                              print("当前状态1：${snapshot}");
-                              if(snapshot.connectionState ==ConnectionState.waiting){
-                                return CircularProgressIndicator();
-                              }
-                              if (snapshot.connectionState == ConnectionState.done) {
-                                print("当前状态：${snapshot.data}");
-                                if(snapshot.hasData){
-                                  return ListView.separated(itemBuilder: (context,index){
-                                    return ListTile(
-                                      leading: Text("${index}"),title: Text("今夜训练场200圈"),
-                                      subtitle: Text("今夜训练场200圈"*4),
-                                      trailing: Text("详情"),
-                                    );
-                                  }, separatorBuilder: (context,index){
-                                    return Divider();
-                                  }, itemCount:snapshot.data.length);
-                                }
-                                else{
-                                  return Text("Error:1");
-                                }
-                              }
-                              else {
-                                return CircularProgressIndicator();
-                              }
-                            },
-                          ),
+                          child: Futurwiget(data_3(),1),
                         ) ,
                       ),
                     ),
-                    Text("SVIP",style:_textStyle),
+                    Container(
+                      child:
+                      Center(
+                        child: Futurwiget(data_3(),1),
+                      ) ,
+                    ),
                   ]),
               )),
             ],)
@@ -106,22 +82,20 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
   }
 
 
-  Future data_3()async{
-
-    var Data = Future.delayed(Duration(seconds: 3),(){
-      List _DataList =[];
-      for(var i=0;i<3;i++){
-        _DataList.add(1);
-      }
-      return _DataList;
-    });
-    return await Data;
-  }
-
-
-
-
 }
+
+Future data_3()async{
+
+  var Data = Future.delayed(Duration(seconds: 3),(){
+    List _DataList =[];
+    for(var i=0;i<3;i++){
+      _DataList.add(1);
+    }
+    return _DataList;
+  });
+  return await Data;
+}
+
 
 class Popuitemwidget extends StatelessWidget {
   @override
@@ -146,3 +120,82 @@ class Popuitemwidget extends StatelessWidget {
     );
   }
 }
+
+
+class Futurwiget extends StatefulWidget {
+  var data;
+  int dataStutes;
+  Futurwiget(this.data,this.dataStutes);
+
+  @override
+  _FuturwigetState createState() => _FuturwigetState();
+}
+
+class _FuturwigetState extends State<Futurwiget> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: widget.data,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        print("当前状态1：${snapshot.connectionState}");
+        print("当前状态1：${snapshot}");
+        if(snapshot.connectionState ==ConnectionState.waiting){
+          return CircularProgressIndicator();
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          print("当前状态：${snapshot.data}");
+          if(snapshot.hasData){
+            return ListView.separated(itemBuilder: (context,index){
+              return ListTile(
+                leading: Text("${index}"),title: Text("今夜训练场200圈"),
+                subtitle: Text("今夜训练场200圈"*4),
+                trailing: MaterialButton(child: Text(this.widget.dataStutes==1?'领取':this.widget.dataStutes==2?'已领取':'已完成'),onPressed: (){},),
+              );
+            }, separatorBuilder: (context,index){
+              return Divider();
+            }, itemCount:snapshot.data.length);
+          }
+          else{
+            return Text("Error:1");
+          }
+        }
+        else {
+          return CircularProgressIndicator();
+        }
+      },
+    );
+  }
+}
+//领取记录
+class GetManger extends StatefulWidget {
+  var data;
+  int dataStutes;
+  GetManger(this.data,this.dataStutes);
+
+  @override
+  _GetMangerState createState() => _GetMangerState();
+}
+
+class _GetMangerState extends State<GetManger> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("领取记录"),actions: [Popuitemwidget()],),
+      body: Container(
+        child: Center(
+          child: Futurwiget(widget.data,widget.dataStutes),
+        ),
+      ),
+    );
+  }
+}
+
+
