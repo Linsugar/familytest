@@ -1,4 +1,4 @@
-import 'package:familytest/routes/application.dart';
+
 import 'package:flutter/material.dart';
 
 class Chat extends StatefulWidget{
@@ -44,7 +44,7 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
               leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(_imagrurl),),title: Text("九尾妖狐"),trailing: MaterialButton(onPressed: (){
               print("点击$index");
               _Amc.forward();
-              Application.router.navigateTo(context, '/chatchild');
+              Navigator.pushNamed(context,'/chatChild');
             },child: Icon(Icons.tab)),);
           },separatorBuilder: (context,index){
           return Divider();

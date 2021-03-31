@@ -1,7 +1,4 @@
 
-import 'package:familytest/pages/mine/childcpns/cremracpn.dart';
-import 'package:familytest/pages/mine/childcpns/dynamicpn.dart';
-import 'package:familytest/routes/application.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +25,7 @@ class myuistate extends State<myui>{
             onPressed: (){}),
               IconButton(icon: Icon(Icons.settings),
             onPressed: (){
-                Application.router.navigateTo(context, '/myseting');
+                Navigator.pushNamed(context, '/mysetting');
             })],
             flexibleSpace: FlexibleSpaceBar(
               background:Image.network(_imagrurl,fit: BoxFit.cover,)
@@ -54,23 +51,21 @@ class myuistate extends State<myui>{
             ),
             height: 350,
             child: Column(children: [
-                ListTile(onTap: (){
-                  Application.router.navigateTo(context, '/taskcpn');
-                },leading: Icon(Icons.event,color: Colors.deepOrange,),title: Text("任务大厅"),trailing: Icon(Icons.chevron_right),),
-                ListTile(leading: Icon(Icons.star,color: Colors.deepOrange,),title: Text("我的积分"),trailing: Icon(Icons.chevron_right),),
-                ListTile(onTap: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context){
-                    return cremacpn();
-                  }));
-                },leading: Icon(Icons.assessment,color: Colors.deepOrange,),title: Text("我的动态"),trailing: Icon(Icons.chevron_right),),
-                ListTile(leading: Icon(Icons.audiotrack,color: Colors.deepOrange,),title: Text("家族职位"),trailing: Icon(Icons.chevron_right),),
-                ListTile(onTap: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context){
-                    return Photos();
-                  }));
-                },leading: Icon(Icons.panorama,color: Colors.deepOrange,),title: Text("我的相册"),trailing: Icon(Icons.chevron_right),),
-                ListTile(leading: Icon(Icons.announcement,color: Colors.deepOrange,),title: Text("反馈意见"),trailing: Icon(Icons.chevron_right),),
-    ],),
+              ListTile(onTap: (){
+                Navigator.pushNamed(context, '/task');
+              },leading: Icon(Icons.event,color: Colors.deepOrange,),title: Text("任务大厅"),trailing: Icon(Icons.chevron_right),),
+              ListTile(leading: Icon(Icons.star,color: Colors.deepOrange,),title: Text("我的积分"),trailing: Icon(Icons.chevron_right),),
+              ListTile(onTap: (){
+                Navigator.pushNamed(context, '/cremacpn');
+              },leading: Icon(Icons.assessment,color: Colors.deepOrange,),title: Text("我的动态"),trailing: Icon(Icons.chevron_right),),
+              ListTile(leading: Icon(Icons.audiotrack,color: Colors.deepOrange,),title: Text("家族职位"),trailing: Icon(Icons.chevron_right),),
+              ListTile(onTap: (){
+                Navigator.pushNamed(context, '/Photos');
+              },leading: Icon(Icons.panorama,color: Colors.deepOrange,),title: Text("我的相册"),trailing: Icon(Icons.chevron_right),),
+              ListTile(onTap: (){
+                Navigator.pushNamed(context, '/feedbook');
+              },leading: Icon(Icons.announcement,color: Colors.deepOrange,),title: Text("反馈意见"),trailing: Icon(Icons.chevron_right),),
+            ],),
           ),),
           SliverToBoxAdapter(child: Container(margin: EdgeInsets.only(left: 10),child: Text("标签：",style: TextStyle(color: Colors.orange),)),),
           SliverToBoxAdapter(

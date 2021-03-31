@@ -1,4 +1,4 @@
-import 'dart:io';
+
 
 import 'package:familytest/until/CreamUntil.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,8 @@ class _cremacpnState extends State<cremacpn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("动态"),actions: [MaterialButton(onPressed: ()async{},
+        appBar: AppBar(title: Text("动态"),actions: [MaterialButton(onPressed: ()async{
+        },
           child: Text("发布动态"),)],),
         body:Container(
           constraints: BoxConstraints.expand(),

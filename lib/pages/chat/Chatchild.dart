@@ -74,7 +74,6 @@ class chatChildState extends State<chatChild>{
                       ],
                     ),
                   );
-                  return Text("数据${snapshot.data}");
                 }
               },),),Flexible(flex: 1,child: TextField(controller: _textcontroller,maxLength: 80,),)
           ],

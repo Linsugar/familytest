@@ -1,14 +1,15 @@
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/mine/myui.dart';
 import 'package:familytest/provider/grobleState.dart';
-import 'package:familytest/routes/application.dart';
+import 'package:familytest/routes/Rout.dart';
 import 'package:familytest/pages/chat/Chat.dart';
 import 'package:familytest/pages/family/FamilyData.dart';
 import 'package:familytest/pages/home/Home.dart';
-import 'package:familytest/routes/route.dart';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:device_info/device_info.dart';
 
 void main() =>runApp(
     MultiProvider(
@@ -26,21 +27,19 @@ class MyApp  extends StatefulWidget{
 }
 
 class MyAppState extends State<MyApp>{
-
+  var _devices_info;
  @override
  void initState() {
+   _devices_info = DeviceInfoPlugin();
    // TODO: implement initState
    super.initState();
  }
 
   @override
   Widget build(BuildContext context) {
-    final  FluroRouter router = FluroRouter();
-    Routes.configureRoutes(router);
-    Application.router = router;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      onGenerateRoute: Application.router.generator,
+      onGenerateRoute: RoutePage.onGenerateRoute,
       home: context.watch<GlobalState>().globalToken==false?Login():MainHome());
   }
 }

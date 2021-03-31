@@ -33,7 +33,7 @@ class PhotsState extends State<Photos>{
             Expanded(flex: 2,child: Container(width:PhoneSize.width ,child: Row(
               children: [
                 context.watch<GlobalState>().imageList.length ==0?Text(''):ClipRRect(borderRadius: BorderRadius.circular(10),
-                    child: Image.file(File(context.watch<GlobalState>().imageList[0]),fit: BoxFit.cover,)),
+                    child:Image.file(File(context.watch<GlobalState>().imageList[0]),fit: BoxFit.cover,)),
                 MaterialButton(
                   onPressed: ()async{
                     await createPhotsWige();
@@ -51,7 +51,6 @@ class PhotsState extends State<Photos>{
                   Text("2.请上传本人照片,勿上传色情图片",overflow:TextOverflow.ellipsis ,style: TextStyle(fontSize: 10),),
                   Text("3.请上传本人照片,勿上传色情图片",overflow:TextOverflow.ellipsis ,style: TextStyle(fontSize: 10),),
                   Text("4.请上传本人照片,勿上传色情图片",overflow:TextOverflow.ellipsis ,style: TextStyle(fontSize: 10),),
-
                 ],),),
               ],
             )),

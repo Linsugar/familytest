@@ -1,5 +1,4 @@
 
-import 'package:familytest/routes/application.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +39,7 @@ class FamilyState extends State<Family>{
                 },itemBuilder: (context,index){
                     return GestureDetector(
                       onTap: (){
-                        Application.router.navigateTo(context, '/childfamily');
+                        Navigator.pushNamed(context, '/childfamily');
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
@@ -83,7 +82,7 @@ class FamilyState extends State<Family>{
                       Flexible(flex: 7,child:ListView.builder(itemCount: 20,itemBuilder: (context,index){
                         return ListTile(
                           onTap: (){
-                            Application.router.navigateTo(context, '/childfamily');
+                            Navigator.pushNamed(context,  '/childfamily');
                           },
                           leading: CircleAvatar(backgroundImage: NetworkImage(_imagrurl),),
                         title: Text("唐氏家族"),
