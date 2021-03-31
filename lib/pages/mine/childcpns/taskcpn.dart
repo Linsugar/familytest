@@ -83,7 +83,7 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
 
 Future data_3()async{
 
-  var Data = Future.delayed(Duration(seconds: 3),(){
+  var Data = Future.delayed(Duration(seconds: 1),(){
     List _DataList =[];
     for(var i=0;i<3;i++){
       _DataList.add(1);
