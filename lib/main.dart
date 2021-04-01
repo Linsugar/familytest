@@ -5,11 +5,10 @@ import 'package:familytest/routes/Rout.dart';
 import 'package:familytest/pages/chat/Chat.dart';
 import 'package:familytest/pages/family/FamilyData.dart';
 import 'package:familytest/pages/home/Home.dart';
-
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() =>runApp(
     MultiProvider(
@@ -28,12 +27,17 @@ class MyApp  extends StatefulWidget{
 
 class MyAppState extends State<MyApp>{
   var _devices_info;
+
  @override
  void initState() {
    _devices_info = DeviceInfoPlugin();
+
+
    // TODO: implement initState
    super.initState();
  }
+
+
 
   @override
   Widget build(BuildContext context) {

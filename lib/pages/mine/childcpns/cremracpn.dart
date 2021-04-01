@@ -1,7 +1,6 @@
 
-
-import 'package:familytest/until/CreamUntil.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 class cremacpn extends StatefulWidget {
   @override
   _cremacpnState createState() => _cremacpnState();
@@ -13,6 +12,9 @@ class _cremacpnState extends State<cremacpn> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("动态"),actions: [MaterialButton(onPressed: ()async{
+
+         var sqlpath =  await getDatabasesPath();
+         print("获取地址：$sqlpath");
         },
           child: Text("发布动态"),)],),
         body:Container(
