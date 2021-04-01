@@ -28,7 +28,6 @@ dependencies:
   video_player: ^1.0.1
   webview_flutter: ^1.0.7
   provider: ^4.3.3
-  fluro: ^1.7.8
   device_info: ^2.0.0
   date_format: ^1.0.9
   flutter_localizations:
@@ -40,6 +39,7 @@ dependencies:
   rive: ^0.6.8
   fluttertoast: ^8.0.3
   permission_handler: ^6.1.1
+  sqflite: ^2.0.0+3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -49,6 +49,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
