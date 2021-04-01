@@ -27,33 +27,14 @@ class MyApp  extends StatefulWidget{
 
 class MyAppState extends State<MyApp>{
   var _devices_info;
-  var _sharedPreferences;
  @override
  void initState() {
    _devices_info = DeviceInfoPlugin();
-   Getphonetoken();
    // TODO: implement initState
+
    super.initState();
  }
 
-// 设置启动页是否可见
-Future Getphonetoken()async{
-//   print('开始检测缓存token值：${_sharedPreferences.getBool('token')}');
- var pref =  await SharedPreferences.getInstance();
- if(pref.getBool('token')!=null){
-   print('开始检测缓存token值：${pref.getBool('token')}');
-   if( !pref.getBool('token')){
-     pref.setBool('token', true);
-     return pref.getBool('token');
-   }else{
-     return pref.getBool('token');
-   }
- }else{
-   print("进入设置token");
-   pref.setBool('token', false);
-   return pref.getBool('token');
- }
- }
 
 
   @override

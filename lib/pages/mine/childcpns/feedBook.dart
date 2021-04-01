@@ -15,7 +15,13 @@ class _feedbookState extends State<feedbook> {
         constraints: BoxConstraints.expand(),
         child: Column(
           children: [
-            Container(decoration: BoxDecoration(border: Border.all(color: Colors.blueGrey,width: 1.0)),child: TextField(maxLines: 10,)),
+            PhysicalModel(
+              color: Colors.blueAccent,
+              child: Container(margin: EdgeInsets.all(5),decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Colors.blueGrey,width: 1.0)),child: TextField(maxLines: 10,)),
+            ),
             MaterialButton(color: Colors.blueAccent[100],onPressed: (){},child: Text("反馈"),)
           ],
         ),

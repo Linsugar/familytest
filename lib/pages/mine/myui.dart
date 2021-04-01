@@ -54,7 +54,9 @@ class myuistate extends State<myui>{
               ListTile(onTap: (){
                 Navigator.pushNamed(context, '/task');
               },leading: Icon(Icons.event,color: Colors.deepOrange,),title: Text("任务大厅"),trailing: Icon(Icons.chevron_right),),
-              ListTile(leading: Icon(Icons.star,color: Colors.deepOrange,),title: Text("我的积分"),trailing: Icon(Icons.chevron_right),),
+              ListTile(onTap: (){
+                Navigator.pushNamed(context, '/interg');
+              },leading: Icon(Icons.star,color: Colors.deepOrange,),title: Text("我的积分"),trailing: Icon(Icons.chevron_right),),
               ListTile(onTap: (){
                 Navigator.pushNamed(context, '/cremacpn');
               },leading: Icon(Icons.assessment,color: Colors.deepOrange,),title: Text("我的动态"),trailing: Icon(Icons.chevron_right),),

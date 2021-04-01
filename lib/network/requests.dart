@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 
 class Request{
-  static Dio network = new Dio();
+  static Dio network = new Dio(BaseOptions(
+    connectTimeout: 3000,
+  ));
 
   getNetwork({String url,String params})async{
     try{

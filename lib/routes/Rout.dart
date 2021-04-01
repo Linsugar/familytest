@@ -4,6 +4,7 @@ import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/pages/mine/childcpns/cremracpn.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicpn.dart';
 import 'package:familytest/pages/mine/childcpns/feedBook.dart';
+import 'package:familytest/pages/mine/childcpns/intergcpn.dart';
 import 'package:familytest/pages/mine/childcpns/mysetting.dart';
 import 'package:familytest/pages/mine/childcpns/taskcpn.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class RoutePage{
     '/chatChild':(context,{argument})=>chatChild(),
     '/Home':(context,{argument})=>Home(),
     '/feedbook':(context,{argument})=>feedbook(),
+    '/interg':(context,{argument})=>interg(),
   };
 
 // ignore: missing_return, top_level_function_literal_block
