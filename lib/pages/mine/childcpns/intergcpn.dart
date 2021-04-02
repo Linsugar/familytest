@@ -53,21 +53,23 @@ class _intergState extends State<interg> {
             ),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: DataTable(
-              columns: [
-                DataColumn(label: Text('称号'),tooltip: "你好"),
-                DataColumn(label: Text('积分'),numeric: true),
-              ],
-              rows: [
-                for(var i=0;i<20;i++)
-                  DataRow(
-                      cells: [
-                        DataCell(Text('惨绝人寰')),
-                        DataCell(Text('18')),
-                      ],onSelectChanged: (value){
-                    print("$value");
-                  },selected: true),
-              ],
+            child: SingleChildScrollView(
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('称号'),tooltip: "你好"),
+                  DataColumn(label: Text('积分'),numeric: true),
+                ],
+                rows: [
+                  for(var i=0;i<20;i++)
+                    DataRow(
+                        cells: [
+                          DataCell(Text('惨绝人寰')),
+                          DataCell(Text('18')),
+                        ],onSelectChanged: (value){
+                      print("$value");
+                    },selected: true),
+                ],
+              ),
             ),
 
           ))

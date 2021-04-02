@@ -60,7 +60,9 @@ class myuistate extends State<myui>{
               ListTile(onTap: (){
                 Navigator.pushNamed(context, '/cremacpn');
               },leading: Icon(Icons.assessment,color: Colors.deepOrange,),title: Text("我的动态"),trailing: Icon(Icons.chevron_right),),
-              ListTile(leading: Icon(Icons.audiotrack,color: Colors.deepOrange,),title: Text("家族职位"),trailing: Icon(Icons.chevron_right),),
+              ListTile(onTap: (){
+                Navigator.pushNamed(context, '/familcpn');
+              },leading: Icon(Icons.audiotrack,color: Colors.deepOrange,),title: Text("家族职位"),trailing: Icon(Icons.chevron_right),),
               ListTile(onTap: (){
                 Navigator.pushNamed(context, '/Photos');
               },leading: Icon(Icons.panorama,color: Colors.deepOrange,),title: Text("我的相册"),trailing: Icon(Icons.chevron_right),),
