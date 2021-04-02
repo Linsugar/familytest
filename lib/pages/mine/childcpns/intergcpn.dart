@@ -48,12 +48,28 @@ class _intergState extends State<interg> {
           ),
           Positioned(left: 20,right: 20,top: MediaQuery.of(context).size.height/4,child: Container(
             decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(5)
+                color: Colors.amber,
+                borderRadius: BorderRadius.circular(5)
             ),
             width: MediaQuery.of(context).size.width,
-            height: 300,
-            
+            height: MediaQuery.of(context).size.height,
+            child: DataTable(
+              columns: [
+                DataColumn(label: Text('称号'),tooltip: "你好"),
+                DataColumn(label: Text('积分'),numeric: true),
+              ],
+              rows: [
+                for(var i=0;i<20;i++)
+                  DataRow(
+                      cells: [
+                        DataCell(Text('惨绝人寰')),
+                        DataCell(Text('18')),
+                      ],onSelectChanged: (value){
+                    print("$value");
+                  },selected: true),
+              ],
+            ),
+
           ))
         ],
       ),
