@@ -10,7 +10,7 @@ class mysetting extends StatefulWidget{
 }
 
 class mysettingstate extends State<mysetting>{
-  String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
+  String _imagrurl = 'http://qr0n4nltx.hn-bkt.clouddn.com/imagesp1.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,10 @@ class mysettingstate extends State<mysetting>{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [Row(children: [Text("头像"),],), Row(children: [CircleAvatar(backgroundImage: NetworkImage(_imagrurl),),Icon(Icons.chevron_right)],)],),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [Row(children: [Text("头像"),],),
+                Row(children: [
+                  CircleAvatar(backgroundImage: NetworkImage(_imagrurl),),Icon(Icons.chevron_right)
+                ],)],),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [Row(children: [Text("昵称"),],), Row(children: [Text("九曜魔王"),Icon(Icons.chevron_right)],)],),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [Row(children: [Text("性别"),],), Row(children: [Text("女"),Icon(Icons.chevron_right)],)],),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [Row(children: [Text("ID"),],), Row(children: [Text("155687421zs"),Icon(Icons.chevron_right)],)],),

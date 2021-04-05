@@ -54,7 +54,10 @@ class RegisterState extends State<Regitser>{
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             for(var i=0;i<5;i++)
-                           Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.white),padding: EdgeInsets.only(left: 10,right: 10),child: TextFormField(decoration: InputDecoration(border:InputBorder.none,icon: Icon(Icons.account_box),hintText: "请输入用户名"),)),
+                           Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.white),padding: EdgeInsets.only(left: 10,right: 10),
+                               child: TextFormField(
+                                 decoration: InputDecoration(
+                                     border:InputBorder.none,icon: Icon(Icons.account_box),hintText: "请输入用户名"),)),
 
                           Row(children: [
                             Checkbox(onChanged: (value){},value: false,),

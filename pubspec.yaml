@@ -68,6 +68,7 @@ flutter:
     - images/idcard.png
     - assets/buggy.riv
     - assets/flag.riv
+    - data/family.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

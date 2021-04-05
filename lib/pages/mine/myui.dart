@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:web_socket_channel/io.dart';
 
 class myui extends StatefulWidget{
   @override
@@ -11,10 +12,12 @@ class myui extends StatefulWidget{
 }
 
 class myuistate extends State<myui>{
-  String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
-
+  String _imagrurl = 'http://qr0n4nltx.hn-bkt.clouddn.com/imagesp1.jpg';
+  initState(){
+  }
   @override
   Widget build(BuildContext context) {
+
     // TODO: implement build
     return Scaffold(
       body: CustomScrollView(
@@ -22,7 +25,9 @@ class myuistate extends State<myui>{
           SliverAppBar(
 //            leading: Text("我的",style: TextStyle(fontSize: 20,color: Colors.black),),
             actions: [IconButton(icon: Icon(Icons.fullscreen),
-            onPressed: (){}),
+            onPressed: (){
+
+            }),
               IconButton(icon: Icon(Icons.settings),
             onPressed: (){
                 Navigator.pushNamed(context, '/mysetting');

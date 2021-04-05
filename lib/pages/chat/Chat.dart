@@ -13,6 +13,7 @@ class Chat extends StatefulWidget{
 
 class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
   AnimationController _Amc;
+  String _headerimag = 'http://qr0n4nltx.hn-bkt.clouddn.com/p3.jpg';
   String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
   @override
   void initState() {
@@ -22,8 +23,9 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
   }
   @override
   void dispose() {
-    super.dispose();
     _Amc.dispose();
+    super.dispose();
+
   }
 
   @override
@@ -38,6 +40,16 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
         body: Container(padding: EdgeInsets.only(top: 10),width: _size.width,height: _size.height,child: ListView.separated(
           itemCount: 20,
           itemBuilder: (context,index){
+            if(index == 0){
+              return ListTile(
+                key: UniqueKey(),
+                subtitle: Text("在这里可以与许多不同的朋友一起畅聊生活琐事",overflow: TextOverflow.ellipsis,maxLines: 1,),
+                leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(_headerimag),),title: Text("聊天广场"),trailing: MaterialButton(onPressed: (){
+                print("点击$index");
+                _Amc.forward();
+                Navigator.pushNamed(context,'/chatChild');
+              },child: Icon(Icons.pan_tool,color: Colors.cyan,)),);
+            }
             return ListTile(
               key: UniqueKey(),
               subtitle: Text("一段凄美而无奈的感人肺腑的爱情",overflow: TextOverflow.ellipsis,maxLines: 1,),
