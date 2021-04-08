@@ -1,11 +1,13 @@
+import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:familytest/pages/login/register.dart';
+import '../../main.dart';
 
 
 class Login extends StatefulWidget {
@@ -42,6 +44,14 @@ class _MyHomePageState extends State<MyHomePage> {
     _file = 'assets/flag.riv';
     _createRive(_file);
   }
+  void showToast(String msg){
+    Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +63,11 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               child:_riveArtboard == null ? const SizedBox() : Rive(artboard: _riveArtboard,fit: BoxFit.cover,),
             ),
+            Positioned(top: 20,right: 20,child: MaterialButton(child: Text("注册",style: TextStyle(color: Colors.white),),onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
+            },)),
             Positioned(
-              top: MediaQuery.of(context).size.height-400,
+              top: MediaQuery.of(context).size.height/3,
               left: 0,
               child: Opacity(
                 opacity: 0.8,
@@ -94,29 +107,29 @@ class _MyHomePageState extends State<MyHomePage> {
                             decoration: InputDecoration(
                                 hintText: "请输入用户名",
                                 icon: Icon(Icons.add_call)),
-                                maxLength: 15,
+                            maxLength: 15,
                           ),
                           Row
                             (mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-                            ElevatedButton.icon(onPressed: (){
+                            ElevatedButton.icon(onPressed: ()async{
                               if( _fromglobalKey.currentState.validate()){
-                                context.read<GlobalState>().changToken(false);
-                                Navigator.pushReplacementNamed(context,'/Home');
-                                print("验证通过");
+                                var userdata = {
+                                  'user_mobile':_Usercontroller.text,
+                                  'user_pwd':_Pwdcontroller.text
+                                };
+                               var loginResult =  await Request.getNetwork('user/',params: userdata);
+                               print("返回结果：$loginResult");
+                               if(loginResult['user_name'] !='' && loginResult['user_id'] !=''){
+                                 print("验证通过");
+                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+                                     MainHome()));
+                                 context.read<GlobalState>().changToken(false);
+                               }else{
+                                 showToast("您的账号密码有误！");
+                               }
+
                               }else{
-                                setState(() {
-                                  _Usercontroller.text="";
-                                  _Pwdcontroller.text ="";
-                                });
-                                print("验证不通过");
-                                Fluttertoast.showToast(
-                                    msg: "您输入的内容有误哦",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
+                                showToast("请正确输入内容，不要乱搞哦！");
                               }
                             }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("登录")),
                             ElevatedButton.icon(onPressed: (){}, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("注册"))
@@ -126,8 +139,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
 
-    ),
-              ),)
+                ),
+              ),),
           ],
         ),
       ),

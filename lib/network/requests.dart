@@ -1,19 +1,24 @@
 import 'package:dio/dio.dart';
-
+import 'dart:convert';
 class Request{
   static Dio network = new Dio(BaseOptions(
     connectTimeout: 3000,
+    baseUrl: 'http://192.168.2.162:8000/Jia/'
   ));
 
-  getNetwork({String url,String params})async{
+  static getNetwork(url,{Map<String, dynamic> params})async{
     try{
-      var getResult = await network.get(url);
+      var getResult = await network.get(url,queryParameters: params);
+      print("返回的数据：${getResult.data}");
+      print("返回的数据：${getResult.data.runtimeType}");
+      print("返回的数据：${getResult.data['user_mobile']}");
       return getResult.data;
+
     }catch(e){
       print("get：$e");
     }
   }
-  setNetwork(String url,String data)async{
+  static setNetwork(String url,String data)async{
     try{
       var postResult = await network.post(url,data: data);
       return postResult.data;

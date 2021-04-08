@@ -53,15 +53,11 @@ class MainHome extends StatefulWidget {
 
 class _MainHomeState extends State<MainHome> {
   static int _index = 0;
+  var _listwiget = [Home(),Family(),Chat(),myui()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:IndexedStack(key: UniqueKey(),index: _index,children: [
-        Home(),
-        Chat(),
-        Family(),
-        myui(),
-      ],),
+      body:_listwiget[_index],
       bottomNavigationBar:BottomNavigationBar(
         onTap: (value){print("value:$value");
         setState(() {
