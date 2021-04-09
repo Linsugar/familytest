@@ -1,15 +1,14 @@
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/mine/myui.dart';
 import 'package:familytest/provider/grobleState.dart';
-import 'package:familytest/routes/Rout.dart';
 import 'package:familytest/pages/chat/Chat.dart';
 import 'package:familytest/pages/family/FamilyData.dart';
 import 'package:familytest/pages/home/Home.dart';
-
+import 'package:familytest/routes/Rout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
-
+import 'dart:io';
 void main() =>runApp(
     MultiProvider(
       providers: [
@@ -26,13 +25,26 @@ class MyApp  extends StatefulWidget{
 }
 
 class MyAppState extends State<MyApp>{
-  var _devices_info;
+  DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
  @override
- void initState() {
-   _devices_info = DeviceInfoPlugin();
+ void initState(){
+   getDevice();
    // TODO: implement initState
-
    super.initState();
+ }
+
+ void getDevice()async{
+   print("开始获取设备");
+   var _device  =await _deviceInfo.androidInfo;
+   if(Platform.isAndroid){
+//   获取唯一Id
+     context.read<GlobalState>().changdeviceid(_device.androidId);
+     print("获取的id：${context.read<GlobalState>().deviceid}");
+     context.read<GlobalState>().changplatform(_device.device);
+   }else if(Platform.isIOS){
+     print("ios未操作");
+   }
+
  }
 
 
@@ -42,7 +54,7 @@ class MyAppState extends State<MyApp>{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RoutePage.onGenerateRoute,
-      home: context.watch<GlobalState>().globalToken==false?Login():MainHome());
+      home: context.watch<GlobalState>().globalToken==false?MyHomePage():MainHome());
   }
 }
 

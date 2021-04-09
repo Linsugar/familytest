@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'dart:convert';
+
 class Request{
   static Dio network = new Dio(BaseOptions(
     connectTimeout: 3000,
@@ -18,9 +18,9 @@ class Request{
       print("get：$e");
     }
   }
-  static setNetwork(String url,String data)async{
+  static setNetwork(String url,Map<String, dynamic>params )async{
     try{
-      var postResult = await network.post(url,data: data);
+      var postResult = await network.post(url,data: params);
       return postResult.data;
     }catch(e){
       print("post：$e");

@@ -1,28 +1,14 @@
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:familytest/pages/login/register.dart';
 import '../../main.dart';
 
-
-class Login extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<Login> with SingleTickerProviderStateMixin {
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyHomePage(),
-    );
-  }
-}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -44,14 +30,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _file = 'assets/flag.riv';
     _createRive(_file);
   }
-  void showToast(String msg){
-    Fluttertoast.showToast(
-      msg: msg,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,);
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             validator: (user){
                               if(user.isEmpty || user.length<5){
                                 return "用户名有误";
-                              }
+                              }return null;
                             },
                             decoration: InputDecoration(
                                 hintText: "请输入手机号码",
@@ -99,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             validator: (pwd){
                               if(pwd.isEmpty || pwd.length<5){
                                 return "密码有误";
-                              }
+                              }return null;
                             },
                             obscureText: true,
                             keyboardType:TextInputType.number ,
@@ -125,11 +103,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                      MainHome()));
                                  context.read<GlobalState>().changToken(false);
                                }else{
-                                 showToast("您的账号密码有误！");
+                                 PopupUntil.showToast("您的账号密码有误！");
                                }
-
                               }else{
-                                showToast("请正确输入内容，不要乱搞哦！");
+                                PopupUntil.showToast("请正确输入内容，不要乱搞哦！");
                               }
                             }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("登录")),
                             ElevatedButton.icon(onPressed: (){}, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("注册"))

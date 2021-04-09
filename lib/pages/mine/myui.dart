@@ -1,8 +1,6 @@
 
-import 'package:familytest/network/requests.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:web_socket_channel/io.dart';
 
 class myui extends StatefulWidget{
   @override
@@ -63,20 +61,7 @@ class myuistate extends State<myui>{
                 ListTile(onTap: (){
                   Navigator.pushNamed(context, '/interg');
                 },leading: Icon(Icons.star,color: Colors.deepOrange,),title: Text("我的积分"),trailing: Icon(Icons.chevron_right),),
-                ListTile(onTap: ()async{
-                  var reslut = await Request.getNetwork('user/',params: {
-                    'user_mobile':'18381663230',
-                    'user_pwd':'666666'
-                  });
-                  if(reslut['user_name']!=''){
-                    print("得到的是null");
-                  }else{
-                    print("得到的");
-                  }
-//                  if(reslut['user_name'] && reslut['user_id'] !=null){
-//
-//                  }
-                  print("得到结果：${reslut['user_name'] }");
+                ListTile(onTap: (){
                 Navigator.pushNamed(context, '/cremacpn');
                  },leading: Icon(Icons.assessment,color: Colors.deepOrange,),title: Text("我的动态"),trailing: Icon(Icons.chevron_right),),
                 ListTile(onTap: (){
