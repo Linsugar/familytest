@@ -3,6 +3,7 @@ import 'package:familytest/pages/family/childcpns/ChildFamily.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/pages/login/register.dart';
 import 'package:familytest/pages/mine/childcpns/cremracpn.dart';
+import 'package:familytest/pages/mine/childcpns/dynamicUp.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicpn.dart';
 import 'package:familytest/pages/mine/childcpns/familycpns.dart';
 import 'package:familytest/pages/mine/childcpns/feedBook.dart';
@@ -24,6 +25,7 @@ class RoutePage{
     '/interg':(context,{argument})=>interg(),
     '/familcpn':(context,{argument})=>familcpn(),
     '/Regitser':(context,{argument})=>Regitser(),
+    '/updynamic':(context,{argument})=>updynamic(),
   };
 
 // ignore: missing_return, top_level_function_literal_block

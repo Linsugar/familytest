@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 class GlobalState with ChangeNotifier{
-  bool globalToken = false;
+  bool globalToken = true;
   List imageList = [];
   String city ='成都';
   String deviceid;

@@ -16,7 +16,9 @@ class _cremacpnState extends State<cremacpn> {
          var sqlpath =  await getDatabasesPath();
          print("获取地址：$sqlpath");
         },
-          child: Text("发布动态"),)],),
+          child: GestureDetector(onTap: (){
+            Navigator.pushNamed(context, '/updynamic');
+          },child: Text("发布动态")),)],),
         body:Container(
           constraints: BoxConstraints.expand(),
           child: ListView.builder(itemCount: 20,itemBuilder: (context,index){
