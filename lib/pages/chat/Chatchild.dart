@@ -54,6 +54,9 @@ class chatChildState extends State<chatChild>{
                     _Streamlist.add(MapEntry("he", snapshot.data));
                     return ListView.builder(itemCount: _Streamlist.length,itemBuilder: (context,index){
                       if(_Streamlist[index].value !=null){
+                        print("数据1：${snapshot.data}");
+                        var s = jsonDecode(snapshot.data);
+                        print("数据3：${s.name}");
                         if(_Streamlist[index].key =='he'){
                           return Hebuilder(Streamlist: _Streamlist, a: index, imagrurl: _imagrurl);
                         }
@@ -85,7 +88,8 @@ class chatChildState extends State<chatChild>{
                         Fluttertoast.showToast(msg: "你输入的内容为空");
                         return;
                       }
-                      _web.sink.add('${_textcontroller.text}');
+                      _web.sink.add('{"name":"张三"}');
+                      _Streamlist.add(MapEntry("me", _textcontroller.text));
                       _textcontroller.clear();
                     },))
                   ],

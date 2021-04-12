@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 
 class Request{
   static Dio network = new Dio(BaseOptions(
-    connectTimeout: 3000,
-    baseUrl: 'http://192.168.2.162:8000/Jia/'
+    connectTimeout: 10000,
+    baseUrl: 'http://192.168.1.140:8000/Jia/'
   ));
 
   static getNetwork(url,{Map<String, dynamic> params})async{
@@ -18,9 +18,9 @@ class Request{
       print("get：$e");
     }
   }
-  static setNetwork(String url,Map<String, dynamic>params )async{
+  static setNetwork(String url,data )async{
     try{
-      var postResult = await network.post(url,data: params);
+      var postResult = await network.post(url,data: data);
       return postResult.data;
     }catch(e){
       print("post：$e");

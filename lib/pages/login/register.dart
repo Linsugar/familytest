@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/showtoast.dart';
@@ -119,15 +120,15 @@ class RegisterState extends State<Regitser>{
                             MaterialButton(color: Colors.red,child: Text("注册"),onPressed: ()async{
                               print("获取设备id:${context.read<GlobalState>().globalToken}");
                               if(_globalKey.currentState.validate()){
-                                var regisdata ={
+                                var formdata = FormData.fromMap({
                                   'user_mobile':_phoneController.text,
                                   'user_pwd':_pwdController.text,
                                   'user_name':_userController.text,
                                   'city':context.read<GlobalState>().city,
                                   'deviceid':context.read<GlobalState>().deviceid,
                                   'platform':context.read<GlobalState>().platform,
-                                };
-                                var  Resultdata = await Request.setNetwork('user/', regisdata);
+                                });
+                                var  Resultdata = await Request.setNetwork('user/', formdata);
                                 if(Resultdata['token']!=null){
                                   PopupUntil.showToast(Resultdata['msg']);
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
