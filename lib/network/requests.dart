@@ -3,10 +3,10 @@ import 'package:dio/dio.dart';
 class Request{
   static Dio network = new Dio(BaseOptions(
     connectTimeout: 10000,
-    baseUrl: 'http://192.168.1.140:8000/Jia/'
+    baseUrl: 'http://192.168.2.162:8000/Jia/'
   ));
 
-  static getNetwork(url,{Map<String, dynamic> params})async{
+  static getNetwork(url,{Map<String, dynamic> ?params})async{
     try{
       var getResult = await network.get(url,queryParameters: params);
       print("返回的数据：${getResult.data}");
@@ -20,6 +20,7 @@ class Request{
   }
   static setNetwork(String url,data )async{
     try{
+      print('post：$data');
       var postResult = await network.post(url,data: data);
       return postResult.data;
     }catch(e){

@@ -8,20 +8,20 @@ class task extends StatefulWidget{
 
 class _taskState extends State<task> with SingleTickerProviderStateMixin{
 
-  TabController _tabController;
+  TabController ?_tabController;
   TextStyle _textStyle = TextStyle(color: Colors.blue,fontSize: 20);
   @override
   void initState() {
     // TODO: implement initState
     _tabController = TabController(length: 3, vsync:this);
-    _tabController.addListener(() {
-      print("当前下标：${_tabController.index}");
+    _tabController?.addListener(() {
+      print("当前下标：${_tabController?.index}");
     });
     super.initState();
   }
   @override
   void dispose() {
-    _tabController.dispose();
+    _tabController?.dispose();
     // TODO: implement dispose
     super.dispose();
   }

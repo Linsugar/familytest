@@ -78,7 +78,7 @@ class Centerwiget extends StatelessWidget {
  final String _name;
  final String _dircetion;
   const Centerwiget({
-    Key key,
+    Key ?key,
     @required name,
     @required dircetion
   }) :_dircetion = dircetion,_name =name, super(key: key);
@@ -90,17 +90,17 @@ class Centerwiget extends StatelessWidget {
 }
 
 class Endwiget extends StatelessWidget {
-  final String _name;
-  final String _dircetion;
+  final String ?_name;
+  final String ?_dircetion;
   const Endwiget({
-    Key key,
-    @required String name,
-    @required String dircetion,
+    Key ?key,
+    @required String ?name,
+    @required String ?dircetion,
   }):_name = name,_dircetion=dircetion,super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [Row(children: [Icon(Icons.account_circle),Text(_name),],), Row(children: [Text(_dircetion),
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [Row(children: [Icon(Icons.account_circle),Text(_name!),],), Row(children: [Text(_dircetion!),
       SizedBox(width: 5,),
       MaterialButton(shape:RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))) ,color: Colors.blue,onPressed: (){},child: Text("绑定"),)],)],);
   }

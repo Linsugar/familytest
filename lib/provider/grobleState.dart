@@ -3,8 +3,8 @@ class GlobalState with ChangeNotifier{
   bool globalToken = true;
   List imageList = [];
   String city ='成都';
-  String deviceid;
-  String platform;
+  String ?deviceid;
+  String ?platform;
   String userid = '1761351652';
 
   changuserid(value){

@@ -11,7 +11,7 @@ class LineChartSample3 extends StatefulWidget {
 }
 
 class _LineChartSample3State extends State<LineChartSample3> {
-  double touchedValue;
+  double ?touchedValue;
 
   @override
   void initState() {

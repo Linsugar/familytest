@@ -45,11 +45,11 @@ class childfamilystate extends State<childfamily>{
 
 class Sliverbody extends StatelessWidget {
   const Sliverbody({
-    Key key,
-    @required String imagrurl,
+    Key ?key,
+    @required String ?imagrurl,
   }) : _imagrurl = imagrurl, super(key: key);
 
-  final String _imagrurl;
+  final String ?_imagrurl;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class Sliverbody extends StatelessWidget {
                           return Card(
                             shape:RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20) )) ,
                             child: ListTile(
-                              leading: CircleAvatar(backgroundImage: NetworkImage(_imagrurl),),
+                              leading: CircleAvatar(backgroundImage: NetworkImage(_imagrurl!),),
                               title: Text("族长"),
                               subtitle: Text("九眼妖王"),
                               trailing: Text("积分：158423"),
@@ -93,16 +93,16 @@ class Sliverbody extends StatelessWidget {
 
 class MychildList extends StatelessWidget {
   const MychildList({
-    Key key,
-    @required String imagrurl,
+    Key ?key,
+    @required String ?imagrurl,
   }) : _imagrurl = imagrurl, super(key: key);
 
-  final String _imagrurl;
+  final String ?_imagrurl;
 
   @override
   Widget build(BuildContext context) {
     return Card(child: ListTile(
-      leading: CircleAvatar(backgroundImage: NetworkImage(_imagrurl),),
+      leading: CircleAvatar(backgroundImage: NetworkImage(_imagrurl!),),
     title: Text("昵称：花和尚鲁智深"),
     subtitle: Text("加入时间：${DateTime.now()}"),
     trailing: IconButton(icon: Icon(Icons.add_box),onPressed: (){},),),

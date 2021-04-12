@@ -6,7 +6,7 @@ class Creamer{
  static Future  GetCramer()async{
    try{
      var result = await  _imagePicker.getImage(source:ImageSource.camera);
-     return result.path;
+     return result?.path;
    }catch(e){
      print("e:$e");
    }
@@ -15,7 +15,7 @@ class Creamer{
  static  Future GetGrally()async{
    try{
      var result =  await _imagePicker.getImage(source:ImageSource.gallery);
-     return result.path;
+     return result?.path;
    }catch(e){
      print("e:$e");
    }

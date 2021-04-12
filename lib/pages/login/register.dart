@@ -58,7 +58,7 @@ class RegisterState extends State<Regitser>{
                         children: [
                           TextFormField(
                             validator: (value){
-                              if(value.isEmpty ||  value.length !=11){
+                              if(value!.isEmpty ||  value.length !=11){
                                 print("当前类型：${value.runtimeType}");
                                 return "手机号码输入有误";
                               }else{
@@ -75,7 +75,7 @@ class RegisterState extends State<Regitser>{
                           SizedBox(height: 10,),
                           TextFormField(
                             validator: (value){
-                              if(value.isEmpty || value.length >5){
+                              if(value!.isEmpty || value.length >5){
                                 return "用户名输入有误";
                               }else{
                                 return null;
@@ -93,7 +93,7 @@ class RegisterState extends State<Regitser>{
                             obscureText: true,
                             keyboardType:TextInputType.phone,
                             validator: (value){
-                              if(value.isEmpty || value.length !=10){
+                              if(value!.isEmpty || value.length !=10){
                                 return "请正确输入密码";
                               }else{
                                 return null;
@@ -119,7 +119,7 @@ class RegisterState extends State<Regitser>{
                             children: [
                             MaterialButton(color: Colors.red,child: Text("注册"),onPressed: ()async{
                               print("获取设备id:${context.read<GlobalState>().globalToken}");
-                              if(_globalKey.currentState.validate()){
+                              if(_globalKey.currentState!.validate()){
                                 var formdata = FormData.fromMap({
                                   'user_mobile':_phoneController.text,
                                   'user_pwd':_pwdController.text,
@@ -129,6 +129,7 @@ class RegisterState extends State<Regitser>{
                                   'platform':context.read<GlobalState>().platform,
                                 });
                                 var  Resultdata = await Request.setNetwork('user/', formdata);
+                                print('得到的 数据：${Resultdata['token']}');
                                 if(Resultdata['token']!=null){
                                   PopupUntil.showToast(Resultdata['msg']);
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){

@@ -1,8 +1,8 @@
 class chatmodel{
-  String name;
-  String id;
-  String image;
-  String context;
+  String ?name;
+  String ?id;
+  String ?image;
+  String ?context;
   chatmodel(json){
     this.id = json[id];
     this.name = json[name];

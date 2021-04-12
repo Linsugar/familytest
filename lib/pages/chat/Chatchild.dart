@@ -103,45 +103,46 @@ class chatChildState extends State<chatChild>{
 }
 
 class Mebuilder extends StatelessWidget {
+  final List<MapEntry<String, String>> ?_Streamlist;
+  final int ?a;
+  final String ?_imagrurl;
   const Mebuilder({
-    Key key,
-    @required List<MapEntry<String, String>> Streamlist,
+    Key ?key,
+    @required List<MapEntry<String, String>> ?Streamlist,
     @required this.a,
-    @required String imagrurl,
+    @required String ?imagrurl,
   }) : _Streamlist = Streamlist, _imagrurl = imagrurl, super(key: key);
 
-  final List<MapEntry<String, String>> _Streamlist;
-  final int a;
-  final String _imagrurl;
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListTile(
-          title: Align(alignment: Alignment.centerRight,child: Text("${_Streamlist[a].value}"),),
-          trailing:CircleAvatar(backgroundImage: NetworkImage(_imagrurl),)
+          title: Align(alignment: Alignment.centerRight,child: Text("${_Streamlist![a!].value}"),),
+          trailing:CircleAvatar(backgroundImage: NetworkImage(_imagrurl!),)
       ),
     );
   }
 }
 class Hebuilder extends StatelessWidget {
   const Hebuilder({
-    Key key,
-    @required List<MapEntry<String, String>> Streamlist,
+    Key ?key,
+    @required List<MapEntry<String, String>> ?Streamlist,
     @required this.a,
-    @required String imagrurl,
+    @required String ?imagrurl,
   }) : _Streamlist = Streamlist, _imagrurl = imagrurl, super(key: key);
 
-  final List<MapEntry<String, String>> _Streamlist;
-  final int a;
-  final String _imagrurl;
+  final List<MapEntry<String, String>> ?_Streamlist;
+  final int ?a;
+  final String ?_imagrurl;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListTile(
-          title: Align(alignment: Alignment.centerLeft,child: Text("${_Streamlist[a].value}"),),
-          leading:CircleAvatar(backgroundImage: NetworkImage(_imagrurl),)
+          title: Align(alignment: Alignment.centerLeft,child: Text("${_Streamlist![a!].value}"),),
+          leading:CircleAvatar(backgroundImage: NetworkImage(_imagrurl!),)
       ),
     );
   }

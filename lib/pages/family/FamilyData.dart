@@ -64,7 +64,7 @@ class FamilyState extends State<Family>{
                     child: Container(child:Flex(direction: Axis.vertical,children: [
                       Flexible(flex: 2,child: Container(
                         margin: EdgeInsets.all(7),
-                        decoration: BoxDecoration(boxShadow: [BoxShadow(offset: Offset(0.0,3.0),color: Colors.deepPurpleAccent[100],blurRadius: 10.0)]),
+                        decoration: BoxDecoration(boxShadow: [BoxShadow(offset: Offset(0.0,3.0),color: Colors.deepPurpleAccent[100]!,blurRadius: 10.0)]),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Container(decoration: BoxDecoration(color: Colors.deepPurpleAccent[100]),

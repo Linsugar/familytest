@@ -31,8 +31,8 @@ class RoutePage{
 // ignore: missing_return, top_level_function_literal_block
  static var onGenerateRoute = (RouteSettings settings) {
     print("获取到的setting：${settings.name}");
-    final String name = settings.name;
-    final Function pageContentBuilder = routeName[name];
+    final String ?name = settings.name;
+    final Function ?pageContentBuilder = routeName[name];
     if (pageContentBuilder != null) {
       //能寻找到对应的路由
       if (settings.arguments != null) {

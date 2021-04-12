@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class Home extends StatefulWidget{
   @override
@@ -12,9 +12,11 @@ class Home extends StatefulWidget{
 
 class HomeState extends State<Home>{
   String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
+  List imagelist=[];
+  List a = [1,2,3,4];
   @override
   void initState() {
-
+     this.imagelist = [_imagrurl,_imagrurl,_imagrurl,_imagrurl];
   }
   @override
   void dispose() {
@@ -60,13 +62,25 @@ class HomeState extends State<Home>{
                     ),
                     Flexible(
                         flex: 9,
-                        child: Swiper(
-                          pagination: SwiperPagination(),
-                          loop: true,
-                          autoplay: true
-                          ,itemCount: 10,itemBuilder: (context,index){
-                          return Image.network(_imagrurl,fit: BoxFit.cover,);
-                        },)
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                             autoPlay: true,
+                          ),
+                          items: imagelist.map((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                    decoration: BoxDecoration(
+                                        color: Colors.amber
+                                    ),
+                                    child: Image(image: NetworkImage(i),fit: BoxFit.cover,)
+                                );
+                              },
+                            );
+                          }).toList(),
+                        )
                     )
                   ],
                 ),

@@ -16,27 +16,30 @@ class _updynamicState extends State<updynamic> {
   TextEditingController _titlecontroller =TextEditingController();
   TextEditingController _contextcontroller =TextEditingController();
   List imageDynamic = [];
-
   var stateus=0;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text("发布动态"),actions: [MaterialButton(onPressed: ()async{
-        print("返回的图片地址：${imageDynamic[0]}");
         print("返回的user_id：${context.read<GlobalState>().userid}");
-        print("返回的图片地址：${imageDynamic[0]}");
         var data  = FormData.fromMap({
-          'image':await MultipartFile.fromFile(imageDynamic[0]),
+          'image':[],
           'user_id':context.read<GlobalState>().userid,
           'new_filename':'${DateTime.now().microsecondsSinceEpoch}'+'.jpg',
           'up_title':_titlecontroller.text,
           'up_context':_contextcontroller.text,
           'up_addres':context.read<GlobalState>().city,
         });
-
-
+        for(var i=0;i<imageDynamic.length;i++){
+          data.files.add(
+            MapEntry('image',
+              await MultipartFile.fromFile(imageDynamic[i])
+            )
+          );
+        }
         var result = await Request.setNetwork('DyImage/',data);
         print("返回的结果：$result");
 
@@ -72,8 +75,8 @@ class _updynamicState extends State<updynamic> {
                           imageDynamic.add(reslut);
                           stateus=1;
                           print("得到的图片内容：${imageDynamic}");
+                          print("得到的图片长度：${imageDynamic.length}");
                         });
-                        print("得到的图片内容：${imageDynamic.isEmpty}");
                       },
                       child:Icon(Icons.add),
                     )

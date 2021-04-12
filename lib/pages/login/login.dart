@@ -11,24 +11,25 @@ import '../../main.dart';
 
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key}) : super(key: key);
+  const MyHomePage({Key ?key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  GlobalKey<FormState> _fromglobalKey = GlobalKey<FormState>();
-  TextEditingController _Usercontroller  =TextEditingController();
-  TextEditingController _Pwdcontroller  =TextEditingController();
-  String _file;
-  Artboard _riveArtboard;
-  RiveAnimationController _controller;
+class _MyHomePageState extends State<MyHomePage>{
+  GlobalKey<FormState> ?_fromglobalKey = GlobalKey<FormState>();
+  TextEditingController ?_Usercontroller  =TextEditingController();
+  TextEditingController ?_Pwdcontroller  =TextEditingController();
+  Artboard ?_riveArtboard;
+  RiveAnimationController ?_controller;
+  String _file = 'assets/flag.riv';
   @override
   void initState() {
+
+    _createRive();
     super.initState();
-    _file = 'assets/flag.riv';
-    _createRive(_file);
+
   }
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Stack(
           children: [
             Container(
-              child:_riveArtboard == null ? const SizedBox() : Rive(artboard: _riveArtboard,fit: BoxFit.cover,),
+              child:_riveArtboard == null ? const SizedBox() : Rive(artboard: _riveArtboard!,fit: BoxFit.cover,),
             ),
             Positioned(top: 20,right: 20,child: MaterialButton(child: Text("注册",style: TextStyle(color: Colors.white),),onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
@@ -66,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             keyboardType: TextInputType.phone,
                             maxLength: 13,
                             validator: (user){
-                              if(user.isEmpty || user.length<5){
+                              if(user!.isEmpty || user.length<5){
                                 return "用户名有误";
                               }return null;
                             },
@@ -75,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 icon: Icon(Icons.account_circle)),),
                           TextFormField(
                             validator: (pwd){
-                              if(pwd.isEmpty || pwd.length<5){
+                              if(pwd!.isEmpty || pwd.length<5){
                                 return "密码有误";
                               }return null;
                             },
@@ -90,10 +91,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           Row
                             (mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
                             ElevatedButton.icon(onPressed: ()async{
-                              if( _fromglobalKey.currentState.validate()){
+                              if( _fromglobalKey!.currentState!.validate()){
                                 var userdata = {
-                                  'user_mobile':_Usercontroller.text,
-                                  'user_pwd':_Pwdcontroller.text
+                                  'user_mobile':_Usercontroller?.text,
+                                  'user_pwd':_Pwdcontroller?.text
                                 };
                                var loginResult =  await Request.getNetwork('user/',params: userdata);
                                print("返回结果：$loginResult");
@@ -123,18 +124,18 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-  _createRive(_file){
+  void _createRive()async{
     rootBundle.load(_file).then(
 //      1.加载riv文件，
           (data) async {
+            print("data:$data");
 //            创建一个存储rive二进制的文件
-        final file = RiveFile();
-        if (file.import(data)) {
-          final artboard = file.mainArtboard;
+        final file =RiveFile.import(data);
+        print("$file文件");
+        final artboard = file.mainArtboard;
 //          添加一个控制器，随时进行控制动画
           artboard.addController(_controller = SimpleAnimation('flag'));
           setState(() => _riveArtboard = artboard);
-        }
       },
     );
   }
