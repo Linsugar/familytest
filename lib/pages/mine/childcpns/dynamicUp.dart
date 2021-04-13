@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/CreamUntil.dart';
+import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,6 +43,12 @@ class _updynamicState extends State<updynamic> {
         }
         var result = await Request.setNetwork('DyImage/',data);
         print("返回的结果：$result");
+        if(result['user_id'] == context.read<GlobalState>().userid){
+          PopupUntil.showToast('发布成功，请稍后');
+          Navigator.pop(context);
+        }else{
+          PopupUntil.showToast('上传失败,请稍后重试');
+        }
 
       },child: Text("发表",style: TextStyle(color: Colors.white),),)],),
       body: Container(
@@ -72,10 +79,12 @@ class _updynamicState extends State<updynamic> {
                         var reslut = await Creamer.GetGrally();
                         print("得到的结果：${reslut}");
                         setState(() {
-                          imageDynamic.add(reslut);
-                          stateus=1;
-                          print("得到的图片内容：${imageDynamic}");
-                          print("得到的图片长度：${imageDynamic.length}");
+                          if(reslut !=null){
+                            imageDynamic.add(reslut);
+                            stateus=1;
+                            print("得到的图片内容：${imageDynamic}");
+                            print("得到的图片长度：${imageDynamic.length}");
+                          }
                         });
                       },
                       child:Icon(Icons.add),

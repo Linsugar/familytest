@@ -6,7 +6,7 @@ import 'package:familytest/pages/mine/childcpns/cremracpn.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicUp.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicpn.dart';
 import 'package:familytest/pages/mine/childcpns/familycpns.dart';
-import 'package:familytest/pages/mine/childcpns/feedBook.dart';
+import 'package:familytest/pages/mine/childcpns/feedback.dart';
 import 'package:familytest/pages/mine/childcpns/intergcpn.dart';
 import 'package:familytest/pages/mine/childcpns/mysetting.dart';
 import 'package:familytest/pages/mine/childcpns/taskcpn.dart';

@@ -3,15 +3,13 @@ import 'package:dio/dio.dart';
 class Request{
   static Dio network = new Dio(BaseOptions(
     connectTimeout: 10000,
-    baseUrl: 'http://192.168.2.162:8000/Jia/'
+    baseUrl: 'http://192.168.5.208:8000/Jia/'
   ));
 
   static getNetwork(url,{Map<String, dynamic> ?params})async{
     try{
       var getResult = await network.get(url,queryParameters: params);
       print("返回的数据：${getResult.data}");
-      print("返回的数据：${getResult.data.runtimeType}");
-      print("返回的数据：${getResult.data['user_mobile']}");
       return getResult.data;
 
     }catch(e){

@@ -61,6 +61,11 @@ class PhotsState extends State<Photos>{
     );
   }
  Future createPhotsWige()async{
-    context.read<GlobalState>().changlist(await Creamer.GetCramer());
+
+    var rsult = await Creamer.GetCramer();
+    if (rsult !=null){
+      context.read<GlobalState>().changlist(rsult);
+    }
+
   }
 }

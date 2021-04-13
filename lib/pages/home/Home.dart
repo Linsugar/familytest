@@ -46,14 +46,14 @@ class HomeState extends State<Home>{
               Flexible(flex: 1,child: Container(margin: EdgeInsets.only(left: 10,right: 10),decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(color: Colors.lightBlue,width: 1.0)),padding: EdgeInsets.only(left: 10,right: 10),width: double.infinity,
                   child:TextField(decoration: InputDecoration(icon: Icon(Icons.search),suffixIcon: Icon(Icons.arrow_drop_down),hintText: '请输入搜索内容'),)),),
               Flexible(flex: 3,child: Container(
-                margin: EdgeInsets.only(left: 10,top: 5),
+//                margin: EdgeInsets.only(left: 10,top: 5),
                 child: Flex(
                   direction: Axis.vertical,
                   children: [
                     Flexible(
                       flex: 1,
                       child: Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.only(left: 10,right: 10),
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
                           Text("今日热搜"),
                           Text("全部"),
@@ -62,25 +62,7 @@ class HomeState extends State<Home>{
                     ),
                     Flexible(
                         flex: 9,
-                        child: CarouselSlider(
-                          options: CarouselOptions(
-                             autoPlay: true,
-                          ),
-                          items: imagelist.map((i) {
-                            return Builder(
-                              builder: (BuildContext context) {
-                                return Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                    decoration: BoxDecoration(
-                                        color: Colors.amber
-                                    ),
-                                    child: Image(image: NetworkImage(i),fit: BoxFit.cover,)
-                                );
-                              },
-                            );
-                          }).toList(),
-                        )
+                        child:cusor(imagelist:imagelist,)
                     )
                   ],
                 ),
@@ -161,3 +143,43 @@ class HomeState extends State<Home>{
     );
   }
 }
+
+class cusor extends StatelessWidget {
+  const cusor({
+    Key? key,
+    required this.imagelist,
+  }) : super(key: key);
+
+  final List imagelist;
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+      options: CarouselOptions(
+        autoPlay: true,
+        enlargeCenterPage: true
+      ),
+      items: imagelist.map((i) {
+        return Builder(
+          builder: (BuildContext context) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  decoration: BoxDecoration(
+                    boxShadow: [BoxShadow(color: Colors.black,spreadRadius: 0.5,blurRadius: 0.9,)],
+                      color: Colors.amber
+                  ),
+                  child: Image(image: NetworkImage(i),fit: BoxFit.cover,)
+              ),
+            );
+          },
+        );
+      }).toList(),
+    );
+  }
+}
+
+
+

@@ -5,7 +5,7 @@ class GlobalState with ChangeNotifier{
   String city ='成都';
   String ?deviceid;
   String ?platform;
-  String userid = '1761351652';
+  String userid = '307844349484234';
 
   changuserid(value){
     userid =value;

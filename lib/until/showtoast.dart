@@ -5,6 +5,7 @@ class PopupUntil{
     Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,);
+      gravity: ToastGravity.CENTER,
+    );
   }
 }
