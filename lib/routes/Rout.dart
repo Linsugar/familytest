@@ -1,6 +1,8 @@
 import 'package:familytest/pages/chat/Chatchild.dart';
 import 'package:familytest/pages/family/childcpns/ChildFamily.dart';
 import 'package:familytest/pages/home/Home.dart';
+import 'package:familytest/pages/home/childcps/videocnps.dart';
+import 'package:familytest/pages/home/childcps/webviewcps.dart';
 import 'package:familytest/pages/login/register.dart';
 import 'package:familytest/pages/mine/childcpns/cremracpn.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicUp.dart';
@@ -26,6 +28,8 @@ class RoutePage{
     '/familcpn':(context,{argument})=>familcpn(),
     '/Regitser':(context,{argument})=>Regitser(),
     '/updynamic':(context,{argument})=>updynamic(),
+    '/videoWidget':(context,{argument})=>videoWidget(),
+    '/webviewcpns':(context,{argument})=>webviewcpns(),
   };
 
 // ignore: missing_return, top_level_function_literal_block

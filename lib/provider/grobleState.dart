@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
 class GlobalState with ChangeNotifier{
-  bool globalToken = true;
+  bool globalToken = false;
   List imageList = [];
   String city ='成都';
   String ?deviceid;
   String ?platform;
-  String userid = '307844349484234';
+  var userid = '61122087048';
+  String ?logintoken='';
+  String ?avator = '';
 
-  changuserid(value){
-    userid =value;
+  changeavator(value){
+    avator =value;
     notifyListeners();
   }
+
+
+  changuserid(value){
+    userid ='$value';
+    notifyListeners();
+  }
+  changlogintoken(value){
+    logintoken ='ak7 '+value+ ' auth';
+    notifyListeners();
+  }
+
 
   changdeviceid(value){
     deviceid = value;

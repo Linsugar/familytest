@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/showtoast.dart';
@@ -27,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage>{
   @override
   void initState() {
 
-    _createRive();
+//    _createRive();
     super.initState();
 
   }
@@ -36,11 +39,11 @@ class _MyHomePageState extends State<MyHomePage>{
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        constraints: BoxConstraints.expand(),
         child: Stack(
           children: [
             Container(
-              child:_riveArtboard == null ? const SizedBox() : Rive(artboard: _riveArtboard!,fit: BoxFit.cover,),
+              color: Colors.blue,
+//              child: Image(image:  AssetImage('images/login.jpg'),fit: BoxFit.cover,),
             ),
             Positioned(top: 20,right: 20,child: MaterialButton(child: Text("注册",style: TextStyle(color: Colors.white),),onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
@@ -84,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage>{
                             keyboardType:TextInputType.number ,
                             controller: _Pwdcontroller,
                             decoration: InputDecoration(
-                                hintText: "请输入用户名",
+                                hintText: "请输入密码",
                                 icon: Icon(Icons.add_call)),
                             maxLength: 15,
                           ),
@@ -92,24 +95,31 @@ class _MyHomePageState extends State<MyHomePage>{
                             (mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
                             ElevatedButton.icon(onPressed: ()async{
                               if( _fromglobalKey!.currentState!.validate()){
-                                var userdata = {
+                                var userdata = FormData.fromMap({
                                   'user_mobile':_Usercontroller?.text,
-                                  'user_pwd':_Pwdcontroller?.text
-                                };
-                               var loginResult =  await Request.getNetwork('user/',params: userdata);
-                               print("返回结果：$loginResult");
-                               if(loginResult['user_name'] !='' && loginResult['user_id'] !=''){
-                                 print("验证通过");
-                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                                     MainHome()));
-                                 context.read<GlobalState>().changToken(false);
-                               }else{
-                                 PopupUntil.showToast("您的账号密码有误！");
-                               }
-                              }else{
-                                PopupUntil.showToast("请正确输入内容，不要乱搞哦！");
+                                  'password':_Pwdcontroller?.text
+                                });
+                                var loginResult =  await Request.setNetwork('user/',userdata);
+                                var token = loginResult['token'];
+                                if(token !=null){
+                                  PopupUntil.showToast(loginResult['msg']);
+                                  context.read<GlobalState>().changToken(false);
+                                  context.read<GlobalState>().changlogintoken(loginResult['token']);
+                                  context.read<GlobalState>().changuserid(loginResult['user_id']);
+                                  context.read<GlobalState>().changeavator(loginResult['avator_image']);
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+                                      MainHome()));
+                                }
+                                if(loginResult['msg']=='密码或手机号有误'){
+                                  PopupUntil.showToast(loginResult['msg']);
+                                }
+                                if(loginResult['msg']=='不存在'){
+                                PopupUntil.showToast(loginResult['msg']);
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+                                    Regitser()));
                               }
-                            }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("登录")),
+                              }
+                              }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("登录")),
                             ElevatedButton.icon(onPressed: (){}, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("注册"))
                           ],),
                         ],
@@ -128,15 +138,114 @@ class _MyHomePageState extends State<MyHomePage>{
     rootBundle.load(_file).then(
 //      1.加载riv文件，
           (data) async {
-            print("data:$data");
+        print("data:$data");
 //            创建一个存储rive二进制的文件
         final file =RiveFile.import(data);
         print("$file文件");
         final artboard = file.mainArtboard;
 //          添加一个控制器，随时进行控制动画
-          artboard.addController(_controller = SimpleAnimation('flag'));
-          setState(() => _riveArtboard = artboard);
+        artboard.addController(_controller = SimpleAnimation('flag'));
+        setState(() => _riveArtboard = artboard);
       },
     );
   }
 }
+
+
+
+//
+//class CustomerSnow extends StatefulWidget{
+//  @override
+//  _CustomerSnowState createState() => _CustomerSnowState();
+//}
+//
+//class _CustomerSnowState extends State<CustomerSnow> with SingleTickerProviderStateMixin{
+//  AnimationController ?_controller;
+//  List<sw> nelis = List.generate(50, (value){
+//    return sw();
+//  });
+//  @override
+//  void initState() {
+//    _controller = AnimationController(vsync: this,duration: Duration(seconds:1))..repeat();
+//    // TODO: implement initState
+//
+//    super.initState();
+//  }
+//  @override
+//  void dispose() {
+//    // TODO: implement dispose
+//    super.dispose();
+//  }
+//
+//  @override
+//  Widget build(BuildContext context) {
+//
+//    return Scaffold(
+//      appBar: AppBar(title: Text("雪花"),),
+//      body: Container(
+//        decoration: BoxDecoration(
+//            gradient: LinearGradient(
+//                begin: Alignment.topCenter,
+//                end: Alignment.bottomCenter,
+//                colors: [Colors.blue,Colors.blue[200],Colors.white],
+//                stops: [0.0,0.7,0.95]
+//            )
+//        ),
+//        constraints: BoxConstraints.expand(),
+//        child: AnimatedBuilder(
+//          animation:_controller! ,
+//          builder: (_, __) {
+//            this.nelis.forEach((element) {
+//              element.fall();
+//            });
+//            return CustomPaint(
+//              painter: Snow(nelis),
+//            );
+//          },
+//        ),
+//      ),
+//    );
+//  }
+//}
+//
+//class Snow extends CustomPainter{
+//
+//  List<sw> nelis;
+//  Snow(this.nelis);
+//  @override
+//  void paint(Canvas canvas, Size size) {
+//    canvas.drawCircle(Offset(size.width/2.0,size.height-240), 60.0, Paint()..color=Colors.white);
+//    canvas.drawOval(Rect.fromCenter(center: Offset(size.width/2.0,size.height-60), width: 250, height: 300),Paint()..color=Colors.white);
+//    canvas.drawCircle(Offset(size.width/2.0-40,size.height-260), 10, Paint());
+//    canvas.drawCircle(Offset(size.width/2.0+40,size.height-260), 10, Paint());
+//    canvas.drawOval(Rect.fromCenter(center: Offset(size.width/2.0,size.height-220), width: 50, height: Random().nextDouble()*10+4),Paint()..color=Colors.red);
+//    this.nelis.forEach((value) {
+//      canvas.drawCircle(Offset(value.x,value.y), value.r, Paint()..color=Colors.white);
+//    });
+//  }
+//  @override
+//  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+//    // TODO: implement shouldRepaint
+//    return true;
+//  }
+//}
+//
+//class sw{
+////  左右移动
+//  double x = Random().nextDouble()*400.0;
+//// 向下
+//  double y = Random().nextDouble()*800.0;
+////  半径
+//  double r = Random().nextDouble()*7.0;
+////  速度
+//  double v = Random().nextDouble()*5;
+//  fall(){
+//    y+=v;
+//    if(y>=800){
+//      x = Random().nextDouble()*400.0;
+//      y = Random().nextDouble()*800.0;
+//      r = Random().nextDouble()*7.0;
+//      v = Random().nextDouble()*5;
+//    }
+//  }
+//}

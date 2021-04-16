@@ -27,7 +27,7 @@ class _cremacpnState extends State<cremacpn> {
     print("进入请求");
    var result = await Request.getNetwork('DyImage/',params: {
       'user_id':context.read<GlobalState>().userid
-    });
+    },token:context.read<GlobalState>().logintoken );
    result.forEach((value){
        dy.add(dynamicdata(value));
    });

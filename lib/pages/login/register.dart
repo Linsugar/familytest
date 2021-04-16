@@ -1,11 +1,15 @@
+
+import 'dart:io';
 import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/CreamUntil.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:familytest/pages/login/login.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../main.dart';
 class Regitser extends StatefulWidget{
@@ -23,6 +27,7 @@ class RegisterState extends State<Regitser>{
   TextEditingController _phoneController  =TextEditingController();
   TextEditingController _userController  =TextEditingController();
   TextEditingController _pwdController  =TextEditingController();
+  String ?avator;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -37,21 +42,30 @@ class RegisterState extends State<Regitser>{
                 Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage('images/login.jpg'),fit: BoxFit.cover)),
                   child: Flex(direction: Axis.vertical,children: [
                     Expanded(flex: 3,child: Container(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.only(top: 30),
                       child: Column(
                           children:[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                IconButton(icon: Icon(Icons.chevron_left),onPressed: (){},),
-                                Text("SING IN",style: TextStyle(fontSize: 20),)
-                              ],
+                            Expanded(flex:2,child: Text("")),
+                            ClipOval(
+                              child: Container(
+                                color: Colors.white,
+                                width: 70,
+                                height: 70,
+                                child: avator ==null?Center(child: GestureDetector(
+                                    onTap: ()async{
+                                      var path =await Creamer.GetGrally();
+                                      setState(() {
+                                        avator = path;
+                                      });
+                                    },
+                                    child: FaIcon(FontAwesomeIcons.camera))):Image(image: FileImage(File(avator!)),fit: BoxFit.cover,),
+                              ),
                             ),
-                            Expanded(child: Text("原野无边无际，远处的天空比近处的树林还要低；江水清清，明月仿似更与人相亲",maxLines: 2,))
+                            SizedBox(height: 10,),
                           ]
                       ),
                     ),),
-                    Expanded(flex:7,child: Container(padding: EdgeInsets.all(20),child: Form(
+                    Expanded(flex:7,child: Container(padding: EdgeInsets.all(10),child: Form(
                       autovalidateMode:AutovalidateMode.always ,
                       key: _globalKey,
                       child: Column(
@@ -118,25 +132,29 @@ class RegisterState extends State<Regitser>{
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                             MaterialButton(color: Colors.red,child: Text("注册"),onPressed: ()async{
-                              print("获取设备id:${context.read<GlobalState>().globalToken}");
                               if(_globalKey.currentState!.validate()){
-                                var formdata = FormData.fromMap({
-                                  'user_mobile':_phoneController.text,
-                                  'user_pwd':_pwdController.text,
-                                  'user_name':_userController.text,
-                                  'city':context.read<GlobalState>().city,
-                                  'deviceid':context.read<GlobalState>().deviceid,
-                                  'platform':context.read<GlobalState>().platform,
-                                });
-                                var  Resultdata = await Request.setNetwork('user/', formdata);
-                                print('得到的 数据：${Resultdata['token']}');
-                                if(Resultdata['token']!=null){
-                                  PopupUntil.showToast(Resultdata['msg']);
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                                    return MainHome();
-                                  }));
+                                if(avator !=null){
+                                  var formdata = FormData.fromMap({
+                                    'user_mobile':_phoneController.text,
+                                    'password':_pwdController.text,
+                                    'username':_userController.text,
+                                    'city':context.read<GlobalState>().city,
+                                    'deviceid':context.read<GlobalState>().deviceid,
+                                    'platform':context.read<GlobalState>().platform,
+                                    'avator_image': await MultipartFile.fromFile(avator!)
+                                  });
+                                  var  Resultdata = await Request.setNetwork('user/', formdata);
+                                  String ?token = Resultdata['token'];
+                                  if(token!.isNotEmpty){
+                                    PopupUntil.showToast(Resultdata['msg']);
+                                    context.read<GlobalState>().changuserid(Resultdata['user_id']);
+                                    context.read<GlobalState>().changeavator(Resultdata['avator_image']);
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                                      return MainHome();
+                                    }));
+                                  }
                                 }else{
-                                  PopupUntil.showToast(Resultdata['msg']);
+                                  PopupUntil.showToast("能不能上传照片？");
                                 }
                               }
                             },),

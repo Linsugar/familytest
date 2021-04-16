@@ -41,7 +41,7 @@ class _updynamicState extends State<updynamic> {
             )
           );
         }
-        var result = await Request.setNetwork('DyImage/',data);
+        var result = await Request.setNetwork('DyImage/',data,token: context.read<GlobalState>().logintoken);
         print("返回的结果：$result");
         if(result['user_id'] == context.read<GlobalState>().userid){
           PopupUntil.showToast('发布成功，请稍后');
@@ -70,10 +70,13 @@ class _updynamicState extends State<updynamic> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     for(var i=0;i<imageDynamic.length;i++)
-                      Expanded(flex:1,child:Container(margin: EdgeInsets.all(3),decoration: BoxDecoration(
+                      Container(
+                        width: MediaQuery.of(context).size.width/5,
+                        height: MediaQuery.of(context).size.width/3,
+                        margin: EdgeInsets.all(3),decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           image:DecorationImage(image: FileImage(File(imageDynamic[i])),fit: BoxFit.cover)
-                      ),)),
+                      ),),
                     imageDynamic.length==4?Text(""):MaterialButton(
                       onPressed: ()async{
                         var reslut = await Creamer.GetGrally();

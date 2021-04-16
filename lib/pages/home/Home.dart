@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
+import 'package:webview_flutter/webview_flutter.dart';
 class Home extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -120,18 +120,24 @@ class HomeState extends State<Home>{
                             Flexible(flex: 5,child: Container(decoration:BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
                                 image: DecorationImage(image: NetworkImage(_imagrurl),fit: BoxFit.cover)),)),
-                            Flexible(flex:5,child: Container(child: Card(
-                              clipBehavior: Clip.none,
-                              elevation: 0.0,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("锐雯"),
-                                  Text("黑暗之神从黑暗深渊而来"),
-                                  Text("2021-02-26")
-                                ],
-                              ),),)),
+                            Flexible(flex:5,child: GestureDetector(
+                              onTap: (){
+                                Navigator.pushNamed(context, "/webviewcpns");
+
+                              },
+                              child: Container(child: Card(
+                                clipBehavior: Clip.none,
+                                elevation: 0.0,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("锐雯"),
+                                    Text("黑暗之神从黑暗深渊而来"),
+                                    Text("2021-02-26")
+                                  ],
+                                ),),),
+                            )),
                           ],
                         ),),),
                       ],),
@@ -164,14 +170,20 @@ class cusor extends StatelessWidget {
           builder: (BuildContext context) {
             return ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.symmetric(horizontal: 5.0),
-                  decoration: BoxDecoration(
-                    boxShadow: [BoxShadow(color: Colors.black,spreadRadius: 0.5,blurRadius: 0.9,)],
-                      color: Colors.amber
-                  ),
-                  child: Image(image: NetworkImage(i),fit: BoxFit.cover,)
+              child: GestureDetector(
+                onTap: (){
+//                  print("点击：${i}");
+                  Navigator.pushNamed(context, "/videoWidget");
+                },
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+                    decoration: BoxDecoration(
+                      boxShadow: [BoxShadow(color: Colors.black,spreadRadius: 0.5,blurRadius: 0.9,)],
+                        color: Colors.amber
+                    ),
+                    child: Image(image: NetworkImage(i),fit: BoxFit.cover,)
+                ),
               ),
             );
           },

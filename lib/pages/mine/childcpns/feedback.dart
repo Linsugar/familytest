@@ -46,7 +46,8 @@ class _feedbookState extends State<feedbook> {
                   'feed_id':context.read<GlobalState>().userid,
                   'feedback_context':_editingController.text,
                 });
-                var result = await Request.setNetwork('feedback/',fromdata);
+                print("id:${context.read<GlobalState>().userid}");
+                var result = await Request.setNetwork('feedback/',fromdata,token: context.read<GlobalState>().logintoken);
                 print("结果:${result}");
                 PopupUntil.showToast('反馈成功，我们工作人员将会跟进，谢谢你的配合');
                 Future.delayed(Duration(seconds: 1)).then((value) => {
@@ -69,15 +70,16 @@ class feedhistory extends StatelessWidget {
   String user_id;
   feedhistory(this.user_id);
 
-  Future _gethistory()async{
-    var result = await Request.getNetwork('feedback/',params: {
-      'feed_id':user_id
-    });
-    print('结果：$result');
-    return result;
-  }
+
   @override
   Widget build(BuildContext context) {
+    Future _gethistory()async{
+      var result = await Request.getNetwork('feedback/',params: {
+        'feed_id':user_id
+      },token: context.read<GlobalState>().logintoken);
+      print('结果：$result');
+      return result;
+    }
     return Scaffold(
       appBar: AppBar(title: Text("反馈记录"),),
       body: FutureBuilder(
@@ -119,14 +121,3 @@ class feedhistory extends StatelessWidget {
   }
 }
 
-
-//Row(
-//mainAxisAlignment: MainAxisAlignment.start,
-//children: [
-//Text("${snapshot.data[index]['feedback_context']}")
-//),
-//Row(
-//mainAxisAlignment: MainAxisAlignment.end,
-//children: [
-//Text("${snapshot.data[index]['feedback_context']}")
-//],),

@@ -1,6 +1,8 @@
 
+import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class myui extends StatefulWidget{
   @override
@@ -22,7 +24,6 @@ class myuistate extends State<myui>{
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-//            leading: Text("我的",style: TextStyle(fontSize: 20,color: Colors.black),),
               actions: [IconButton(icon: Icon(Icons.fullscreen),
                   onPressed: (){
 
@@ -32,7 +33,7 @@ class myuistate extends State<myui>{
                       Navigator.pushNamed(context, '/mysetting');
                     })],
               flexibleSpace: FlexibleSpaceBar(
-                  background:Image.network(_imagrurl,fit: BoxFit.cover,)
+                  background:Image.network(context.watch<GlobalState>().avator!,fit: BoxFit.cover,)
               ),
               expandedHeight: 150,
             ),
