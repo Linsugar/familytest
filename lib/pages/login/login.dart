@@ -120,7 +120,9 @@ class _MyHomePageState extends State<MyHomePage>{
                               }
                               }
                               }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("登录")),
-                            ElevatedButton.icon(onPressed: (){}, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("注册"))
+                            ElevatedButton.icon(onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
+                              }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("注册"))
                           ],),
                         ],
                       ),
