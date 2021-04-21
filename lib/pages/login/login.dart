@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +29,12 @@ class _MyHomePageState extends State<MyHomePage>{
   RiveAnimationController ?_controller;
   String _file = 'assets/flag.riv';
   @override
-  void initState() {
-
-//    _createRive();
+  void initState(){
     super.initState();
-
   }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage>{
                                   context.read<GlobalState>().changlogintoken(loginResult['token']);
                                   context.read<GlobalState>().changuserid(loginResult['user_id']);
                                   context.read<GlobalState>().changeavator(loginResult['avator_image']);
+                                  context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
                                       MainHome()));
                                 }
@@ -154,100 +156,3 @@ class _MyHomePageState extends State<MyHomePage>{
 }
 
 
-
-//
-//class CustomerSnow extends StatefulWidget{
-//  @override
-//  _CustomerSnowState createState() => _CustomerSnowState();
-//}
-//
-//class _CustomerSnowState extends State<CustomerSnow> with SingleTickerProviderStateMixin{
-//  AnimationController ?_controller;
-//  List<sw> nelis = List.generate(50, (value){
-//    return sw();
-//  });
-//  @override
-//  void initState() {
-//    _controller = AnimationController(vsync: this,duration: Duration(seconds:1))..repeat();
-//    // TODO: implement initState
-//
-//    super.initState();
-//  }
-//  @override
-//  void dispose() {
-//    // TODO: implement dispose
-//    super.dispose();
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//
-//    return Scaffold(
-//      appBar: AppBar(title: Text("雪花"),),
-//      body: Container(
-//        decoration: BoxDecoration(
-//            gradient: LinearGradient(
-//                begin: Alignment.topCenter,
-//                end: Alignment.bottomCenter,
-//                colors: [Colors.blue,Colors.blue[200],Colors.white],
-//                stops: [0.0,0.7,0.95]
-//            )
-//        ),
-//        constraints: BoxConstraints.expand(),
-//        child: AnimatedBuilder(
-//          animation:_controller! ,
-//          builder: (_, __) {
-//            this.nelis.forEach((element) {
-//              element.fall();
-//            });
-//            return CustomPaint(
-//              painter: Snow(nelis),
-//            );
-//          },
-//        ),
-//      ),
-//    );
-//  }
-//}
-//
-//class Snow extends CustomPainter{
-//
-//  List<sw> nelis;
-//  Snow(this.nelis);
-//  @override
-//  void paint(Canvas canvas, Size size) {
-//    canvas.drawCircle(Offset(size.width/2.0,size.height-240), 60.0, Paint()..color=Colors.white);
-//    canvas.drawOval(Rect.fromCenter(center: Offset(size.width/2.0,size.height-60), width: 250, height: 300),Paint()..color=Colors.white);
-//    canvas.drawCircle(Offset(size.width/2.0-40,size.height-260), 10, Paint());
-//    canvas.drawCircle(Offset(size.width/2.0+40,size.height-260), 10, Paint());
-//    canvas.drawOval(Rect.fromCenter(center: Offset(size.width/2.0,size.height-220), width: 50, height: Random().nextDouble()*10+4),Paint()..color=Colors.red);
-//    this.nelis.forEach((value) {
-//      canvas.drawCircle(Offset(value.x,value.y), value.r, Paint()..color=Colors.white);
-//    });
-//  }
-//  @override
-//  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-//    // TODO: implement shouldRepaint
-//    return true;
-//  }
-//}
-//
-//class sw{
-////  左右移动
-//  double x = Random().nextDouble()*400.0;
-//// 向下
-//  double y = Random().nextDouble()*800.0;
-////  半径
-//  double r = Random().nextDouble()*7.0;
-////  速度
-//  double v = Random().nextDouble()*5;
-//  fall(){
-//    y+=v;
-//    if(y>=800){
-//      x = Random().nextDouble()*400.0;
-//      y = Random().nextDouble()*800.0;
-//      r = Random().nextDouble()*7.0;
-//      v = Random().nextDouble()*5;
-//    }
-//  }
-//}

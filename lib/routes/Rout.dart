@@ -3,6 +3,7 @@ import 'package:familytest/pages/family/childcpns/ChildFamily.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/pages/home/childcps/videocnps.dart';
 import 'package:familytest/pages/home/childcps/webviewcps.dart';
+import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/login/register.dart';
 import 'package:familytest/pages/mine/childcpns/cremracpn.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicUp.dart';
@@ -21,7 +22,7 @@ class RoutePage{
     '/mysetting':(context,{argument})=>mysetting(),
     '/childfamily':(context,{argument})=>childfamily(),
     '/cremacpn':(context,{argument})=>cremacpn(),
-    '/chatChild':(context,{argument})=>chatChild(),
+    '/chatChild':(context,{argument})=>chatChild(argument),
     '/Home':(context,{argument})=>Home(),
     '/feedbook':(context,{argument})=>feedbook(),
     '/interg':(context,{argument})=>interg(),
@@ -30,6 +31,7 @@ class RoutePage{
     '/updynamic':(context,{argument})=>updynamic(),
     '/videoWidget':(context,{argument})=>videoWidget(),
     '/webviewcpns':(context,{argument})=>webviewcpns(),
+    '/MyHomePage':(context,{argument})=>MyHomePage(),
   };
 
 // ignore: missing_return, top_level_function_literal_block
@@ -41,7 +43,7 @@ class RoutePage{
       //能寻找到对应的路由
       if (settings.arguments != null) {
         //页面跳转前有传参
-        final Route route = MaterialPageRoute(builder: (context) => pageContentBuilder(context, arguments: settings.arguments));
+        final Route route = MaterialPageRoute(builder: (context) => pageContentBuilder(context, argument: settings.arguments));
         return route;
       } else {
         //页面跳转前没有传参

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/CreamUntil.dart';
+import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:familytest/pages/login/login.dart';
@@ -107,7 +108,7 @@ class RegisterState extends State<Regitser>{
                             obscureText: true,
                             keyboardType:TextInputType.phone,
                             validator: (value){
-                              if(value!.isEmpty || value.length !=10){
+                              if(value!.isEmpty || value.length <5){
                                 return "请正确输入密码";
                               }else{
                                 return null;
@@ -149,6 +150,7 @@ class RegisterState extends State<Regitser>{
                                     PopupUntil.showToast(Resultdata['msg']);
                                     context.read<GlobalState>().changuserid(Resultdata['user_id']);
                                     context.read<GlobalState>().changeavator(Resultdata['avator_image']);
+                                    context.read<GlobalState>().changeroogtoken(Resultdata['roogtoken']);
                                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                                       return MainHome();
                                     }));

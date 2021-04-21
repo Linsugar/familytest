@@ -58,12 +58,12 @@ packages:
     source: hosted
     version: "1.15.0"
   crypto:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: crypto
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.0.0"
+    version: "3.0.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -350,6 +350,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.7.1"
+  rongcloud_im_plugin:
+    dependency: "direct main"
+    description:
+      name: rongcloud_im_plugin
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.1.0"
   shared_preferences:
     dependency: "direct main"
     description:

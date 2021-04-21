@@ -4,9 +4,11 @@ import 'package:web_socket_channel/io.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:familytest/roog/roogYun.dart';
 
-import 'model/chatmoled.dart';
 class chatChild extends StatefulWidget{
+  Map ?arguments;
+  chatChild(this.arguments);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -14,20 +16,24 @@ class chatChild extends StatefulWidget{
   }
 }
 
+
 class chatChildState extends State<chatChild>{
   String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
   List<MapEntry<String,String>> _Streamlist= [];
-  List<chatmodel> _chatlist= [];
   var _streamController = StreamController<String>();
   var _textcontroller = TextEditingController();
   var jso;
   final _web = IOWebSocketChannel.connect("ws://192.168.1.140:56788");
+  var userinfo;
 
   @override
   void initState() {
-    _web.sink.add("admin:123456");
+    userinfo = widget.arguments!['userinfo'];
+    print("得到的参数：${widget.arguments!['userinfo']}");
+    Roogyun.getConversation(userinfo.userid);
     super.initState();
   }
+
   @override
   void dispose() {
     _streamController.close();
@@ -37,10 +43,8 @@ class chatChildState extends State<chatChild>{
 
   @override
   Widget build(BuildContext context) {
-
-    // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text("九尾妖狐"),actions: [CircleAvatar(backgroundImage: NetworkImage(_imagrurl)),SizedBox(width: 10,)],),
+      appBar: AppBar(title: Text(userinfo.name),actions: [CircleAvatar(backgroundImage: NetworkImage(userinfo.avator_image)),SizedBox(width: 10,)],),
       body: Container(
           child:Flex(
             direction: Axis.vertical,
@@ -88,8 +92,8 @@ class chatChildState extends State<chatChild>{
                         Fluttertoast.showToast(msg: "你输入的内容为空");
                         return;
                       }
-                      _web.sink.add('{"name":"张三"}');
-                      _Streamlist.add(MapEntry("me", _textcontroller.text));
+                      print("当前输入内容：${_textcontroller.text},当前userid:${userinfo.userid}");
+                      Roogyun.sedMessage(_textcontroller.text, userinfo.userid);
                       _textcontroller.clear();
                     },))
                   ],

@@ -26,7 +26,7 @@ class myuistate extends State<myui>{
             SliverAppBar(
               actions: [IconButton(icon: Icon(Icons.fullscreen),
                   onPressed: (){
-
+                    Navigator.pushReplacementNamed(context, "/MyHomePage");
                   }),
                 IconButton(icon: Icon(Icons.settings),
                     onPressed: (){

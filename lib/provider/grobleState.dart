@@ -7,10 +7,16 @@ class GlobalState with ChangeNotifier{
   String ?platform;
   var userid = '61122087048';
   String ?logintoken='';
-  String ?avator = '';
+  String ?avator;
+  String ?roogtoken;
 
   changeavator(value){
     avator =value;
+    notifyListeners();
+  }
+
+  changeroogtoken(value){
+    roogtoken =value;
     notifyListeners();
   }
 

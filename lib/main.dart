@@ -1,3 +1,4 @@
+
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/mine/myui.dart';
 import 'package:familytest/provider/grobleState.dart';
@@ -9,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 import 'dart:io';
+import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart';
+import 'package:familytest/roog/roogYun.dart';
+
 void main() =>runApp(
     MultiProvider(
       providers: [
@@ -26,12 +30,16 @@ class MyApp  extends StatefulWidget{
 
 class MyAppState extends State<MyApp>{
   DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
+
  @override
  void initState(){
+   Roogyun.rooginit();
+   Roogyun.rooglistn();
    getDevice();
    // TODO: implement initState
    super.initState();
  }
+
 
  void getDevice()async{
    print("开始获取设备");
@@ -39,15 +47,11 @@ class MyAppState extends State<MyApp>{
    if(Platform.isAndroid){
 //   获取唯一Id
      context.read<GlobalState>().changdeviceid(_device.androidId);
-     print("获取的id：${context.read<GlobalState>().deviceid}");
      context.read<GlobalState>().changplatform(_device.device);
    }else if(Platform.isIOS){
      print("ios未操作");
    }
-
  }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +84,8 @@ class _MainHomeState extends State<MainHome> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.apps),label: "首页"),
-          BottomNavigationBarItem(icon: Icon(Icons.apps),label: "消息"),
           BottomNavigationBarItem(icon: Icon(Icons.apps),label: "家族"),
+          BottomNavigationBarItem(icon: Icon(Icons.apps),label: "消息"),
           BottomNavigationBarItem(icon: Icon(Icons.apps),label: "我的"),
         ],
       ),

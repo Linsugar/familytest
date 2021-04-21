@@ -87,9 +87,8 @@ class mysettingstate extends State<mysetting>{
                   children: [
                     Endwiget(name: "绑定QQ",dircetion: "8888888",),
                     Endwiget(name: "绑定微信",dircetion: "8888888",),
-                    Endwiget(name: "绑定微博",dircetion: "8888888",)
+                    Endwiget(name: "绑定微博",dircetion: "8888888",),
                   ],
-
                 ))),
           ],),);
         }
