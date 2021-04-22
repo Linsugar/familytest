@@ -12,8 +12,9 @@ static rooginit(){
 static rooglistn(){
   RongIMClient.onMessageReceived = (Message msg,int left) {
     print("receive message messsageId:"+msg.messageId.toString()+" left:"+left.toString()+'msg:'+msg.toString());
-    print("消息类型6：${msg.content.conversationDigest()}");
-    print("消息发送者信息：${msg.content.sendUserInfo}");
+    print("监听到消息：${msg.content.conversationDigest()}");
+    print("消息发送者信息：${msg.targetId}");
+    return msg;
   };
 }
 
@@ -34,7 +35,11 @@ static roogclientstatue(){
 //获得指定会话消息
  static getConversation(String targetId)async{
     Conversation con =await RongIMClient.getConversation(RCConversationType.Private, targetId);
-    print("得到会话：${con.latestMessageContent.conversationDigest()}");
+    print("得到的内容：$con");
+    if(con!=null){
+      print("得到会话：${con.latestMessageContent.conversationDigest()}");
+      return con.latestMessageContent.conversationDigest();
+    }
   }
 
 
@@ -77,5 +82,27 @@ static  roogclient(String ?token)async{
     print("连接状态：${a}");
     print("退出");
   }
+static  roogHistoryMessages(String ?userid) async {
+    List msgs = await RongIMClient.getHistoryMessage(RCConversationType.Private, userid, -1, 100);
+    print("get history ${msgs}");
+    for(Message m in msgs) {
+      print("sentTime = "+m.sentTime.toString());
+    }
+    return msgs;
+  }
+
+//  获取远程历史消息
+static rooghistory(String tarid){
+var msg =(dynamic msgList,int code) {
+  if(code == 0) {
+    for(Message msg in msgList) {
+      print("getRemoteHistoryMessages  success "+ msg.messageId.toString());
+    }
+  }else {
+    print("getRemoteHistoryMessages error "+code.toString());
+  }
+};
+var result =   RongIMClient.getRemoteHistoryMessages(1, tarid, 0, 20,msg);
+}
 
 }

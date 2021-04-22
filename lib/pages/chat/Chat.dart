@@ -16,6 +16,7 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
   @override
   void initState() {
     _Amc = AnimationController(vsync: this,duration: Duration(seconds: 300));
+    Roogyun.rooglistn();
     super.initState();
   }
 
@@ -30,7 +31,7 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
     // TODO: implement build
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(title: Text("聊天3"), actions: [
+        appBar: AppBar(title: Text("畅聊"), actions: [
           PopuWidget()
         ],),
         body: SingleChildScrollView(
@@ -50,9 +51,11 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
                         key: UniqueKey(),
                         subtitle: Text("在这里可以与许多不同的朋友一起畅聊生活琐事",overflow: TextOverflow.ellipsis,maxLines: 1,),
                         leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(_headerimag),),title: Text("聊天广场"),trailing: MaterialButton(onPressed: (){
-                        print("点击");
-                        _Amc?.forward();
-                        Navigator.pushNamed(context,'/chatChild');
+                         print("点击");
+                         _Amc?.forward();
+                         Navigator.pushNamed(context,'/chatChild',arguments:{
+                         'userinfo': snapshot.data
+                         });
                       },child: Icon(Icons.pan_tool,color: Colors.cyan,)),)),
                       Expanded(flex:8,child: ListView.separated(
                         itemCount: snapshot.data.length,

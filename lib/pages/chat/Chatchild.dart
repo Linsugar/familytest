@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:web_socket_channel/io.dart';
+import 'package:familytest/provider/grobleState.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:familytest/roog/roogYun.dart';
+import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart';
 
 class chatChild extends StatefulWidget{
   Map ?arguments;
@@ -16,138 +17,162 @@ class chatChild extends StatefulWidget{
   }
 }
 
-
 class chatChildState extends State<chatChild>{
-  String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
-  List<MapEntry<String,String>> _Streamlist= [];
   var _streamController = StreamController<String>();
   var _textcontroller = TextEditingController();
-  var jso;
-  final _web = IOWebSocketChannel.connect("ws://192.168.1.140:56788");
   var userinfo;
+  List histortlist =[];
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
     userinfo = widget.arguments!['userinfo'];
-    print("得到的参数：${widget.arguments!['userinfo']}");
     Roogyun.getConversation(userinfo.userid);
+    RongIMClient.onMessageReceived = (Message msg,int left) {
+      print("receive message messsageId:"+msg.messageId.toString()+" left:"+left.toString()+'msg:'+msg.toString());
+      print("监听到消息：${msg.content.conversationDigest()}");
+      print("消息发送者信息1：${msg.targetId}");
+      print("消息发送者信息2：${msg.senderUserId}");
+      setState(() {
+        histortlist.add(msg);
+      });
+    };
+
+    focusNode.addListener(() {
+      if(focusNode.hasFocus){
+        print("焦点");
+      }else{
+        print("失去焦点");
+      }
+    });
     super.initState();
   }
 
   @override
   void dispose() {
     _streamController.close();
-    _web.sink.close();
     super.dispose();
+  }
+
+  getallmeg(String uid)async{
+    histortlist =  await Roogyun.roogHistoryMessages(userinfo.userid);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(userinfo.name),actions: [CircleAvatar(backgroundImage: NetworkImage(userinfo.avator_image)),SizedBox(width: 10,)],),
-      body: Container(
-          child:Flex(
-            direction: Axis.vertical,
-            children: [
-              Expanded(flex: 8,child: StreamBuilder(
-                stream: _web.stream,
+      body:Column(
+          children: [
+            Flexible(child:
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: FutureBuilder(
+                future: getallmeg(userinfo.userid),
                 builder: (BuildContext context, AsyncSnapshot snapshot){
                   if(snapshot.hasError){
                     return Icon(Icons.error);
-                  }else{
-                    _Streamlist.add(MapEntry("he", snapshot.data));
-                    return ListView.builder(itemCount: _Streamlist.length,itemBuilder: (context,index){
-                      if(_Streamlist[index].value !=null){
-                        print("数据1：${snapshot.data}");
-                        var s = jsonDecode(snapshot.data);
-                        print("数据3：${s.name}");
-                        if(_Streamlist[index].key =='he'){
-                          return Hebuilder(Streamlist: _Streamlist, a: index, imagrurl: _imagrurl);
-                        }
-                        return Mebuilder(Streamlist: _Streamlist, a: index, imagrurl: _imagrurl);
-                      }else{
-                        return Align(alignment: Alignment.topCenter,child: Text("开始您的聊天之旅吧"),);
-                      }
-                    });
+                  }if(snapshot.connectionState ==ConnectionState.waiting){
+                    return CircularProgressIndicator();
                   }
-                },),),Flexible(flex: 1,child:Container(
-
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Colors.black
-                        )
-                    )
-                ),
-                child: Row(
-                  children: [
-                    Expanded(flex: 8,child: Container(padding: EdgeInsets.only(left: 10),
+                  else{
+                    return Container(
+                      child: ListView.separated(
+                          itemBuilder: (context,index){
+                            var Data = histortlist[index];
+                            return  histortlist[index].senderUserId==userinfo.userid?talk1(Data: Data, userinfo: userinfo):talk2(Data: Data);
+                          }, separatorBuilder: (context,index){
+                        return Divider();
+                      }, itemCount: histortlist.length),
+                    );
+                  }
+                },),
+            )),
+            Container(
+                    width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  padding: EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                  border:Border.all(color: Colors.black,width: 1)
+              ),
+                  child:Flex(
+                   direction: Axis.horizontal,
+                    children: [
+                    Expanded(
+                        flex: 7,child: Container(
                       child: TextField(
-                        maxLines: 2,controller: _textcontroller,decoration: InputDecoration(
-                        hintText: "请输入内容",
-                        border: InputBorder.none,
-                      ),),)),
-                    Expanded(flex: 2,child: MaterialButton(color: Colors.blue,child: Text("发送"),onPressed: (){
-                      if(_textcontroller.text.isEmpty){
-                        Fluttertoast.showToast(msg: "你输入的内容为空");
-                        return;
-                      }
-                      print("当前输入内容：${_textcontroller.text},当前userid:${userinfo.userid}");
-                      Roogyun.sedMessage(_textcontroller.text, userinfo.userid);
-                      _textcontroller.clear();
-                    },))
-                  ],
-                ),
-              ),)
-            ],
-          )
-      ),
+                        focusNode: focusNode,
+                      controller: _textcontroller,
+                      minLines: 1,
+                      maxLines: 2,decoration: InputDecoration(
+                      isCollapsed: true,
+                      hintText: "请输入回答",
+                      hintMaxLines: 20,
+                      border: InputBorder.none,
+                    ),),
+                    )),
+                    Expanded(
+                      flex:2,child:Padding(
+                        padding: EdgeInsets.all(5),
+                          child: Material(
+                            borderRadius: BorderRadius.circular(5),
+                             color: Colors.blue,
+                            child:InkWell(
+                              onTap: (){
+                                if(_textcontroller.text.isEmpty){
+                                    Fluttertoast.showToast(msg: "你输入的内容为空");
+                                    return;
+                                    }
+                                    setState(() {
+                                    print("当前输入内容：${_textcontroller.text},当前userid:${userinfo.userid}");
+                                    Roogyun.sedMessage(_textcontroller.text,userinfo.userid);
+                                    _textcontroller.clear();
+                                    });
+                                    },
+                              child: Container(
+                                  child: Center(child: Text("发送")),
+                          ),
+                        )
+                    ),
+                  ))
+                ],
+            ))
+          ],
+        ),
     );
   }
 }
 
-class Mebuilder extends StatelessWidget {
-  final List<MapEntry<String, String>> ?_Streamlist;
-  final int ?a;
-  final String ?_imagrurl;
-  const Mebuilder({
-    Key ?key,
-    @required List<MapEntry<String, String>> ?Streamlist,
-    @required this.a,
-    @required String ?imagrurl,
-  }) : _Streamlist = Streamlist, _imagrurl = imagrurl, super(key: key);
+class talk1 extends StatelessWidget {
+  const talk1({
+    Key? key,
+    required this.Data,
+    required this.userinfo,
+  }) : super(key: key);
 
-
-
+  final Data;
+  final userinfo;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListTile(
-          title: Align(alignment: Alignment.centerRight,child: Text("${_Streamlist![a!].value}"),),
-          trailing:CircleAvatar(backgroundImage: NetworkImage(_imagrurl!),)
-      ),
+    return ListTile(
+      leading: CircleAvatar(backgroundImage: NetworkImage(userinfo.avator_image),),
+//      title: Text("${Data.senderUserId}"),
+      subtitle: Text("${Data.content.content}"),
     );
   }
 }
-class Hebuilder extends StatelessWidget {
-  const Hebuilder({
-    Key ?key,
-    @required List<MapEntry<String, String>> ?Streamlist,
-    @required this.a,
-    @required String ?imagrurl,
-  }) : _Streamlist = Streamlist, _imagrurl = imagrurl, super(key: key);
-
-  final List<MapEntry<String, String>> ?_Streamlist;
-  final int ?a;
-  final String ?_imagrurl;
-
+class talk2 extends StatelessWidget {
+  const talk2({
+    Key? key,
+    required this.Data,
+  }) : super(key: key);
+  final Data;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListTile(
-          title: Align(alignment: Alignment.centerLeft,child: Text("${_Streamlist![a!].value}"),),
-          leading:CircleAvatar(backgroundImage: NetworkImage(_imagrurl!),)
-      ),
+    return ListTile(
+      subtitle: Text("${Data.content.content}",textAlign: TextAlign.right,style: TextStyle(),),
+      trailing: CircleAvatar(backgroundImage: NetworkImage(context.watch<GlobalState>().avator!),),
     );
   }
 }
@@ -155,3 +180,29 @@ class Hebuilder extends StatelessWidget {
 
 
 
+//Row(
+//children: [
+//Container(
+//width: 200,
+//height: 30,
+//child: TextField(
+//style: TextStyle(fontSize: 25),
+//maxLines: 2,controller: _textcontroller,decoration: InputDecoration(
+//hintText: "请输入内容",
+//border: InputBorder.none,
+//),),
+//),
+//MaterialButton(color: Colors.blue,child: Text("发送"),onPressed: (){
+//if(_textcontroller.text.isEmpty){
+//Fluttertoast.showToast(msg: "你输入的内容为空");
+//return;
+//}
+//setState(() {
+//print("当前输入内容：${_textcontroller.text},当前userid:${userinfo.userid}");
+//Roogyun.sedMessage(_textcontroller.text,userinfo.userid);
+//_textcontroller.clear();
+//});
+//},
+//)
+//],
+//)

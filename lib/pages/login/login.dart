@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage>{
               color: Colors.blue,
 //              child: Image(image:  AssetImage('images/login.jpg'),fit: BoxFit.cover,),
             ),
-            Positioned(top: 20,right: 20,child: MaterialButton(child: Text("注册",style: TextStyle(color: Colors.white),),onPressed: (){
+            Positioned(top: 30,right: 20,child: MaterialButton(child: Text("注册",style: TextStyle(color: Colors.white),),onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
             },)),
             Positioned(

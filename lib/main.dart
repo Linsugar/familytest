@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 import 'dart:io';
-import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart';
 import 'package:familytest/roog/roogYun.dart';
 
 void main() =>runApp(
@@ -34,11 +33,13 @@ class MyAppState extends State<MyApp>{
  @override
  void initState(){
    Roogyun.rooginit();
-   Roogyun.rooglistn();
+
    getDevice();
    // TODO: implement initState
    super.initState();
  }
+
+
 
 
  void getDevice()async{
