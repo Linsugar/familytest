@@ -16,7 +16,7 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
   @override
   void initState() {
     _Amc = AnimationController(vsync: this,duration: Duration(seconds: 300));
-    Roogyun.rooglistn();
+    Roogyun.rooglistn(context);
     super.initState();
   }
 

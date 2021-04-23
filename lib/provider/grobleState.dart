@@ -9,6 +9,12 @@ class GlobalState with ChangeNotifier{
   String ?logintoken='';
   String ?avator;
   String ?roogtoken;
+  List ?historylist= [];
+
+  changhistory(value){
+    historylist!.add(value);
+    notifyListeners();
+  }
 
   changeavator(value){
     avator =value;

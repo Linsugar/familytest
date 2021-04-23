@@ -1,5 +1,7 @@
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/pages/chat/model/chatmoled.dart';
+import 'package:familytest/provider/grobleState.dart';
+import 'package:provider/provider.dart';
 import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart';
 
 class Roogyun{
@@ -9,11 +11,12 @@ static rooginit(){
     RongIMClient.init("p5tvi9dsplrv4");
   }
 //  监听
-static rooglistn(){
+static rooglistn(context){
   RongIMClient.onMessageReceived = (Message msg,int left) {
     print("receive message messsageId:"+msg.messageId.toString()+" left:"+left.toString()+'msg:'+msg.toString());
     print("监听到消息：${msg.content.conversationDigest()}");
     print("消息发送者信息：${msg.targetId}");
+    Provider.of<GlobalState>(context,listen: false).changhistory(msg);
     return msg;
   };
 }
@@ -35,6 +38,7 @@ static roogclientstatue(){
 //获得指定会话消息
  static getConversation(String targetId)async{
     Conversation con =await RongIMClient.getConversation(RCConversationType.Private, targetId);
+
     print("得到的内容：$con");
     if(con!=null){
       print("得到会话：${con.latestMessageContent.conversationDigest()}");
@@ -44,11 +48,12 @@ static roogclientstatue(){
 
 
 //  发送消息
-static sedMessage(String sendmsg,String pid)async{
+static sedMessage(String sendmsg,String pid,context)async{
     TextMessage txtMessage = new TextMessage();
     txtMessage.content = sendmsg;
     Message msg = await RongIMClient.sendMessage(RCConversationType.Private, pid, txtMessage);
     var st = msg.sentStatus;
+    Provider.of<GlobalState>(context,listen: false).changhistory(msg);
     print("发送消息状态：${st}");
   }
 
@@ -82,12 +87,14 @@ static  roogclient(String ?token)async{
     print("连接状态：${a}");
     print("退出");
   }
-static  roogHistoryMessages(String ?userid) async {
+static  roogHistoryMessages(String ?userid,context) async {
     List msgs = await RongIMClient.getHistoryMessage(RCConversationType.Private, userid, -1, 100);
     print("get history ${msgs}");
     for(Message m in msgs) {
+      Provider.of<GlobalState>(context,listen: false).changhistory(m);
       print("sentTime = "+m.sentTime.toString());
     }
+
     return msgs;
   }
 

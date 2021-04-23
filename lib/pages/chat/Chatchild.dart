@@ -28,16 +28,8 @@ class chatChildState extends State<chatChild>{
   void initState() {
     userinfo = widget.arguments!['userinfo'];
     Roogyun.getConversation(userinfo.userid);
-    RongIMClient.onMessageReceived = (Message msg,int left) {
-      print("receive message messsageId:"+msg.messageId.toString()+" left:"+left.toString()+'msg:'+msg.toString());
-      print("监听到消息：${msg.content.conversationDigest()}");
-      print("消息发送者信息1：${msg.targetId}");
-      print("消息发送者信息2：${msg.senderUserId}");
-      setState(() {
-        histortlist.add(msg);
-      });
-    };
-
+    getallmeg();
+    getlistn();
     focusNode.addListener(() {
       if(focusNode.hasFocus){
         print("焦点");
@@ -54,40 +46,31 @@ class chatChildState extends State<chatChild>{
     super.dispose();
   }
 
-  getallmeg(String uid)async{
-    histortlist =  await Roogyun.roogHistoryMessages(userinfo.userid);
+  getallmeg()async{
+   await Roogyun.roogHistoryMessages(userinfo.userid,context);
+  }
+  getlistn()async{
+    await Roogyun.rooglistn(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    var hisy =context.watch<GlobalState>().historylist;
     return Scaffold(
       appBar: AppBar(title: Text(userinfo.name),actions: [CircleAvatar(backgroundImage: NetworkImage(userinfo.avator_image)),SizedBox(width: 10,)],),
       body:Column(
           children: [
             Flexible(child:
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: FutureBuilder(
-                future: getallmeg(userinfo.userid),
-                builder: (BuildContext context, AsyncSnapshot snapshot){
-                  if(snapshot.hasError){
-                    return Icon(Icons.error);
-                  }if(snapshot.connectionState ==ConnectionState.waiting){
-                    return CircularProgressIndicator();
-                  }
-                  else{
-                    return Container(
-                      child: ListView.separated(
-                          itemBuilder: (context,index){
-                            var Data = histortlist[index];
-                            return  histortlist[index].senderUserId==userinfo.userid?talk1(Data: Data, userinfo: userinfo):talk2(Data: Data);
-                          }, separatorBuilder: (context,index){
-                        return Divider();
-                      }, itemCount: histortlist.length),
-                    );
-                  }
-                },),
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                child: ListView.separated(
+                    itemBuilder: (context,index){
+                      var Data = hisy![index];
+                      return  hisy[index].senderUserId==userinfo.userid?talk1(Data: Data, userinfo: userinfo):talk2(Data: Data);
+                    }, separatorBuilder: (context,index){
+                  return Divider();
+                }, itemCount: hisy!.length),
             )),
             Container(
                     width: MediaQuery.of(context).size.width,
@@ -126,7 +109,7 @@ class chatChildState extends State<chatChild>{
                                     }
                                     setState(() {
                                     print("当前输入内容：${_textcontroller.text},当前userid:${userinfo.userid}");
-                                    Roogyun.sedMessage(_textcontroller.text,userinfo.userid);
+                                    Roogyun.sedMessage(_textcontroller.text,userinfo.userid,context);
                                     _textcontroller.clear();
                                     });
                                     },
@@ -176,33 +159,3 @@ class talk2 extends StatelessWidget {
     );
   }
 }
-
-
-
-
-//Row(
-//children: [
-//Container(
-//width: 200,
-//height: 30,
-//child: TextField(
-//style: TextStyle(fontSize: 25),
-//maxLines: 2,controller: _textcontroller,decoration: InputDecoration(
-//hintText: "请输入内容",
-//border: InputBorder.none,
-//),),
-//),
-//MaterialButton(color: Colors.blue,child: Text("发送"),onPressed: (){
-//if(_textcontroller.text.isEmpty){
-//Fluttertoast.showToast(msg: "你输入的内容为空");
-//return;
-//}
-//setState(() {
-//print("当前输入内容：${_textcontroller.text},当前userid:${userinfo.userid}");
-//Roogyun.sedMessage(_textcontroller.text,userinfo.userid);
-//_textcontroller.clear();
-//});
-//},
-//)
-//],
-//)
