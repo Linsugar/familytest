@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:familytest/roog/roogYun.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Chat extends StatefulWidget{
   @override
@@ -69,7 +70,7 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
                               Navigator.pushNamed(context,'/chatChild',arguments:{
                                 'userinfo': snapshot.data[index]
                               });
-                              },child: Icon(Icons.tab)),);
+                              },child: FaIcon(FontAwesomeIcons.commentDots)),);
                         },separatorBuilder: (context,index){
                         return Divider();
                       },))

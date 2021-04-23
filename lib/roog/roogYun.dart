@@ -17,7 +17,7 @@ static rooglistn(context){
     print("监听到消息：${msg.content.conversationDigest()}");
     print("消息发送者信息：${msg.targetId}");
     Provider.of<GlobalState>(context,listen: false).changhistory(msg);
-    return msg;
+
   };
 }
 
@@ -36,12 +36,15 @@ static roogclientstatue(){
 }
 
 //获得指定会话消息
- static getConversation(String targetId)async{
+ static getConversation(String targetId,context)async{
     Conversation con =await RongIMClient.getConversation(RCConversationType.Private, targetId);
-
-    print("得到的内容：$con");
+    print("得到的内容1：$con");
     if(con!=null){
-      print("得到会话：${con.latestMessageContent.conversationDigest()}");
+      print("得到的内容2：${con.latestMessageContent}");
+      print("得到会话3：${con.latestMessageContent.conversationDigest()}");
+      print("得到会话4：${con.latestMessageContent.sendUserInfo}");
+      print("得到会话5：${con.latestMessageContent.mentionedInfo}");
+      print("得到会话6：${con.latestMessageContent.destructDuration}");
       return con.latestMessageContent.conversationDigest();
     }
   }

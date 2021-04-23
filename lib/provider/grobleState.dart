@@ -15,6 +15,10 @@ class GlobalState with ChangeNotifier{
     historylist!.add(value);
     notifyListeners();
   }
+  clearhistory(){
+    historylist=[];
+    notifyListeners();
+  }
 
   changeavator(value){
     avator =value;
