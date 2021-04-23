@@ -117,7 +117,8 @@ class chatabout extends StatelessWidget {
                       return ListTile(
                         key: UniqueKey(),
                         subtitle: Text("${snapshot.data[index].user_context}",overflow: TextOverflow.ellipsis,maxLines: 1,),
-                        leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(snapshot.data[index].avator_image),),title: Text(snapshot.data[index].name),trailing: MaterialButton(onPressed: (){
+                        leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator_image),),
+                        title: Text(snapshot.data[index].name),trailing: MaterialButton(onPressed: (){
                         print("点击$index");
                         _Amc?.forward();
                         Navigator.pushNamed(context,'/chatChild',arguments:{
