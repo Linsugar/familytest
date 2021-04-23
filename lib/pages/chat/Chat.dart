@@ -169,6 +169,7 @@ class dya extends StatelessWidget {
             return Container(child: ListView.separated(
                 itemBuilder: (context,index){
               return  ListTile(
+                leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator),),
                 title: Text("${snapshot.data[index].title}"),
                 subtitle:  Text("${snapshot.data[index].con}"),
               );
