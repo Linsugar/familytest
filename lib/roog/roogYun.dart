@@ -36,7 +36,7 @@ static roogclientstatue(){
 }
 
 //获得指定会话消息
- static getConversation(String targetId,context)async{
+ static getConversation(String targetId)async{
     Conversation con =await RongIMClient.getConversation(RCConversationType.Private, targetId);
     print("得到的内容1：$con");
     if(con!=null){

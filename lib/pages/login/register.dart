@@ -151,6 +151,7 @@ class RegisterState extends State<Regitser>{
                                     context.read<GlobalState>().changuserid(Resultdata['user_id']);
                                     context.read<GlobalState>().changeavator(Resultdata['avator_image']);
                                     context.read<GlobalState>().changeroogtoken(Resultdata['roogtoken']);
+                                    context.read<GlobalState>().changeusername(Resultdata['username']);
                                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                                       return MainHome();
                                     }));

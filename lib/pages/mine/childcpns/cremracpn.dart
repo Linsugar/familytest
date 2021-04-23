@@ -55,7 +55,10 @@ class _cremacpnState extends State<cremacpn> {
                 return Center(child: CircularProgressIndicator());
               }
               if(snapshot.hasError){
-                return Center(child: Text("数据有误,请稍后再看"),);
+                return Center(child: Text("您还没有动态，您可以先去发布动态哦"),);
+              }
+              if(snapshot.data == null){
+                return Text("请发,动态");
               }
               else{
                 return ListView.builder(itemCount: snapshot.data.length,itemBuilder: (context,index){
@@ -65,9 +68,9 @@ class _cremacpnState extends State<cremacpn> {
                       child: Column(
                         children: [
                           Expanded(flex: 5,child: Padding(padding: EdgeInsets.all(10),child: Text("${snapshot.data[index].context}"))),
-                          Expanded(flex: 5,child: Row(children: [
+                          Expanded(flex: 5,child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
                             for(var i=0;i<snapshot.data[index].imageurl!.length;i++)
-                                  Expanded(flex: 3,child: Image(image: NetworkImage(snapshot.data[index].imageurl![i]),fit: BoxFit.cover,))
+                                  Container(width: MediaQuery.of(context).size.width/4.5,height: MediaQuery.of(context).size.width/5,child: Image(image: NetworkImage(snapshot.data[index].imageurl![i]),fit: BoxFit.cover,))
                           ],)),
                         ],
                       ),

@@ -109,6 +109,7 @@ class _MyHomePageState extends State<MyHomePage>{
                                   context.read<GlobalState>().changuserid(loginResult['user_id']);
                                   context.read<GlobalState>().changeavator(loginResult['avator_image']);
                                   context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
+                                  context.read<GlobalState>().changeusername(loginResult['user_name']);
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
                                       MainHome()));
                                 }

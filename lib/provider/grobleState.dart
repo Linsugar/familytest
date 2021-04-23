@@ -10,6 +10,12 @@ class GlobalState with ChangeNotifier{
   String ?avator;
   String ?roogtoken;
   List ?historylist= [];
+  String ?username;
+
+  changeusername(value){
+    username = value;
+    notifyListeners();
+  }
 
   changhistory(value){
     historylist!.add(value);

@@ -29,7 +29,7 @@ class chatChildState extends State<chatChild>{
   @override
   void initState() {
     userinfo = widget.arguments!['userinfo'];
-    Roogyun.getConversation(userinfo.userid,context);
+    Roogyun.getConversation(userinfo.userid);
     getallmeg();
     getlistn();
     checkfoucde();

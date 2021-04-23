@@ -33,6 +33,8 @@ class _updynamicState extends State<updynamic> {
           'up_title':_titlecontroller.text,
           'up_context':_contextcontroller.text,
           'up_addres':context.read<GlobalState>().city,
+          'up_name':context.read<GlobalState>().username,
+          'up_avator':context.read<GlobalState>().avator,
         });
         for(var i=0;i<imageDynamic.length;i++){
           data.files.add(
