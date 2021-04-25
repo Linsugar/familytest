@@ -98,7 +98,7 @@ class _updynamicState extends State<updynamic> {
                 )),
               ],
             ),)),
-            Expanded(flex: 5,child: Container(color: Colors.blueGrey,)),
+            Expanded(flex: 5,child: Container(color: Colors.white,)),
           ],
         ),
       ),

@@ -16,12 +16,14 @@ class Home extends StatefulWidget{
 }
 
 
-class HomeState extends State<Home>{
+class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
   List imagelist=[];
   List a = [1,2,3,4];
+  var tabcontlore;
   @override
   void initState() {
+      tabcontlore  =TabController(length: 4, vsync: this);
      this.imagelist = [_imagrurl,_imagrurl,_imagrurl,_imagrurl];
      Roogyun.roogclient(context.read<GlobalState>().roogtoken);
   }
@@ -51,8 +53,7 @@ class HomeState extends State<Home>{
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text("首页"),),
-      body: SingleChildScrollView(
-        child: Container(
+      body: Container(
             width: _size.width,
             height: _size.height,
             child:FutureBuilder(
@@ -64,130 +65,164 @@ class HomeState extends State<Home>{
                 return Center(child: Text("数据加载有误，请稍后尝试"));
               }else{
                 print("得到的数据：${snapshot.data}");
-                return Flex(direction: Axis.vertical,children: [
-                  Flexible(flex: 1,child: Container(padding: EdgeInsets.all(5),child:
-                    ListView.separated(scrollDirection: Axis.horizontal,itemBuilder: (context,index){
+                return Flex(
+                  direction: Axis.vertical,children: [
+                  Container(
+                      width: double.infinity,
+                      height: 70,
+                      padding: EdgeInsets.all(5),child:
+                  ListView.separated(scrollDirection: Axis.horizontal,itemBuilder: (context,index){
                     return GestureDetector(
                       onTap: (){
                         Navigator.pushNamed(context,'/chatChild',arguments:{
                           "userinfo":snapshot.data[index]
                         });
                       },
-                      child: Container(margin: EdgeInsets.all(5),width: _size.width/10,decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 2.0),shape:BoxShape.circle ,
-                          boxShadow: [BoxShadow(color: Colors.blue,offset: Offset(0.0,1.0))],image: DecorationImage(image: NetworkImage(snapshot.data[index].avator_image))
+                      child: Container(
+                          height: 50,
+                          width: 50,
+                          margin: EdgeInsets.all(5),decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 2.0),shape:BoxShape.circle ,
+                          boxShadow: [BoxShadow(color: Colors.blue,offset: Offset(0.0,1.0))],image: DecorationImage(image: NetworkImage(snapshot.data[index].avator_image),fit: BoxFit.cover)
                       )),
                     );
                   },itemCount: snapshot.data.length,separatorBuilder: (context,index){
                     return SizedBox(width: 10,);
-                  },))),
-                  Flexible(flex: 1,child: Container(margin: EdgeInsets.only(left: 10,right: 10),decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(color: Colors.lightBlue,width: 1.0)),padding: EdgeInsets.only(left: 10,right: 10),width: double.infinity,
-                      child:TextField(decoration: InputDecoration(icon: Icon(Icons.search),suffixIcon: Icon(Icons.arrow_drop_down),hintText: '请输入搜索内容'),)),),
-                  Flexible(flex: 3,child: Container(
-//                margin: EdgeInsets.only(left: 10,top: 5),
-                    child: Flex(
-                      direction: Axis.vertical,
+                  },)),
+                  Container(
+                    width:double.infinity,
+                      height: 50,
+                      margin: EdgeInsets.only(left: 10,right: 10),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.lightBlue,width: 1.0)),
+                      padding: EdgeInsets.only(left: 10,right: 10),
+                      child:TextField(
+                        decoration: InputDecoration(icon: Icon(Icons.search),suffixIcon: Icon(Icons.arrow_drop_down),hintText: '请输入搜索内容'),)),
+                  Container(
+                    width: double.infinity,
+                    height: 230,
+                    child: Column(
                       children: [
-                        Flexible(
-                          flex: 1,
-                          child: Container(
-                            padding: EdgeInsets.only(left: 10,right: 10),
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
-                              Text("今日热搜"),
-                              Text("全部"),
-                            ],),
-                          ),
-                        ),
-                        Flexible(
-                            flex: 9,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
+                          Text("今日热搜"),
+                          Text("全部"),
+                        ],),
+                        Container(
                             child:cusor(imagelist:imagelist,)
                         )
                       ],
                     ),
-                  )),
-                  Flexible(flex: 3,child: Container(child:  Flex(
-                    direction: Axis.vertical,
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          padding: EdgeInsets.only(left: 10,right: 10),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
-                            Text("今日看点"),
-                            Text("全部"),
-                          ],),
-                        ),
-                      ),
-                      Flexible(
-                          flex: 8,
-                          child: ListView.separated(scrollDirection: Axis.horizontal,itemCount: 10,separatorBuilder: (context,index){
-                            return SizedBox(width: 5,);
-                          },itemBuilder: (context,index){
-                            return Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.green),margin: EdgeInsets.only(left: 10,top: 10,bottom: 10),width: _size.width/1.5,
-                                child: Flex(direction: Axis.vertical,children: [
-                                  Flexible(flex: 6,child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(_imagrurl),fit: BoxFit.cover)),),),
-                                  Flexible(flex: 4,child: Container(color: Colors.blueGrey,child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Container(margin: EdgeInsets.only(left: 10),child: CircleAvatar(backgroundImage: NetworkImage(_imagrurl),)),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10,right: 10),
-                                        child: Column(children: [
-                                          Text("狂野莽夫"),
-                                          Text("这是一位狂野莽夫"),
-                                        ],),
-                                      ),
-                                      Text("点击")
-                                    ],
-                                  ),),),
-                                ],));
-                          },)
-                      )
-                    ],
-                  ),),),
-                  Flexible(
-                      flex: 2,
-                      child:Container(height: 400,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),margin: EdgeInsets.only(left: 10,right: 10),
-                        child: Card(
-                          child: Flex(direction: Axis.vertical,children: [
-                            Flexible(flex: 2,child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [Text("毁灭者"),Text("展示")],),),
-                            Flexible(flex: 8,child: Container(child: Flex(
-                              direction: Axis.horizontal,
-                              children: [
-                                Flexible(flex: 5,child: Container(decoration:BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    image: DecorationImage(image: NetworkImage(_imagrurl),fit: BoxFit.cover)),)),
-                                Flexible(flex:5,child: GestureDetector(
-                                  onTap: (){
-                                    Navigator.pushNamed(context, "/webviewcpns");
-
-                                  },
-                                  child: Container(child: Card(
-                                    clipBehavior: Clip.none,
-                                    elevation: 0.0,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("锐雯"),
-                                        Text("黑暗之神从黑暗深渊而来"),
-                                        Text("2021-02-26")
-                                      ],
-                                    ),),),
-                                )),
-                              ],
-                            ),),),
-                          ],),
-                        ),)
                   ),
+                  Container(
+                      child: TabBar(
+                        controller: tabcontlore,
+                        tabs: [
+                          Text("汽车",style: TextStyle(fontSize: 15,color: Colors.black),),
+                          Text("搞笑",style: TextStyle(fontSize: 15,color: Colors.black),),
+                          Text("宠物",style: TextStyle(fontSize: 15,color: Colors.black),),
+                          Text("电竞",style: TextStyle(fontSize: 15,color: Colors.black),),
+                        ],
+                      ),
+                    ),
+                  Expanded(
+                        child:TabBarView(
+                      controller: tabcontlore,
+                    children: [
+                      Listcontext(_imagrurl,1),
+                      Listcontext(_imagrurl,2),
+                      Listcontext(_imagrurl,3),
+                      Listcontext(_imagrurl,4),
+                    ],
+                  ),)
                 ],);
               };
             },)
         ),
+
+    );
+  }
+}
+
+class Listcontext extends StatefulWidget {
+
+  Listcontext(iamgrulr,wxcls){
+    imageurl = iamgrulr;
+    wxclass = wxcls;
+  }
+  var imageurl;
+  var wxclass;
+  @override
+  _ListcontextState createState() => _ListcontextState();
+}
+
+class _ListcontextState extends State<Listcontext> {
+  List<wxinfo> wxlist = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  _GeWxContext(int wxcls)async{
+    if(wxlist.isEmpty){
+      dynamic result = await Request.getNetwork("wxarticle/",params: {
+        "wxclass":widget.wxclass
+      });
+      result.forEach((value){
+        this.wxlist.add(wxinfo(value));
+      });
+      return wxlist;
+    }else{
+      return wxlist;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FutureBuilder(
+        future: _GeWxContext(widget.wxclass),
+        builder: (BuildContext context, AsyncSnapshot snapshot){
+          if(snapshot.connectionState ==ConnectionState.waiting){
+            return Center(child: CircularProgressIndicator(),);
+          }if(snapshot.hasError){
+            return Text("数据有误");
+          }else{
+            return ListView.separated(
+                itemBuilder: (context,index){
+                  return Container(
+                    width: double.infinity,
+                    height: 100,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                         width: 100,
+                          height: 100,
+                          child: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image(image: NetworkImage(snapshot.data[index].wxphoto),fit: BoxFit.cover,),),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(" 标题：${snapshot.data[index].wxtitle}",maxLines: 1,overflow: TextOverflow.ellipsis,),
+                            Text(" 发布时间:${snapshot.data[index].wxtime}"),
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                }, separatorBuilder: (context,index){
+              return Divider();
+            }, itemCount: this.wxlist.length);
+          }
+        },
       ),
     );
   }
 }
+
+
 
 class cusor extends StatelessWidget {
   const cusor({
@@ -232,5 +267,3 @@ class cusor extends StatelessWidget {
   }
 }
 
-
-//

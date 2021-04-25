@@ -55,10 +55,10 @@ class _cremacpnState extends State<cremacpn> {
                 return Center(child: CircularProgressIndicator());
               }
               if(snapshot.hasError){
-                return Center(child: Text("您还没有动态，您可以先去发布动态哦"),);
+                return Center(child: Text("产生了一点小问题，请稍后"),);
               }
-              if(snapshot.data == null){
-                return Text("请发,动态");
+              if(snapshot.data.isEmpty){
+                return Center(child: Text("您当前还未发布动态哟~"),);
               }
               else{
                 return ListView.builder(itemCount: snapshot.data.length,itemBuilder: (context,index){

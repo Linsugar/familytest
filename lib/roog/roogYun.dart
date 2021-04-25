@@ -93,7 +93,7 @@ static  roogclient(String ?token)async{
 static  roogHistoryMessages(String ?userid,context) async {
     List msgs = await RongIMClient.getHistoryMessage(RCConversationType.Private, userid, -1, 100);
     print("get history ${msgs}");
-    for(Message m in msgs) {
+    for(Message m in msgs.reversed) {
       Provider.of<GlobalState>(context,listen: false).changhistory(m);
       print("sentTime = "+m.sentTime.toString());
     }

@@ -31,18 +31,6 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
     super.dispose();
   }
 
-//  _getdynamic()async{
-//    List<chatdynamic> dylist = [];
-//    var result = await Request.getNetwork('dynamicall/',params: {
-//      'user_id':context.read<GlobalState>().userid
-//    });
-//    print("result:${result}");
-//    for(var i=0;i<result.length;i++){
-//      dylist.add( chatdynamic(result[i]));
-//    }
-//    print("最后的结果；${dylist}");
-//    return dylist;
-//}
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +44,11 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
             preferredSize:  Size.fromHeight(50),
             child: AppBar(
               bottom: TabBar(
-              isScrollable: false,
-              tabs: [
-              Text("聊天",style: TextStyle(fontSize: 20),),
-              Text("动态",style: TextStyle(fontSize: 20)),
-            ],),),
+                isScrollable: false,
+                tabs: [
+                  Text("聊天",style: TextStyle(fontSize: 20),),
+                  Text("动态",style: TextStyle(fontSize: 20)),
+                ],),),
           ),
           body:TabBarView(
             children: [
@@ -98,7 +86,8 @@ class chatabout extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             }if(snapshot.hasError){
               return Center(child: Text("您当前还未与其他人有过聊天哦~"));
-            }else{
+            }
+            else{
               return Column(
                 children: [
                   Expanded(flex: 1,child: ListTile(
@@ -166,15 +155,47 @@ class dya extends StatelessWidget {
             return Icon(Icons.error);
           }if(snapshot.connectionState ==ConnectionState.waiting){
             return Center(child: CircularProgressIndicator());
-          }else{
+          }if(snapshot.data.isEmpty){
+            return Center(child: Text("目前还未有动态发布"),);
+          }
+          else{
             return Container(child: ListView.separated(
                 itemBuilder: (context,index){
-              return  ListTile(
-                leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator),),
-                title: Text("${snapshot.data[index].title}"),
-                subtitle:  Text("${snapshot.data[index].con}"),
-              );
-            }, separatorBuilder: (context,index){
+                  return  Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator),),
+                        title: Text("${snapshot.data[index].title}"),
+                        subtitle:  Text("发布时间:${snapshot.data[index].time}"),
+                      ),
+                      Container(
+                        constraints: BoxConstraints(
+                          maxHeight: 100,
+                          minHeight: 10,
+                        ),
+                        child: Text("${snapshot.data[index].con}",maxLines: 3,overflow:TextOverflow.ellipsis),
+                      ),
+                      SizedBox(height: 10,),
+                      Container(
+                        constraints: BoxConstraints(
+                          minHeight: 50,
+                          maxHeight: 100,
+                        ),
+                        child:ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context,im){
+                              return Container(
+                                width: 80,
+                                height: 50,
+                                child: Image(image: NetworkImage(snapshot.data[index].imagelist[im]),fit: BoxFit.cover,),
+                              );
+                            }, separatorBuilder: (context,im){
+                          return SizedBox(width: 10,);
+                        }, itemCount: snapshot.data[index].imagelist.length) ,
+                      )
+                    ],
+                  );
+                }, separatorBuilder: (context,index){
               return Divider();
             }, itemCount: snapshot.data.length));
           }
@@ -182,6 +203,16 @@ class dya extends StatelessWidget {
     );;
   }
 }
+
+
+//ListView.builder(
+//scrollDirection: Axis.horizontal,itemBuilder: (context,im){
+//return Container(
+//width: 50,
+//height: 50,
+//child: Image(image: NetworkImage(snapshot.data[index].imagelist[im]),fit: BoxFit.cover,),
+//);
+//},itemCount: snapshot.data[index].imagelist.length,)
 
 
 
