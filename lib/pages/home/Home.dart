@@ -80,7 +80,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
             SizedBox(height: 10,),
             ctabr(tabcontlore: tabcontlore),
             ctab(tabcontlore: tabcontlore, imagrurl: _imagrurl),
-            Text("最新消息~",textAlign: TextAlign.center,)
+            Text("最新消息~",textAlign: TextAlign.center,),
+
           ],
         ),
 
@@ -101,7 +102,10 @@ class ctab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
+      constraints: BoxConstraints(
+        minHeight: 150,
+        maxHeight: 200
+      ),
       child: TabBarView(
         controller: tabcontlore,
         children: [

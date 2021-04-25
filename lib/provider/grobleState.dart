@@ -12,6 +12,12 @@ class GlobalState with ChangeNotifier{
   List ?historylist= [];
   String ?username;
   List ?overuser = [];
+  List ?emij = [];
+
+  changeemij(value){
+    emij!.add(value);
+    notifyListeners();
+  }
 
   changeoveruser(value){
     overuser!.add(value);

@@ -7,6 +7,7 @@ import 'package:familytest/pages/family/FamilyData.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/routes/Rout.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 import 'dart:io';
@@ -84,10 +85,10 @@ class _MainHomeState extends State<MainHome> {
         currentIndex: _index,
         type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.apps),label: "首页"),
-          BottomNavigationBarItem(icon: Icon(Icons.apps),label: "家族"),
-          BottomNavigationBarItem(icon: Icon(Icons.apps),label: "消息"),
-          BottomNavigationBarItem(icon: Icon(Icons.apps),label: "我的"),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.themeisle),label: "首页"),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.users),label: "家族"),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.sms),label: "消息"),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.monero),label: "我的"),
         ],
       ),
     );

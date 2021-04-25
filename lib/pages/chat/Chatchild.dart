@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,6 +27,7 @@ class chatChildState extends State<chatChild>{
   FocusNode focusNode = FocusNode();
   ScrollController _controller = ScrollController();
   bool inputbool = false;
+  bool emjstatue = true;
 
   @override
   void initState() {
@@ -33,6 +36,7 @@ class chatChildState extends State<chatChild>{
     getallmeg();
     getlistn();
     checkfoucde();
+    _getemijdata();
     super.initState();
   }
 
@@ -40,6 +44,16 @@ class chatChildState extends State<chatChild>{
   void dispose() {
     _streamController.close();
     super.dispose();
+  }
+
+  _getemijdata()async{
+    var _data = await rootBundle.loadString('data/emij.json');
+//    print("长度：${_data.length}");
+    var result = jsonDecode(_data);
+    print("长度：${result.runtimeType}");
+   for(var i=0;i<100;i++){
+     Provider.of<GlobalState>(context,listen: false).changeemij(result[i]);
+   }
   }
 
   checkfoucde(){
@@ -62,6 +76,7 @@ class chatChildState extends State<chatChild>{
   @override
   Widget build(BuildContext context) {
     var hisy =context.watch<GlobalState>().historylist;
+    var emij = context.watch<GlobalState>().emij;
     return Scaffold(
       appBar: AppBar(title: Text(userinfo.name),actions: [CircleAvatar(backgroundImage: NetworkImage(userinfo.avator_image)),SizedBox(width: 10,)],),
       body:WillPopScope(
@@ -108,6 +123,7 @@ class chatChildState extends State<chatChild>{
                             }else{
                               setState(() {
                                 inputbool = true;
+                                emjstatue =true;
                               });
                             }
                           },
@@ -142,17 +158,44 @@ class chatChildState extends State<chatChild>{
                                   print("当前输入内容：${_textcontroller.text},当前userid:${userinfo.userid}");
                                   Roogyun.sedMessage(_textcontroller.text,userinfo.userid,context);
                                   _textcontroller.clear();
+                                  setState(() {
+                                    inputbool =false;
+                                    emjstatue =true;
+                                  });
                                 },
                                 child: Container(
                                   child: Center(child: Text("发送")),
                                 ),
                               )
                           ),
-                        ): FaIcon(FontAwesomeIcons.smileWink)
+                        ): GestureDetector(onTap: (){
+                          print("进去");
+                          setState(() {
+                            emjstatue =!emjstatue;
+                          });
+                        },child: FaIcon(FontAwesomeIcons.smileWink))
                       ],),
                     ))
                   ],
-                ))
+                )),
+            emjstatue?Container():Container(
+              height: 140,
+              color: Colors.blueGrey,
+              child: PageView(
+                children: [
+                  GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 10,
+                  ), itemBuilder: (context,index){
+                    return GestureDetector(
+                      onTap: (){
+                        _textcontroller.text = "${_textcontroller.text}" + "${String.fromCharCode(emij![index]['unicode'])}";
+                      },
+                        child: Text("${String.fromCharCode(emij![index]['unicode'])}"));
+                  },itemCount: 40,),
+                ],
+              ),
+            )
           ],
         ),
       ),
