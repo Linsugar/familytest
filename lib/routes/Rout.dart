@@ -30,7 +30,7 @@ class RoutePage{
     '/Regitser':(context,{argument})=>Regitser(),
     '/updynamic':(context,{argument})=>updynamic(),
     '/videoWidget':(context,{argument})=>videoWidget(),
-    '/webviewcpns':(context,{argument})=>webviewcpns(),
+    '/webviewcpns':(context,{argument})=>webviewcpns(argument),
     '/MyHomePage':(context,{argument})=>MyHomePage(),
   };
 

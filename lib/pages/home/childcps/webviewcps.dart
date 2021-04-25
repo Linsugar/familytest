@@ -1,10 +1,11 @@
 import 'dart:io';
-
-import 'package:flutter/services.dart';
+import 'package:date_format/date_format.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:flutter/material.dart';
 class webviewcpns extends StatefulWidget {
+  Map ?arguments;
+  webviewcpns(this.arguments);
   @override
   _webviewcpnsState createState() => _webviewcpnsState();
 }
@@ -12,9 +13,10 @@ class webviewcpns extends StatefulWidget {
 class _webviewcpnsState extends State<webviewcpns> {
   WebViewController ?_controller;
   String ?_title;
-
+  var wxcontext;
   @override
   void initState() {
+     wxcontext = widget.arguments!['wxcontext'];
     // TODO: implement initState
     if(Platform.isAndroid) WebView.platform =SurfaceAndroidWebView();
     super.initState();
@@ -30,7 +32,7 @@ class _webviewcpnsState extends State<webviewcpns> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("webview"),),
+      appBar: AppBar(title: Text("${wxcontext.wxtitle}"),),
       body: WebView(
         javascriptMode: JavascriptMode.unrestricted,
 //        页面加载完成的回调
@@ -43,7 +45,7 @@ class _webviewcpnsState extends State<webviewcpns> {
           print("创建完成1");
           _controller = controller;
           _getitle();
-          _controller!.loadUrl("https://mp.weixin.qq.com/s/I01TSVB_3N0T9GoUkm4uOw");
+          _controller!.loadUrl("${wxcontext.wxurl}");
         },
         initialUrl: "https://mp.weixin.qq.com/s/9mgnjye6JHPuecgQBuQDQg",
       ),

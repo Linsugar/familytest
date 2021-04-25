@@ -11,6 +11,13 @@ class GlobalState with ChangeNotifier{
   String ?roogtoken;
   List ?historylist= [];
   String ?username;
+  List ?overuser = [];
+
+  changeoveruser(value){
+    overuser!.add(value);
+    notifyListeners();
+  }
+
 
   changeusername(value){
     username = value;

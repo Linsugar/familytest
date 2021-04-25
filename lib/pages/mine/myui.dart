@@ -37,7 +37,8 @@ class myuistate extends State<myui>{
               ),
               expandedHeight: 150,
             ),
-            SliverToBoxAdapter(child: Container(margin: EdgeInsets.all(10),decoration: BoxDecoration(
+            SliverToBoxAdapter(
+              child: Container(margin: EdgeInsets.all(10),decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: [BoxShadow(color: Colors.black38,offset: Offset(0.0, 0.0),spreadRadius: 1.0,blurRadius: 20)]
             ),height: 100,child: Row(
