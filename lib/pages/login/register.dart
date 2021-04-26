@@ -123,7 +123,7 @@ class RegisterState extends State<Regitser>{
                           cursorColor: Colors.white,
                           style: TextStyle(color: Colors.white),
                           maxLength: 5,maxLines: 1,decoration: InputDecoration(
-                            icon: Icon(Icons.account_circle,color: Colors.blue,),
+                            icon: FaIcon(FontAwesomeIcons.userTie,color: Colors.white,),
                             hintText: "请输入用户名",
                             labelText: "用户名"
                         ),),
@@ -144,7 +144,7 @@ class RegisterState extends State<Regitser>{
                           controller: _pwdController,
 
                           maxLength: 10,maxLines: 1,decoration: InputDecoration(
-                            icon: Icon(Icons.account_circle,color: Colors.blue,),
+                            icon:FaIcon(FontAwesomeIcons.key,color: Colors.white,),
                             hintText: "请输入密码",
                             labelText: "密码"
                         ),),
