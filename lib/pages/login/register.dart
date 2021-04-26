@@ -9,8 +9,10 @@ import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:familytest/pages/login/login.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rive/rive.dart';
 
 import '../../main.dart';
 class Regitser extends StatefulWidget{
@@ -29,6 +31,16 @@ class RegisterState extends State<Regitser>{
   TextEditingController _userController  =TextEditingController();
   TextEditingController _pwdController  =TextEditingController();
   String ?avator;
+  Artboard ?_riveArtboard;
+  RiveAnimationController ?_controller;
+  String _file = 'assets/67-93-flux-capacitor.riv';
+
+  @override
+  void initState() {
+    _createRive(_controller);
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -38,100 +50,116 @@ class RegisterState extends State<Regitser>{
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-            child: Stack(
-              children: [
-                Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage('images/login.jpg'),fit: BoxFit.cover)),
-                  child: Flex(direction: Axis.vertical,children: [
-                    Expanded(flex: 3,child: Container(
-                      padding: EdgeInsets.only(top: 30),
-                      child: Column(
-                          children:[
-                            Expanded(flex:2,child: Text("")),
-                            ClipOval(
-                              child: Container(
-                                color: Colors.white,
-                                width: 70,
-                                height: 70,
-                                child: avator ==null?Center(child: GestureDetector(
-                                    onTap: ()async{
-                                      var path =await Creamer.GetGrally();
-                                      setState(() {
-                                        avator = path;
-                                      });
-                                    },
-                                    child: FaIcon(FontAwesomeIcons.camera))):Image(image: FileImage(File(avator!)),fit: BoxFit.cover,),
-                              ),
+          child: Stack(
+            children: [
+              Container(
+                  child: _riveArtboard == null
+                      ? const SizedBox():
+                  Rive(artboard: _riveArtboard!,fit: BoxFit.cover,)
+              ),
+
+              Container(
+//                decoration: BoxDecoration(image: DecorationImage(image: AssetImage('images/login.jpg'),fit: BoxFit.cover)),
+                child: Flex(direction: Axis.vertical,children: [
+                  Expanded(flex: 3,child: Container(
+                    padding: EdgeInsets.only(top: 30),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:[
+                          ClipOval(
+                            child: Container(
+                              color: Colors.white,
+                              width: 70,
+                              height: 70,
+                              child: avator ==null?Center(child: GestureDetector(
+                                  onTap: ()async{
+                                    var path =await Creamer.GetGrally();
+                                    setState(() {
+                                      avator = path;
+                                    });
+                                  },
+                                  child: FaIcon(FontAwesomeIcons.camera))):Image(image: FileImage(File(avator!)),fit: BoxFit.cover,),
                             ),
-                            SizedBox(height: 10,),
-                          ]
-                      ),
-                    ),),
-                    Expanded(flex:7,child: Container(padding: EdgeInsets.all(10),child: Form(
-                      autovalidateMode:AutovalidateMode.always ,
-                      key: _globalKey,
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            validator: (value){
-                              if(value!.isEmpty ||  value.length !=11){
-                                print("当前类型：${value.runtimeType}");
-                                return "手机号码输入有误";
-                              }else{
-                                return null;
-                              }
-                            },
-                            controller: _phoneController,
-                            keyboardType:TextInputType.phone ,
-                            maxLength: 13,maxLines: 1,decoration: InputDecoration(
-                              icon: Icon(Icons.account_circle,color: Colors.blue,),
-                              hintText: "请输入手机号码",
-                              labelText: "手机号"
-                          ),),
+                          ),
                           SizedBox(height: 10,),
-                          TextFormField(
-                            validator: (value){
-                              if(value!.isEmpty || value.length >5){
-                                return "用户名输入有误";
-                              }else{
-                                return null;
-                              }
-                            },
-                            keyboardType:TextInputType.name,
-                            controller: _userController,
-                            maxLength: 5,maxLines: 1,decoration: InputDecoration(
-                              icon: Icon(Icons.account_circle,color: Colors.blue,),
-                              hintText: "请输入用户名",
-                              labelText: "用户名"
-                          ),),
-                          SizedBox(height: 10,),
-                          TextFormField(
-                            obscureText: true,
-                            keyboardType:TextInputType.phone,
-                            validator: (value){
-                              if(value!.isEmpty || value.length <5){
-                                return "请正确输入密码";
-                              }else{
-                                return null;
-                              }
-                            },
-                            controller: _pwdController,
-                            maxLength: 10,maxLines: 1,decoration: InputDecoration(
-                              icon: Icon(Icons.account_circle,color: Colors.blue,),
-                              hintText: "请输入密码",
-                              labelText: "密码"
-                          ),),
-                          Row(mainAxisAlignment: MainAxisAlignment.center,children: [
-                            Text("男"),
-                            Switch(value: sexbool, onChanged: (value){
-                              setState(() {
-                                sexbool = value;
-                              });
-                            }),
-                            Text("女")
-                          ],),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                        ]
+                    ),
+                  ),),
+                  Expanded(flex:7,child: Container(padding: EdgeInsets.all(10),child: Form(
+                    autovalidateMode:AutovalidateMode.always ,
+                    key: _globalKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          validator: (value){
+                            if(value!.isEmpty ||  value.length !=11){
+                              print("当前类型：${value.runtimeType}");
+                              return "手机号码输入有误";
+                            }else{
+                              return null;
+                            }
+                          },
+                          controller: _phoneController,
+                          keyboardType:TextInputType.phone ,
+                          cursorColor: Colors.white,
+                          style: TextStyle(color: Colors.white),
+                          maxLength: 13,maxLines: 1,decoration: InputDecoration(
+                          helperStyle: TextStyle(color: Colors.white),
+                            icon: FaIcon(FontAwesomeIcons.mobileAlt,color: Colors.white,),
+                            hintText: "请输入手机号码",
+                            labelText: "手机号"
+                        ),),
+                        SizedBox(height: 10,),
+                        TextFormField(
+                          validator: (value){
+                            if(value!.isEmpty || value.length >5){
+                              return "用户名输入有误";
+                            }else{
+                              return null;
+                            }
+                          },
+                          keyboardType:TextInputType.name,
+                          controller: _userController,
+                          cursorColor: Colors.white,
+                          style: TextStyle(color: Colors.white),
+                          maxLength: 5,maxLines: 1,decoration: InputDecoration(
+                            icon: Icon(Icons.account_circle,color: Colors.blue,),
+                            hintText: "请输入用户名",
+                            labelText: "用户名"
+                        ),),
+                        SizedBox(height: 10,),
+                        TextFormField(
+
+                          cursorColor: Colors.white,
+                          style: TextStyle(color: Colors.white),
+                          obscureText: true,
+                          keyboardType:TextInputType.phone,
+                          validator: (value){
+                            if(value!.isEmpty || value.length <5){
+                              return "请正确输入密码";
+                            }else{
+                              return null;
+                            }
+                          },
+                          controller: _pwdController,
+
+                          maxLength: 10,maxLines: 1,decoration: InputDecoration(
+                            icon: Icon(Icons.account_circle,color: Colors.blue,),
+                            hintText: "请输入密码",
+                            labelText: "密码"
+                        ),),
+                        Row(mainAxisAlignment: MainAxisAlignment.center,children: [
+                          Text("男"),
+                          Switch(value: sexbool, onChanged: (value){
+                            setState(() {
+                              sexbool = value;
+                            });
+                          }),
+                          Text("女")
+                        ],),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                             MaterialButton(color: Colors.red,child: Text("注册"),onPressed: ()async{
                               if(_globalKey.currentState!.validate()){
                                 if(avator !=null){
@@ -166,14 +194,30 @@ class RegisterState extends State<Regitser>{
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyHomePage()));
                             },),
                           ],)
-                        ],
-                      ),
-                    ),)),
-                  ],),),
-              ],
-            ),
+                      ],
+                    ),
+                  ),)),
+                ],),),
+            ],
           ),
+        ),
       ),
+    );
+  }
+
+  void _createRive(contlr)async {
+    rootBundle.load(_file).then(
+//      1.加载riv文件，
+          (data) async {
+        print("data:$data");
+//            创建一个存储rive二进制的文件
+        final file =RiveFile.import(data);
+        print("$file文件");
+        final artboard = file.mainArtboard;
+//          添加一个控制器，随时进行控制动画
+        artboard.addController(contlr = SimpleAnimation('Animation'));
+        setState(() => _riveArtboard = artboard);
+      },
     );
   }
 }

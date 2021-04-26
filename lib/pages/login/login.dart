@@ -28,6 +28,7 @@ class _MyHomePageState extends State<MyHomePage>{
   Artboard ?_riveArtboard;
   RiveAnimationController ?_controller;
   String _file = 'assets/10-14-portable-table.riv';
+
   @override
   void initState(){
     _createRive(_controller);
