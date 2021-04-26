@@ -205,16 +205,6 @@ class dya extends StatelessWidget {
 }
 
 
-//ListView.builder(
-//scrollDirection: Axis.horizontal,itemBuilder: (context,im){
-//return Container(
-//width: 50,
-//height: 50,
-//child: Image(image: NetworkImage(snapshot.data[index].imagelist[im]),fit: BoxFit.cover,),
-//);
-//},itemCount: snapshot.data[index].imagelist.length,)
-
-
 
 class PopuWidget extends StatelessWidget {
   const PopuWidget({

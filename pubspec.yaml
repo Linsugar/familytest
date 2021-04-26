@@ -38,7 +38,7 @@ dependencies:
   shared_preferences: ^2.0.5
   web_socket_channel: ^2.0.0
   fl_chart: ^0.20.1
-  rive: ^0.7.1
+  rive: ^0.7.3
   fluttertoast: ^8.0.3
   permission_handler: ^6.1.1
   sqflite: ^2.0.0+3
@@ -75,6 +75,7 @@ flutter:
     - assets/flag.riv
     - data/family.json
     - data/emij.json
+    - assets/10-14-portable-table.riv
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

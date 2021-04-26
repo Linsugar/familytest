@@ -27,119 +27,125 @@ class _MyHomePageState extends State<MyHomePage>{
   TextEditingController ?_Pwdcontroller  =TextEditingController();
   Artboard ?_riveArtboard;
   RiveAnimationController ?_controller;
-  String _file = 'assets/flag.riv';
+  String _file = 'assets/10-14-portable-table.riv';
   @override
   void initState(){
+    _createRive(_controller);
     super.initState();
   }
-
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        child: Stack(
-          children: [
-            Container(
-              color: Colors.blue,
-//              child: Image(image:  AssetImage('images/login.jpg'),fit: BoxFit.cover,),
-            ),
-            Positioned(top: 30,right: 10,child: MaterialButton(child: Text("注册",style: TextStyle(color: Colors.white),),onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
-            },)),
-            Positioned(
-              top: MediaQuery.of(context).size.height/3,
-              left: 0,
-              child: Opacity(
-                opacity: 0.8,
-                child: Container(
-                  padding: EdgeInsets.only(left: 20,right: 20),
-                  width: MediaQuery.of(context).size.width,
-                  height: 200,
-                  color: Colors.white,
-                  child:Container(
-                    child: Form(
-                      autovalidateMode: AutovalidateMode.always,
-                      key: _fromglobalKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          TextFormField(
-                            controller: _Usercontroller,
-                            keyboardType: TextInputType.phone,
-                            maxLength: 13,
-                            validator: (user){
-                              if(user!.isEmpty || user.length<5){
-                                return "用户名有误";
-                              }return null;
-                            },
-                            decoration: InputDecoration(
-                                hintText: "请输入手机号码",
-                                icon: Icon(Icons.account_circle)),),
-                          TextFormField(
-                            validator: (pwd){
-                              if(pwd!.isEmpty || pwd.length<5){
-                                return "密码有误";
-                              }return null;
-                            },
-                            obscureText: true,
-                            keyboardType:TextInputType.number ,
-                            controller: _Pwdcontroller,
-                            decoration: InputDecoration(
-                                hintText: "请输入密码",
-                                icon: Icon(Icons.add_call)),
-                            maxLength: 15,
-                          ),
-                          Row
-                            (mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-                            ElevatedButton.icon(onPressed: ()async{
-                              if( _fromglobalKey!.currentState!.validate()){
-                                var userdata = FormData.fromMap({
-                                  'user_mobile':_Usercontroller?.text,
-                                  'password':_Pwdcontroller?.text
-                                });
-                                var loginResult =  await Request.setNetwork('user/',userdata);
-                                var token = loginResult['token'];
-                                if(token !=null){
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: _riveArtboard == null
+                    ? const SizedBox():
+                Rive(artboard: _riveArtboard!,fit: BoxFit.cover,),
+              ),
+              Positioned(top: 30,right: 10,child: MaterialButton(child: Text("注册",style: TextStyle(color: Colors.white),),onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
+              },)),
+              Positioned(
+                top: MediaQuery.of(context).size.height/3,
+                left: 0,
+                child: Opacity(
+                  opacity: 0.8,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 20,right: 20),
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    color: Colors.white,
+                    child:Container(
+                      child: Form(
+                        autovalidateMode: AutovalidateMode.always,
+                        key: _fromglobalKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            TextFormField(
+                              controller: _Usercontroller,
+                              keyboardType: TextInputType.phone,
+                              maxLength: 13,
+                              validator: (user){
+                                if(user!.isEmpty || user.length<5){
+                                  return "用户名有误";
+                                }return null;
+                              },
+                              decoration: InputDecoration(
+                                  hintText: "请输入手机号码",
+                                  icon: Icon(Icons.account_circle)),),
+                            TextFormField(
+                              validator: (pwd){
+                                if(pwd!.isEmpty || pwd.length<5){
+                                  return "密码有误";
+                                }return null;
+                              },
+                              obscureText: true,
+                              keyboardType:TextInputType.number ,
+                              controller: _Pwdcontroller,
+                              decoration: InputDecoration(
+                                  hintText: "请输入密码",
+                                  icon: Icon(Icons.add_call)),
+                              maxLength: 15,
+                            ),
+                            Row
+                              (mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
+                              ElevatedButton.icon(onPressed: ()async{
+                                if( _fromglobalKey!.currentState!.validate()){
+                                  var userdata = FormData.fromMap({
+                                    'user_mobile':_Usercontroller?.text,
+                                    'password':_Pwdcontroller?.text
+                                  });
+                                  var loginResult =  await Request.setNetwork('user/',userdata);
+                                  var token = loginResult['token'];
+                                  if(token !=null){
+                                    PopupUntil.showToast(loginResult['msg']);
+                                    context.read<GlobalState>().changToken(false);
+                                    context.read<GlobalState>().changlogintoken(loginResult['token']);
+                                    context.read<GlobalState>().changuserid(loginResult['user_id']);
+                                    context.read<GlobalState>().changeavator(loginResult['avator_image']);
+                                    context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
+                                    context.read<GlobalState>().changeusername(loginResult['user_name']);
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+                                        MainHome()));
+                                  }
+                                  if(loginResult['msg']=='密码或手机号有误'){
+                                    PopupUntil.showToast(loginResult['msg']);
+                                  }
+                                  if(loginResult['msg']=='不存在'){
                                   PopupUntil.showToast(loginResult['msg']);
-                                  context.read<GlobalState>().changToken(false);
-                                  context.read<GlobalState>().changlogintoken(loginResult['token']);
-                                  context.read<GlobalState>().changuserid(loginResult['user_id']);
-                                  context.read<GlobalState>().changeavator(loginResult['avator_image']);
-                                  context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
-                                  context.read<GlobalState>().changeusername(loginResult['user_name']);
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                                      MainHome()));
+                                      Regitser()));
                                 }
-                                if(loginResult['msg']=='密码或手机号有误'){
-                                  PopupUntil.showToast(loginResult['msg']);
                                 }
-                                if(loginResult['msg']=='不存在'){
-                                PopupUntil.showToast(loginResult['msg']);
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                                    Regitser()));
-                              }
-                              }
-                              }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("登录")),
-                            ElevatedButton.icon(onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
-                              }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("注册"))
-                          ],),
-                        ],
+                                }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("登录")),
+                              ElevatedButton.icon(onPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
+                                }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("注册"))
+                            ],),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
 
-                ),
-              ),),
-          ],
+                  ),
+                ),),
+            ],
+          ),
         ),
       ),
     );
   }
-  void _createRive()async{
+  void _createRive(contlr)async{
     rootBundle.load(_file).then(
 //      1.加载riv文件，
           (data) async {
@@ -149,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage>{
         print("$file文件");
         final artboard = file.mainArtboard;
 //          添加一个控制器，随时进行控制动画
-        artboard.addController(_controller = SimpleAnimation('flag'));
+        artboard.addController(contlr = SimpleAnimation('Loop'));
         setState(() => _riveArtboard = artboard);
       },
     );

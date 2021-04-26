@@ -4,9 +4,9 @@ class Request{
   static Dio network = new Dio(BaseOptions(
     connectTimeout: 10000,
 //    生产
-    baseUrl: 'http://3ie5702133.wicp.vip/Jia/'
+//    baseUrl: 'http://3ie5702133.wicp.vip/Jia/'
 //    测试
-//    baseUrl: 'http://192.168.5.217:8000/Jia/',
+    baseUrl: 'http://192.168.5.217:8000/Jia/',
   ))..interceptors.add(InterceptorsWrapper(
     onRequest:(options, handler) {
       print("进入拦截onRequest${options.data}");

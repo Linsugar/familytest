@@ -58,6 +58,7 @@ class MyAppState extends State<MyApp>{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "家族",
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RoutePage.onGenerateRoute,
       home: context.watch<GlobalState>().globalToken==false?MyHomePage():MainHome());
