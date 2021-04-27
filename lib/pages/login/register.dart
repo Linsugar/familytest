@@ -59,26 +59,28 @@ class RegisterState extends State<Regitser>{
               ),
 
               Container(
-//                decoration: BoxDecoration(image: DecorationImage(image: AssetImage('images/login.jpg'),fit: BoxFit.cover)),
                 child: Flex(direction: Axis.vertical,children: [
                   Expanded(flex: 3,child: Container(
                     padding: EdgeInsets.only(top: 30),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children:[
-                          ClipOval(
-                            child: Container(
-                              color: Colors.white,
-                              width: 70,
-                              height: 70,
-                              child: avator ==null?Center(child: GestureDetector(
-                                  onTap: ()async{
-                                    var path =await Creamer.GetGrally();
-                                    setState(() {
-                                      avator = path;
-                                    });
-                                  },
-                                  child: FaIcon(FontAwesomeIcons.camera))):Image(image: FileImage(File(avator!)),fit: BoxFit.cover,),
+                          GestureDetector(
+                            onTap: ()async{
+                                var path =await Creamer.GetGrally();
+                                setState(() {
+                                  avator = path;
+                                }
+                                );
+                            },
+                            child: ClipOval(
+                              child: Container(
+                                color: Colors.white,
+                                width: 70,
+                                height: 70,
+                                child: avator ==null?Center(
+                                    child: FaIcon(FontAwesomeIcons.camera)):Image(image: FileImage(File(avator!)),fit: BoxFit.cover,),
+                              ),
                             ),
                           ),
                           SizedBox(height: 10,),
@@ -104,7 +106,7 @@ class RegisterState extends State<Regitser>{
                           cursorColor: Colors.white,
                           style: TextStyle(color: Colors.white),
                           maxLength: 13,maxLines: 1,decoration: InputDecoration(
-                          helperStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(color: Colors.white),
                             icon: FaIcon(FontAwesomeIcons.mobileAlt,color: Colors.white,),
                             hintText: "请输入手机号码",
                             labelText: "手机号"
@@ -123,13 +125,17 @@ class RegisterState extends State<Regitser>{
                           cursorColor: Colors.white,
                           style: TextStyle(color: Colors.white),
                           maxLength: 5,maxLines: 1,decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.white),
                             icon: FaIcon(FontAwesomeIcons.userTie,color: Colors.white,),
                             hintText: "请输入用户名",
                             labelText: "用户名"
                         ),),
                         SizedBox(height: 10,),
                         TextFormField(
-
+                          onFieldSubmitted: (value)async{
+                           await regis(context);
+                          },
+                          textInputAction: TextInputAction.done,
                           cursorColor: Colors.white,
                           style: TextStyle(color: Colors.white),
                           obscureText: true,
@@ -142,9 +148,9 @@ class RegisterState extends State<Regitser>{
                             }
                           },
                           controller: _pwdController,
-
                           maxLength: 10,maxLines: 1,decoration: InputDecoration(
                             icon:FaIcon(FontAwesomeIcons.key,color: Colors.white,),
+                            hintStyle: TextStyle(color: Colors.white),
                             hintText: "请输入密码",
                             labelText: "密码"
                         ),),
@@ -160,39 +166,13 @@ class RegisterState extends State<Regitser>{
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            MaterialButton(color: Colors.red,child: Text("注册"),onPressed: ()async{
-                              if(_globalKey.currentState!.validate()){
-                                if(avator !=null){
-                                  var formdata = FormData.fromMap({
-                                    'user_mobile':_phoneController.text,
-                                    'password':_pwdController.text,
-                                    'username':_userController.text,
-                                    'city':context.read<GlobalState>().city,
-                                    'deviceid':context.read<GlobalState>().deviceid,
-                                    'platform':context.read<GlobalState>().platform,
-                                    'avator_image': await MultipartFile.fromFile(avator!)
-                                  });
-                                  var  Resultdata = await Request.setNetwork('user/', formdata);
-                                  String ?token = Resultdata['token'];
-                                  if(token!.isNotEmpty){
-                                    PopupUntil.showToast(Resultdata['msg']);
-                                    context.read<GlobalState>().changuserid(Resultdata['user_id']);
-                                    context.read<GlobalState>().changeavator(Resultdata['avator_image']);
-                                    context.read<GlobalState>().changeroogtoken(Resultdata['roogtoken']);
-                                    context.read<GlobalState>().changeusername(Resultdata['username']);
-                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                                      return MainHome();
-                                    }));
-                                  }
-                                }else{
-                                  PopupUntil.showToast("能不能上传照片？");
-                                }
-                              }
-                            },),
+                            ElevatedButton.icon(onPressed: ()async{
+                              await regis(context);
+                            }, icon: FaIcon(FontAwesomeIcons.registered), label: Text("注册")),
                             SizedBox(width: 10,),
-                            MaterialButton(color: Colors.blue,child: Text("登录"),onPressed: (){
+                            ElevatedButton.icon(onPressed: (){
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyHomePage()));
-                            },),
+                            }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
                           ],)
                       ],
                     ),
@@ -203,6 +183,36 @@ class RegisterState extends State<Regitser>{
         ),
       ),
     );
+  }
+
+  Future regis(BuildContext context) async {
+     if(_globalKey.currentState!.validate()){
+      if(avator !=null){
+        var formdata = FormData.fromMap({
+          'user_mobile':_phoneController.text,
+          'password':_pwdController.text,
+          'username':_userController.text,
+          'city':context.read<GlobalState>().city,
+          'deviceid':context.read<GlobalState>().deviceid,
+          'platform':context.read<GlobalState>().platform,
+          'avator_image': await MultipartFile.fromFile(avator!)
+        });
+        var  Resultdata = await Request.setNetwork('user/', formdata);
+        String ?token = Resultdata['token'];
+        if(token!.isNotEmpty){
+          PopupUntil.showToast(Resultdata['msg']);
+          context.read<GlobalState>().changuserid(Resultdata['user_id']);
+          context.read<GlobalState>().changeavator(Resultdata['avator_image']);
+          context.read<GlobalState>().changeroogtoken(Resultdata['roogtoken']);
+          context.read<GlobalState>().changeusername(Resultdata['username']);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+            return MainHome();
+          }));
+        }
+      }else{
+        PopupUntil.showToast("能不能上传照片？");
+      }
+    }
   }
 
   void _createRive(contlr)async {

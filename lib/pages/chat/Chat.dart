@@ -1,6 +1,7 @@
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/pages/chat/model/chatdynamic.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:familytest/roog/roogYun.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -93,12 +94,15 @@ class chatabout extends StatelessWidget {
                   Expanded(flex: 1,child: ListTile(
                     key: UniqueKey(),
                     subtitle: Text("在这里可以与许多不同的朋友一起畅聊生活琐事",overflow: TextOverflow.ellipsis,maxLines: 1,),
-                    leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(_headerimag),),title: Text("聊天广场"),trailing: MaterialButton(onPressed: (){
-                    print("点击");
-                    _Amc?.forward();
-                    Navigator.pushNamed(context,'/chatChild',arguments:{
-                      'userinfo': snapshot.data
-                    });
+                    leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(_headerimag),),
+                    title: Text("聊天广场"),trailing: MaterialButton(
+                      onPressed: (){
+//                    print("点击");
+//                    _Amc?.forward();
+//                    Navigator.pushNamed(context,'/chatChild',arguments:{
+//                      'userinfo': snapshot.data
+//                    });
+                        PopupUntil.showToast("当前功能正在开发中~");
                   },child: Icon(Icons.pan_tool,color: Colors.cyan,)),)),
                   Expanded(flex:8,child: ListView.separated(
                     itemCount: snapshot.data.length,

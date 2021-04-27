@@ -8,6 +8,7 @@ import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rive/rive.dart';
 import 'package:provider/provider.dart';
 import 'package:familytest/pages/login/register.dart';
@@ -64,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage>{
                     padding: EdgeInsets.only(left: 20,right: 20),
                     width: MediaQuery.of(context).size.width,
                     height: 200,
-                    color: Colors.white,
+//                    color: Colors.white,
                     child:Container(
                       child: Form(
                         autovalidateMode: AutovalidateMode.always,
@@ -83,55 +84,35 @@ class _MyHomePageState extends State<MyHomePage>{
                               },
                               decoration: InputDecoration(
                                   hintText: "请输入手机号码",
-                                  icon: Icon(Icons.account_circle)),),
+                                  hintStyle: TextStyle(color: Colors.white),
+                                  icon: FaIcon(FontAwesomeIcons.mobileAlt,color: Colors.white,)),),
                             TextFormField(
+                              onFieldSubmitted: (value){
+                                relogin(context);
+                              },
                               validator: (pwd){
                                 if(pwd!.isEmpty || pwd.length<5){
                                   return "密码有误";
                                 }return null;
                               },
+                              textInputAction: TextInputAction.done,
                               obscureText: true,
                               keyboardType:TextInputType.number ,
                               controller: _Pwdcontroller,
                               decoration: InputDecoration(
                                   hintText: "请输入密码",
-                                  icon: Icon(Icons.add_call)),
+                                  hintStyle: TextStyle(color: Colors.white),
+                                  icon:FaIcon(FontAwesomeIcons.key,color: Colors.white,)),
                               maxLength: 15,
                             ),
                             Row
                               (mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
                               ElevatedButton.icon(onPressed: ()async{
-                                if( _fromglobalKey!.currentState!.validate()){
-                                  var userdata = FormData.fromMap({
-                                    'user_mobile':_Usercontroller?.text,
-                                    'password':_Pwdcontroller?.text
-                                  });
-                                  var loginResult =  await Request.setNetwork('user/',userdata);
-                                  var token = loginResult['token'];
-                                  if(token !=null){
-                                    PopupUntil.showToast(loginResult['msg']);
-                                    context.read<GlobalState>().changToken(false);
-                                    context.read<GlobalState>().changlogintoken(loginResult['token']);
-                                    context.read<GlobalState>().changuserid(loginResult['user_id']);
-                                    context.read<GlobalState>().changeavator(loginResult['avator_image']);
-                                    context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
-                                    context.read<GlobalState>().changeusername(loginResult['user_name']);
-                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                                        MainHome()));
-                                  }
-                                  if(loginResult['msg']=='密码或手机号有误'){
-                                    PopupUntil.showToast(loginResult['msg']);
-                                  }
-                                  if(loginResult['msg']=='不存在'){
-                                  PopupUntil.showToast(loginResult['msg']);
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                                      Regitser()));
-                                }
-                                }
-                                }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("登录")),
+                                await relogin(context);
+                                }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
                               ElevatedButton.icon(onPressed: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
-                                }, icon: Icon(Icons.audiotrack,color: Colors.red,), label: Text("注册"))
+                                }, icon: FaIcon(FontAwesomeIcons.registered), label: Text("注册"))
                             ],),
                           ],
                         ),
@@ -145,6 +126,36 @@ class _MyHomePageState extends State<MyHomePage>{
         ),
       ),
     );
+  }
+
+  Future relogin(BuildContext context) async {
+             if( _fromglobalKey!.currentState!.validate()){
+      var userdata = FormData.fromMap({
+        'user_mobile':_Usercontroller?.text,
+        'password':_Pwdcontroller?.text
+      });
+      var loginResult =  await Request.setNetwork('user/',userdata);
+      var token = loginResult['token'];
+      if(token !=null){
+        PopupUntil.showToast(loginResult['msg']);
+        context.read<GlobalState>().changToken(false);
+        context.read<GlobalState>().changlogintoken(loginResult['token']);
+        context.read<GlobalState>().changuserid(loginResult['user_id']);
+        context.read<GlobalState>().changeavator(loginResult['avator_image']);
+        context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
+        context.read<GlobalState>().changeusername(loginResult['user_name']);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+            MainHome()));
+      }
+      if(loginResult['msg']=='密码或手机号有误'){
+        PopupUntil.showToast(loginResult['msg']);
+      }
+      if(loginResult['msg']=='不存在'){
+      PopupUntil.showToast(loginResult['msg']);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+          Regitser()));
+    }
+    }
   }
   void _createRive(contlr)async{
     rootBundle.load(_file).then(
