@@ -3,7 +3,8 @@ import 'package:dio/dio.dart';
 class Request{
   static Dio network = new Dio(BaseOptions(
     connectTimeout: 10000,
-//    生产
+//    生产http://3ie5702133.wicp.vip/
+
     baseUrl: 'http://3ie5702133.wicp.vip/Jia/'
 //    测试
 //    baseUrl: 'http://192.168.5.217:8000/Jia/',

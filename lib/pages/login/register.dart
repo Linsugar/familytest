@@ -57,7 +57,7 @@ class RegisterState extends State<Regitser>{
                       ? const SizedBox():
                   Rive(artboard: _riveArtboard!,fit: BoxFit.cover,)
               ),
-
+              context.read<GlobalState>().loadstatue?Center(child: CircularProgressIndicator()):Container(),
               Container(
                 child: Flex(direction: Axis.vertical,children: [
                   Expanded(flex: 3,child: Container(
@@ -167,6 +167,7 @@ class RegisterState extends State<Regitser>{
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton.icon(onPressed: ()async{
+                              Provider.of<GlobalState>(context,listen: false).changeloads(true);
                               await regis(context);
                             }, icon: FaIcon(FontAwesomeIcons.registered), label: Text("注册")),
                             SizedBox(width: 10,),
@@ -205,6 +206,7 @@ class RegisterState extends State<Regitser>{
           context.read<GlobalState>().changeavator(Resultdata['avator_image']);
           context.read<GlobalState>().changeroogtoken(Resultdata['roogtoken']);
           context.read<GlobalState>().changeusername(Resultdata['username']);
+          Provider.of<GlobalState>(context,listen: false).changeloads(false);
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
             return MainHome();
           }));

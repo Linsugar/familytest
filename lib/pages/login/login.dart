@@ -1,10 +1,8 @@
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
-import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
+import 'package:familytest/until/wx.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +11,7 @@ import 'package:rive/rive.dart';
 import 'package:provider/provider.dart';
 import 'package:familytest/pages/login/register.dart';
 import '../../main.dart';
-
+import 'package:fluwx/fluwx.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key ?key}) : super(key: key);
@@ -36,6 +34,11 @@ class _MyHomePageState extends State<MyHomePage>{
     super.initState();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage>{
                     ? const SizedBox():
                 Rive(artboard: _riveArtboard!,fit: BoxFit.cover,),
               ),
+              context.read<GlobalState>().loadstatue?Center(child: CircularProgressIndicator()):Container(),
               Positioned(top: 30,right: 10,child: MaterialButton(child: Text("注册",style: TextStyle(color: Colors.white),),onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
               },)),
@@ -64,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage>{
                   child: Container(
                     padding: EdgeInsets.only(left: 20,right: 20),
                     width: MediaQuery.of(context).size.width,
-                    height: 200,
+                    height: 300,
 //                    color: Colors.white,
                     child:Container(
                       child: Form(
@@ -107,13 +111,17 @@ class _MyHomePageState extends State<MyHomePage>{
                             ),
                             Row
                               (mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-                              ElevatedButton.icon(onPressed: ()async{
-                                await relogin(context);
+                              ElevatedButton.icon(onPressed: (){
+                                Provider.of<GlobalState>(context,listen: false).changeloads(true);
+                                   relogin(context);
                                 }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
                               ElevatedButton.icon(onPressed: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
                                 }, icon: FaIcon(FontAwesomeIcons.registered), label: Text("注册"))
                             ],),
+                            MaterialButton(onPressed: (){
+                              Wx.wxlogin();
+                            },child: Text("微信登录"),)
                           ],
                         ),
                       ),
@@ -127,7 +135,6 @@ class _MyHomePageState extends State<MyHomePage>{
       ),
     );
   }
-
   Future relogin(BuildContext context) async {
              if( _fromglobalKey!.currentState!.validate()){
       var userdata = FormData.fromMap({
@@ -135,8 +142,8 @@ class _MyHomePageState extends State<MyHomePage>{
         'password':_Pwdcontroller?.text
       });
       var loginResult =  await Request.setNetwork('user/',userdata);
-      var token = loginResult['token'];
-      if(token !=null){
+      Provider.of<GlobalState>(context,listen: false).changeloads(false);
+      if(loginResult['token'] !=null){
         PopupUntil.showToast(loginResult['msg']);
         context.read<GlobalState>().changToken(false);
         context.read<GlobalState>().changlogintoken(loginResult['token']);
@@ -172,6 +179,7 @@ class _MyHomePageState extends State<MyHomePage>{
       },
     );
   }
+
 }
 
 

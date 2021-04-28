@@ -6,6 +6,7 @@ import 'package:familytest/pages/chat/Chat.dart';
 import 'package:familytest/pages/family/FamilyData.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/routes/Rout.dart';
+import 'package:familytest/until/wx.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,7 @@ class MyAppState extends State<MyApp>{
  @override
  void initState(){
    Roogyun.rooginit();
-
+   Wx.initwx();
    getDevice();
    // TODO: implement initState
    super.initState();

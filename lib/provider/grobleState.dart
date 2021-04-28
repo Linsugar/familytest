@@ -13,6 +13,13 @@ class GlobalState with ChangeNotifier{
   String ?username;
   List ?overuser = [];
   List ?emij = [];
+  bool loadstatue =false;
+
+  changeloads(value){
+    loadstatue = value;
+    notifyListeners();
+  }
+
 
   changeemij(value){
     emij!.add(value);
