@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +15,11 @@ class Home extends StatefulWidget{
   }
 }
 
-
 class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
   List imagelist=[];
   List a = [1,2,3,4];
+  double hei = 200;
   var tabcontlore;
   @override
   void initState() {
@@ -52,38 +54,87 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     // TODO: implement build
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text("首页"),),
-      body: ListView(
-          children: [
-            Container(
-              height: _size.height/10,
-              child: ListView.separated(scrollDirection: Axis.horizontal,itemBuilder: (context,index){
-                return GestureDetector(
-                  onTap: (){
-                    Navigator.pushNamed(context,'/chatChild',arguments:{
-                      "userinfo":userlist![index]
-                    });
-                  },
-                  child: Container(
-                      height: 50,
-                      width: 50,
-                      margin: EdgeInsets.all(5),decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 2.0),shape:BoxShape.circle ,
-                      boxShadow: [BoxShadow(color: Colors.blue,offset: Offset(0.0,1.0))],image: DecorationImage(image: NetworkImage(userlist![index].avator_image),fit: BoxFit.cover)
-                  )),
-                );
-              },itemCount: userlist!.length,separatorBuilder: (context,index){
-                return SizedBox(width: 10,);
-              },)
-            ),
-            input(),
-            photos(imagelist: imagelist),
-            SizedBox(height: 10,),
-            ctabr(tabcontlore: tabcontlore),
-            ctab(tabcontlore: tabcontlore, imagrurl: _imagrurl),
-            Text("最新消息~",textAlign: TextAlign.center,),
+      body: CustomScrollView(
+          scrollDirection:Axis.vertical,
+          slivers: [
+            SliverAppBar(
+              title: input(),
+              bottom: TabBar(
+                controller: tabcontlore,
+                labelPadding: EdgeInsets.only(bottom: 15),
+                tabs: [
+                  Text("首页"),
+                  Text("周边游"),
+                  Text("亲子时光"),
+                  Text("踏青赏花"),
+                ],),
 
+            ),
+            SliverToBoxAdapter(
+              child: AnimatedContainer(
+                duration: Duration(seconds: 1),
+                height: hei,
+                child: PageView(
+                  onPageChanged: (value){
+                    print("当前翻页;$value");
+                      setState(() {
+                        if(hei==200){
+                          hei =300;
+                        }else{
+                          hei = 200;
+                        }
+                      });
+                  },
+                  children: [
+                    Container(
+                      color: Colors.blueGrey,
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverGrid(
+                              delegate: SliverChildBuilderDelegate(
+                              (context,index){
+                                return Container(
+                                  color: Colors.blue[index * 50],
+                                  child: Text("$index"),
+                                );
+                              },childCount: 15
+                          ), gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
+                              mainAxisExtent: 67,
+                              crossAxisCount: 5))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.blue,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(child: SizedBox(height: 10,),),
+            SliverToBoxAdapter(
+              child: Row(
+                children: [
+                  Container(
+                    width: _size.width/2,
+                    child:cusor(imagelist: imagelist,) ,
+                  ),
+                  Container(
+                    width: _size.width/2,
+                    child:cusor(imagelist: imagelist,) ,
+                  )
+                ],
+              ),
+            ),
+            SliverToBoxAdapter(child: SizedBox(height: 10,),),
+            SliverToBoxAdapter(
+              child: Container(
+                height: 100,
+                child: cusor(imagelist:imagelist,),
+              ),
+            )
           ],
-        ),
+      ),
 
     );
   }
@@ -176,12 +227,14 @@ class input extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(left: 10,right: 10),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.lightBlue,width: 1.0)),
         padding: EdgeInsets.only(left: 10,right: 10),
         child:TextField(
-          decoration: InputDecoration(icon: Icon(Icons.search),suffixIcon: Icon(Icons.arrow_drop_down),hintText: '请输入搜索内容'),)
+          decoration: InputDecoration(
+            border: InputBorder.none,
+              icon: Icon(Icons.search),suffixIcon: Icon(Icons.arrow_drop_down),hintText: '请输入搜索内容'),)
     );
   }
 }
@@ -303,15 +356,6 @@ class _ListcontextState extends State<Listcontext> {
 }
 
 
-
-
-
-
-
-
-
-
-
 class cusor extends StatelessWidget {
   const cusor({
     Key? key,
@@ -324,17 +368,17 @@ class cusor extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
+        viewportFraction: 1.0,
         autoPlay: true,
-        enlargeCenterPage: true
+//        enlargeCenterPage: true
       ),
       items: imagelist.map((i) {
         return Builder(
           builder: (BuildContext context) {
             return ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: GestureDetector(
+              child: InkWell(
                 onTap: (){
-//                  print("点击：${i}");
                   Navigator.pushNamed(context, "/videoWidget");
                 },
                 child: Container(
@@ -355,106 +399,3 @@ class cusor extends StatelessWidget {
   }
 }
 
-
-
-//====================================================雪花========================================
-//
-//import 'package:flutter/cupertino.dart';
-//import 'package:flutter/material.dart';
-//import 'dart:math';
-//
-//class CustomerSnow extends StatefulWidget{
-//  @override
-//  _CustomerSnowState createState() => _CustomerSnowState();
-//}
-//
-//class _CustomerSnowState extends State<CustomerSnow> with SingleTickerProviderStateMixin{
-//  AnimationController _controller;
-//  List<sw> nelis = List.generate(50, (value){
-//    return sw();
-//  });
-//  @override
-//  void initState() {
-//    _controller = AnimationController(vsync: this,duration: Duration(seconds:1))..repeat();
-//    // TODO: implement initState
-//
-//    super.initState();
-//  }
-//  @override
-//  void dispose() {
-//    // TODO: implement dispose
-//    super.dispose();
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//
-//    return Scaffold(
-//      appBar: AppBar(title: Text("雪花"),),
-//      body: Container(
-//        decoration: BoxDecoration(
-//            gradient: LinearGradient(
-//                begin: Alignment.topCenter,
-//                end: Alignment.bottomCenter,
-//                colors: [Colors.blue,Colors.blue[200]!,Colors.white],
-//                stops: [0.0,0.7,0.95]
-//            )
-//        ),
-//        constraints: BoxConstraints.expand(),
-//        child: AnimatedBuilder(
-//          animation:_controller ,
-//          builder: (_, __) {
-//            this.nelis.forEach((element) {
-//              element.fall();
-//            });
-//            return CustomPaint(
-//              painter: Snow(nelis),
-//            );
-//          },
-//        ),
-//      ),
-//    );
-//  }
-//}
-//
-//class Snow extends CustomPainter{
-//
-//  List<sw> nelis;
-//  Snow(this.nelis);
-//  @override
-//  void paint(Canvas canvas, Size size) {
-//    canvas.drawCircle(Offset(size.width/2.0,size.height-240), 60.0, Paint()..color=Colors.white);
-//    canvas.drawOval(Rect.fromCenter(center: Offset(size.width/2.0,size.height-60), width: 250, height: 300),Paint()..color=Colors.white);
-//    canvas.drawCircle(Offset(size.width/2.0-40,size.height-260), 10, Paint());
-//    canvas.drawCircle(Offset(size.width/2.0+40,size.height-260), 10, Paint());
-//    canvas.drawOval(Rect.fromCenter(center: Offset(size.width/2.0,size.height-220), width: 50, height: Random().nextDouble()*10+4),Paint()..color=Colors.red);
-//    this.nelis.forEach((value) {
-//      canvas.drawCircle(Offset(value.x,value.y), value.r, Paint()..color=Colors.white);
-//    });
-//  }
-//  @override
-//  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-//    // TODO: implement shouldRepaint
-//    return true;
-//  }
-//}
-//
-//class sw{
-////  左右移动
-//  double x = Random().nextDouble()*400.0;
-//// 向下
-//  double y = Random().nextDouble()*800.0;
-////  半径
-//  double r = Random().nextDouble()*7.0;
-////  速度
-//  double v = Random().nextDouble()*5;
-//  fall(){
-//    y+=v;
-//    if(y>=800){
-//      x = Random().nextDouble()*400.0;
-//      y = Random().nextDouble()*800.0;
-//      r = Random().nextDouble()*7.0;
-//      v = Random().nextDouble()*5;
-//    }
-//  }
-//}
