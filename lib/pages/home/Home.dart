@@ -5,6 +5,7 @@ import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:familytest/roog/roogYun.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 import 'model.dart';
 class Home extends StatefulWidget{
@@ -21,12 +22,14 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   List a = [1,2,3,4];
   double hei = 200;
   var tabcontlore;
+  List<wxinfo> wxlist = [];
   @override
   void initState() {
      tabcontlore  =TabController(length: 4, vsync: this);
      this.imagelist = [_imagrurl,_imagrurl,_imagrurl,_imagrurl];
      Roogyun.roogclient(context.read<GlobalState>().roogtoken);
      _getuserinfo();
+     _GeWxContext();
   }
 
   @override
@@ -47,10 +50,24 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     return userinfo;
   }
 
+  _GeWxContext()async{
+    var wx = context.read<GlobalState>();
+    if(wx.wxlist.isEmpty){
+      dynamic result = await Request.getNetwork("wxarticle/");
+      result.forEach((value){
+        wx.changewxlist(wxinfo(value));
+      });
+      return wxlist;
+    }else{
+      return wxlist;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
     var userlist = context.watch<GlobalState>().overuser;
+    var wx = context.watch<GlobalState>().wxlist;
     // TODO: implement build
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -89,6 +106,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                     Container(
                       color: Colors.blueGrey,
                       child: CustomScrollView(
+                        physics: NeverScrollableScrollPhysics(),
                         slivers: [
                           SliverGrid(
                               delegate: SliverChildBuilderDelegate(
@@ -99,6 +117,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                                 );
                               },childCount: 15
                           ), gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
+
                               mainAxisExtent: 67,
                               crossAxisCount: 5))
                         ],
@@ -132,7 +151,42 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                 height: 100,
                 child: cusor(imagelist:imagelist,),
               ),
-            )
+            ),
+            SliverToBoxAdapter(
+                child: StaggeredGridView.countBuilder(
+                  shrinkWrap: true,
+                  physics:NeverScrollableScrollPhysics() ,
+                  crossAxisCount: 4,
+                  itemCount: wx.length,
+                  itemBuilder: (BuildContext context, int index) => new Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5)
+                    ),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, '/webviewcpns',arguments: {
+                            "wxcontext":wx[index]
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Expanded(child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                              color: Colors.blue,
+                              image: DecorationImage(
+                                image: NetworkImage(wx[index].wxphoto),fit: BoxFit.cover
+                              )
+                            ),)),
+                            Text("${wx[index].wxtitle}",overflow: TextOverflow.ellipsis,)
+                          ],
+                        ),
+                      )),
+                  staggeredTileBuilder: (int index) =>
+                  new StaggeredTile.count(2, index.isEven ? 3 : 2),
+                  mainAxisSpacing: 4.0,
+                  crossAxisSpacing: 4.0,
+                )),
           ],
       ),
 

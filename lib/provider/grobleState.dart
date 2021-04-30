@@ -14,6 +14,13 @@ class GlobalState with ChangeNotifier{
   List ?overuser = [];
   List ?emij = [];
   bool loadstatue =false;
+  List wxlist = [];
+
+
+  changewxlist(value){
+    wxlist.add(value);
+    notifyListeners();
+  }
 
   changeloads(value){
     loadstatue = value;
