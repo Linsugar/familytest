@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/provider/homeState.dart';
+import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:familytest/roog/roogYun.dart';
@@ -126,24 +127,29 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                         SliverGrid(
                             delegate: SliverChildBuilderDelegate(
                                     (context,index){
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.white,width: 1)
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: NetworkImage(homelist[index]['url']),
-                                                  fit: BoxFit.cover
-                                                )
-                                              ),
-                                        )),
-                                        Expanded(flex: 1,child: Text("${homelist[index]['title']}",overflow:TextOverflow.ellipsis ,))
-                                      ],
+                                  return InkWell(
+                                    onTap: (){
+                                      PopupUntil.showToast("功能暂未开放");
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white,width: 1)
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(homelist[index]['url']),
+                                                    fit: BoxFit.cover
+                                                  )
+                                                ),
+                                          )),
+                                          Expanded(flex: 1,child: Text("${homelist[index]['title']}",overflow:TextOverflow.ellipsis ,))
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },childCount: 15
@@ -164,25 +170,30 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                         SliverGrid(
                             delegate: SliverChildBuilderDelegate(
                                     (context,index){
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.white,width: 1)
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Expanded(flex: 2,
-                                            child: Container(
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: NetworkImage(homelist[index]['url']),
-                                              fit: BoxFit.cover
-                                            )
-                                          ),
-                                        )),
-                                        Expanded(
-                                          flex: 1,
-                                            child: Text("${homelist[index]['title']}"))
-                                      ],
+                                  return InkWell(
+                                    onTap: (){
+                                      PopupUntil.showToast("功能暂未开放");
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white,width: 1)
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Expanded(flex: 2,
+                                              child: Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(homelist[index]['url']),
+                                                fit: BoxFit.cover
+                                              )
+                                            ),
+                                          )),
+                                          Expanded(
+                                            flex: 1,
+                                              child: Text("${homelist[index]['title']}"))
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },childCount: 26
