@@ -1,5 +1,4 @@
 import 'dart:ffi';
-
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +24,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   List<wxinfo> wxlist = [];
   @override
   void initState() {
-     tabcontlore  =TabController(length: 4, vsync: this);
-     this.imagelist = [_imagrurl,_imagrurl,_imagrurl,_imagrurl];
-     Roogyun.roogclient(context.read<GlobalState>().roogtoken);
-     _getuserinfo();
-     _GeWxContext();
+    tabcontlore  =TabController(length: 4, vsync: this);
+    this.imagelist = [_imagrurl,_imagrurl,_imagrurl,_imagrurl];
+    Roogyun.roogclient(context.read<GlobalState>().roogtoken);
+    _getuserinfo();
+    _GeWxContext();
   }
 
   @override
@@ -72,122 +71,161 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: CustomScrollView(
-          scrollDirection:Axis.vertical,
-          slivers: [
-            SliverAppBar(
-              title: input(),
-              bottom: TabBar(
-                controller: tabcontlore,
-                labelPadding: EdgeInsets.only(bottom: 15),
-                tabs: [
-                  Text("首页"),
-                  Text("周边游"),
-                  Text("亲子时光"),
-                  Text("踏青赏花"),
-                ],),
+        scrollDirection:Axis.vertical,
+        slivers: [
+          SliverAppBar(
+            title: input(),
+            bottom: TabBar(
+              controller: tabcontlore,
+              labelPadding: EdgeInsets.only(bottom: 15),
+              tabs: [
+                Text("首页"),
+                Text("周边游"),
+                Text("亲子时光"),
+                Text("踏青赏花"),
+              ],),
 
-            ),
-            SliverToBoxAdapter(
-              child: AnimatedContainer(
-                duration: Duration(seconds: 1),
-                height: hei,
-                child: PageView(
-                  onPageChanged: (value){
-                    print("当前翻页;$value");
-                      setState(() {
-                        if(hei==200){
-                          hei =300;
-                        }else{
-                          hei = 200;
-                        }
-                      });
-                  },
-                  children: [
-                    Container(
-                      color: Colors.blueGrey,
-                      child: CustomScrollView(
-                        physics: NeverScrollableScrollPhysics(),
-                        slivers: [
-                          SliverGrid(
-                              delegate: SliverChildBuilderDelegate(
-                              (context,index){
-                                return Container(
-                                  color: Colors.blue[index * 50],
-                                  child: Text("$index"),
-                                );
-                              },childCount: 15
-                          ), gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
-
-                              mainAxisExtent: 67,
-                              crossAxisCount: 5))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      color: Colors.blue,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(child: SizedBox(height: 10,),),
-            SliverToBoxAdapter(
-              child: Row(
+          ),
+          SliverToBoxAdapter(
+            child: AnimatedContainer(
+              duration: Duration(seconds: 1),
+              height: hei,
+              child: PageView(
+                onPageChanged: (value){
+                  print("当前翻页;$value");
+                  setState(() {
+                    if(hei==200){
+                      hei =360;
+                    }else{
+                      hei = 200;
+                    }
+                  });
+                },
                 children: [
                   Container(
-                    width: _size.width/2,
-                    child:cusor(imagelist: imagelist,) ,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: CustomScrollView(
+                      physics: NeverScrollableScrollPhysics(),
+                      slivers: [
+                        SliverGrid(
+                            delegate: SliverChildBuilderDelegate(
+                                    (context,index){
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.white,width: 1)
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 5,),
+                                        Expanded(child: Image(image: AssetImage('images/motianlun.png'),)),
+                                        Expanded(child: Text("KTv"))
+                                      ],
+                                    ),
+                                  );
+                                },childCount: 15
+                            ), gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
+
+                            mainAxisExtent: 67,
+                            crossAxisCount: 5))
+                      ],
+                    ),
                   ),
                   Container(
-                    width: _size.width/2,
-                    child:cusor(imagelist: imagelist,) ,
-                  )
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: CustomScrollView(
+                      physics: NeverScrollableScrollPhysics(),
+                      slivers: [
+                        SliverGrid(
+                            delegate: SliverChildBuilderDelegate(
+                                    (context,index){
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.white,width: 1)
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 5,),
+                                        Expanded(child: Image(image: AssetImage('images/motianlun.png'),)),
+                                        Expanded(child: Text("KTv"))
+                                      ],
+                                    ),
+                                  );
+                                },childCount: 26
+                            ), gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisExtent: 60,
+                            crossAxisCount: 5))
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-            SliverToBoxAdapter(child: SizedBox(height: 10,),),
-            SliverToBoxAdapter(
-              child: Container(
-                height: 100,
-                child: cusor(imagelist:imagelist,),
-              ),
+          ),
+          SliverToBoxAdapter(child: SizedBox(height: 10,),),
+          SliverToBoxAdapter(
+            child: Row(
+              children: [
+                Container(
+                  width: _size.width/2,
+                  child:cusor(imagelist: imagelist,) ,
+                ),
+                Container(
+                  width: _size.width/2,
+                  child:cusor(imagelist: imagelist,) ,
+                )
+              ],
             ),
-            SliverToBoxAdapter(
-                child: StaggeredGridView.countBuilder(
-                  shrinkWrap: true,
-                  physics:NeverScrollableScrollPhysics() ,
-                  crossAxisCount: 4,
-                  itemCount: wx.length,
-                  itemBuilder: (BuildContext context, int index) => new Container(
+          ),
+          SliverToBoxAdapter(child: SizedBox(height: 10,),),
+          SliverToBoxAdapter(
+            child: Container(
+              height: 100,
+              child: cusor(imagelist:imagelist,),
+            ),
+          ),
+          SliverToBoxAdapter(
+              child: StaggeredGridView.countBuilder(
+                padding: EdgeInsets.all(10),
+                shrinkWrap: true,
+                physics:NeverScrollableScrollPhysics() ,
+                crossAxisCount: 4,
+                itemCount: wx.length,
+                itemBuilder: (BuildContext context, int index) => new Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5)
+                        borderRadius: BorderRadius.circular(5)
                     ),
-                      child: InkWell(
-                        onTap: (){
-                          Navigator.pushNamed(context, '/webviewcpns',arguments: {
-                            "wxcontext":wx[index]
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Expanded(child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                              color: Colors.blue,
-                              image: DecorationImage(
-                                image: NetworkImage(wx[index].wxphoto),fit: BoxFit.cover
-                              )
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, '/webviewcpns',arguments: {
+                          "wxcontext":wx[index]
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          Expanded(child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.blue,
+                                image: DecorationImage(
+                                    image: NetworkImage(wx[index].wxphoto),fit: BoxFit.cover
+                                )
                             ),)),
-                            Text("${wx[index].wxtitle}",overflow: TextOverflow.ellipsis,)
-                          ],
-                        ),
-                      )),
-                  staggeredTileBuilder: (int index) =>
-                  new StaggeredTile.count(2, index.isEven ? 3 : 2),
-                  mainAxisSpacing: 4.0,
-                  crossAxisSpacing: 4.0,
-                )),
-          ],
+                          Text("${wx[index].wxtitle}",overflow: TextOverflow.ellipsis,)
+                        ],
+                      ),
+                    )),
+                staggeredTileBuilder: (int index) =>
+                new StaggeredTile.count(2, index.isEven ? 3 : 2),
+                mainAxisSpacing: 4.0,
+                crossAxisSpacing: 4.0,
+              )),
+        ],
       ),
 
     );
@@ -208,8 +246,8 @@ class ctab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        minHeight: 150,
-        maxHeight: 200
+          minHeight: 150,
+          maxHeight: 200
       ),
       child: TabBarView(
         controller: tabcontlore,
@@ -287,7 +325,7 @@ class input extends StatelessWidget {
         padding: EdgeInsets.only(left: 10,right: 10),
         child:TextField(
           decoration: InputDecoration(
-            border: InputBorder.none,
+              border: InputBorder.none,
               icon: Icon(Icons.search),suffixIcon: Icon(Icons.arrow_drop_down),hintText: '请输入搜索内容'),)
     );
   }
@@ -365,46 +403,46 @@ class _ListcontextState extends State<Listcontext> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _GeWxContext(widget.wxclass),
-        builder: (BuildContext context, AsyncSnapshot snapshot){
-          if(snapshot.connectionState ==ConnectionState.waiting){
-            return Center(child: CircularProgressIndicator(),);
-          }if(snapshot.hasError){
-            return Text("数据有误");
-          }else{
-            return ListView.separated(
-                itemBuilder: (context,index){
-                  return GestureDetector(
-                    onTap: (){
-                      Navigator.pushNamed(context, '/webviewcpns',arguments: {
-                        "wxcontext":snapshot.data[index]
-                      });
-                    },
-                    child: Container(
-                      height: 100,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                           width: 100,
-                            child: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image(image: NetworkImage(snapshot.data[index].wxphoto),fit: BoxFit.cover,),),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(" 标题：${snapshot.data[index].wxtitle}",maxLines: 1,overflow: TextOverflow.ellipsis,),
-                              Text(" 发布时间:${snapshot.data[index].wxtime}"),
-                            ],
-                          )
-                        ],
-                      ),
+      future: _GeWxContext(widget.wxclass),
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        if(snapshot.connectionState ==ConnectionState.waiting){
+          return Center(child: CircularProgressIndicator(),);
+        }if(snapshot.hasError){
+          return Text("数据有误");
+        }else{
+          return ListView.separated(
+              itemBuilder: (context,index){
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, '/webviewcpns',arguments: {
+                      "wxcontext":snapshot.data[index]
+                    });
+                  },
+                  child: Container(
+                    height: 100,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 100,
+                          child: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image(image: NetworkImage(snapshot.data[index].wxphoto),fit: BoxFit.cover,),),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(" 标题：${snapshot.data[index].wxtitle}",maxLines: 1,overflow: TextOverflow.ellipsis,),
+                            Text(" 发布时间:${snapshot.data[index].wxtime}"),
+                          ],
+                        )
+                      ],
                     ),
-                  );
-                }, separatorBuilder: (context,index){
-              return Divider();
-            }, itemCount: this.wxlist.length);
-          }
-        },
+                  ),
+                );
+              }, separatorBuilder: (context,index){
+            return Divider();
+          }, itemCount: this.wxlist.length);
+        }
+      },
     );
   }
 }
@@ -439,7 +477,7 @@ class cusor extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     margin: EdgeInsets.symmetric(horizontal: 5.0),
                     decoration: BoxDecoration(
-                      boxShadow: [BoxShadow(color: Colors.black,spreadRadius: 0.5,blurRadius: 0.9,)],
+                        boxShadow: [BoxShadow(color: Colors.black,spreadRadius: 0.5,blurRadius: 0.9,)],
                         color: Colors.amber
                     ),
                     child: Image(image: NetworkImage(i),fit: BoxFit.cover,)

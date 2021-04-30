@@ -11,7 +11,6 @@ import 'package:rive/rive.dart';
 import 'package:provider/provider.dart';
 import 'package:familytest/pages/login/register.dart';
 import '../../main.dart';
-import 'package:fluwx/fluwx.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key ?key}) : super(key: key);
