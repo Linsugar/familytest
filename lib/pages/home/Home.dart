@@ -1,9 +1,11 @@
-import 'dart:ffi';
+import 'dart:convert';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/provider/homeState.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:familytest/roog/roogYun.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 import 'model.dart';
@@ -29,6 +31,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     Roogyun.roogclient(context.read<GlobalState>().roogtoken);
     _getuserinfo();
     _GeWxContext();
+    _Getimage();
   }
 
   @override
@@ -62,11 +65,22 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     }
   }
 
+  _Getimage()async{
+    var im = await rootBundle.loadString('data/home.json');
+    print("数据返回：${im}");
+    var imagedeoce  = json.decode(im);
+    print("数据返回：${imagedeoce.length}");
+    imagedeoce.forEach((value){
+      Provider.of<homeState>(context,listen: false).changelist(value);
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
     var userlist = context.watch<GlobalState>().overuser;
     var wx = context.watch<GlobalState>().wxlist;
+    var homelist = context.watch<homeState>().homelist;
     // TODO: implement build
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -104,7 +118,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: Colors.blue,
                         borderRadius: BorderRadius.circular(10)
                     ),
                     child: CustomScrollView(
@@ -119,9 +132,17 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                                     ),
                                     child: Column(
                                       children: [
-                                        SizedBox(height: 5,),
-                                        Expanded(child: Image(image: AssetImage('images/motianlun.png'),)),
-                                        Expanded(child: Text("KTv"))
+                                        Expanded(
+                                          flex: 2,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: NetworkImage(homelist[index]['url']),
+                                                  fit: BoxFit.cover
+                                                )
+                                              ),
+                                        )),
+                                        Expanded(flex: 1,child: Text("${homelist[index]['title']}",overflow:TextOverflow.ellipsis ,))
                                       ],
                                     ),
                                   );
@@ -135,7 +156,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: Colors.blue,
                         borderRadius: BorderRadius.circular(10)
                     ),
                     child: CustomScrollView(
@@ -150,9 +170,18 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                                     ),
                                     child: Column(
                                       children: [
-                                        SizedBox(height: 5,),
-                                        Expanded(child: Image(image: AssetImage('images/motianlun.png'),)),
-                                        Expanded(child: Text("KTv"))
+                                        Expanded(flex: 2,
+                                            child: Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(homelist[index]['url']),
+                                              fit: BoxFit.cover
+                                            )
+                                          ),
+                                        )),
+                                        Expanded(
+                                          flex: 1,
+                                            child: Text("${homelist[index]['title']}"))
                                       ],
                                     ),
                                   );
@@ -198,7 +227,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                 itemCount: wx.length,
                 itemBuilder: (BuildContext context, int index) => new Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5)
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: InkWell(
                       onTap: (){
@@ -211,7 +240,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                           Expanded(child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: Colors.blue,
                                 image: DecorationImage(
                                     image: NetworkImage(wx[index].wxphoto),fit: BoxFit.cover
                                 )
@@ -232,84 +260,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   }
 }
 
-class ctab extends StatelessWidget {
-  const ctab({
-    Key? key,
-    required this.tabcontlore,
-    required String imagrurl,
-  }) : _imagrurl = imagrurl, super(key: key);
-
-  final  tabcontlore;
-  final String _imagrurl;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(
-          minHeight: 150,
-          maxHeight: 200
-      ),
-      child: TabBarView(
-        controller: tabcontlore,
-        children: [
-          Listcontext(_imagrurl,1),
-          Listcontext(_imagrurl,2),
-          Listcontext(_imagrurl,3),
-          Listcontext(_imagrurl,4),
-        ],
-      ),
-    );
-  }
-}
-
-class ctabr extends StatelessWidget {
-  const ctabr({
-    Key? key,
-    required this.tabcontlore,
-  }) : super(key: key);
-
-  final  tabcontlore;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: TabBar(
-        controller: tabcontlore,
-        tabs: [
-          Text("汽车",style: TextStyle(fontSize: 15,color: Colors.black),),
-          Text("搞笑",style: TextStyle(fontSize: 15,color: Colors.black),),
-          Text("宠物",style: TextStyle(fontSize: 15,color: Colors.black),),
-          Text("电竞",style: TextStyle(fontSize: 15,color: Colors.black),),
-        ],
-      ),
-    );
-  }
-}
-
-class photos extends StatelessWidget {
-  const photos({
-    Key? key,
-    required this.imagelist,
-  }) : super(key: key);
-
-  final List imagelist;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
-          Text("今日热搜"),
-          Text("全部"),
-        ],),
-        Container(
-            child:cusor(imagelist:imagelist,)
-        )
-      ],
-    );
-  }
-}
 
 class input extends StatelessWidget {
   const input({

@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/showtoast.dart';
-import 'package:familytest/until/wx.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage>{
   TextEditingController ?_Pwdcontroller  =TextEditingController();
   Artboard ?_riveArtboard;
   RiveAnimationController ?_controller;
-  String _file = 'assets/10-14-portable-table.riv';
+  String _file = 'assets/139-250-walkcycle-try-02.riv';
 
   @override
   void initState(){
@@ -119,7 +118,8 @@ class _MyHomePageState extends State<MyHomePage>{
                                 }, icon: FaIcon(FontAwesomeIcons.registered), label: Text("注册"))
                             ],),
                             MaterialButton(onPressed: (){
-                              Wx.wxlogin();
+//                              Wx.wxlogin();
+                            PopupUntil.showToast("功能暂未开放");
                             },child: Text("微信登录"),)
                           ],
                         ),
@@ -154,9 +154,11 @@ class _MyHomePageState extends State<MyHomePage>{
             MainHome()));
       }
       if(loginResult['msg']=='密码或手机号有误'){
+        Provider.of<GlobalState>(context,listen: false).changeloads(false);
         PopupUntil.showToast(loginResult['msg']);
       }
       if(loginResult['msg']=='不存在'){
+        Provider.of<GlobalState>(context,listen: false).changeloads(false);
       PopupUntil.showToast(loginResult['msg']);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
           Regitser()));
@@ -173,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage>{
         print("$file文件");
         final artboard = file.mainArtboard;
 //          添加一个控制器，随时进行控制动画
-        artboard.addController(contlr = SimpleAnimation('Loop'));
+        artboard.addController(contlr = SimpleAnimation('Walkcycle'));
         setState(() => _riveArtboard = artboard);
       },
     );

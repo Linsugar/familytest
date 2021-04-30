@@ -13,7 +13,6 @@ class myui extends StatefulWidget{
 }
 
 class myuistate extends State<myui>{
-  String _imagrurl = 'http://qr0n4nltx.hn-bkt.clouddn.com/imagesp1.jpg';
   initState(){
   }
   @override

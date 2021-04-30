@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:date_format/date_format.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ class webviewcpns extends StatefulWidget {
 
 class _webviewcpnsState extends State<webviewcpns> {
   WebViewController ?_controller;
-  String ?_title;
   var wxcontext;
   @override
   void initState() {

@@ -4,6 +4,7 @@ import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/pages/chat/Chat.dart';
 import 'package:familytest/pages/family/FamilyData.dart';
 import 'package:familytest/pages/home/Home.dart';
+import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/routes/Rout.dart';
 import 'package:familytest/until/wx.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ import 'package:familytest/roog/roogYun.dart';
 void main() =>runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_)=>GlobalState())
+        ChangeNotifierProvider(create: (_)=>GlobalState()),
+        ChangeNotifierProvider(create: (_)=>homeState(),child: Home(),)
       ],
       child: MyApp(),));
 
