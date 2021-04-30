@@ -30,7 +30,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     tabcontlore  =TabController(length: 4, vsync: this);
     this.imagelist = [_imagrurl,_imagrurl,_imagrurl,_imagrurl];
     Roogyun.roogclient(context.read<GlobalState>().roogtoken);
-    _getuserinfo();
     _GeWxContext();
     _Getimage();
   }
@@ -89,8 +88,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
         scrollDirection:Axis.vertical,
         slivers: [
           SliverAppBar(
+            backgroundColor: Colors.blue[400],
             title: input(),
             bottom: TabBar(
+              indicatorColor: Colors.white,
               controller: tabcontlore,
               labelPadding: EdgeInsets.only(bottom: 15),
               tabs: [
@@ -191,7 +192,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                                           )),
                                           Expanded(
                                             flex: 1,
-                                              child: Text("${homelist[index]['title']}"))
+                                              child: Text("${homelist[index]['title']}",overflow:TextOverflow.ellipsis))
                                         ],
                                       ),
                                     ),
@@ -270,8 +271,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     );
   }
 }
-
-
 class input extends StatelessWidget {
   const input({
     Key? key,
@@ -282,7 +281,7 @@ class input extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.lightBlue,width: 1.0)),
+            border: Border.all(color: Colors.white,width: 1.0)),
         padding: EdgeInsets.only(left: 10,right: 10),
         child:TextField(
           decoration: InputDecoration(
@@ -407,7 +406,6 @@ class _ListcontextState extends State<Listcontext> {
     );
   }
 }
-
 
 class cusor extends StatelessWidget {
   const cusor({
