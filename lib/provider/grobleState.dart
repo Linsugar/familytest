@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 class GlobalState with ChangeNotifier{
-  bool globalToken = false;
   List imageList = [];
   String city ='成都';
   String ?deviceid;
@@ -33,7 +32,7 @@ class GlobalState with ChangeNotifier{
     notifyListeners();
   }
 
-  changeoveruser(value){
+  changealluser(value){
     overuser!.add(value);
     notifyListeners();
   }
@@ -84,11 +83,6 @@ class GlobalState with ChangeNotifier{
     notifyListeners();
   }
 
-//  改变token的值
-  changToken(bool value){
-    globalToken = value;
-    notifyListeners();
-  }
   changlist(value){
     imageList.add(value);
     notifyListeners();

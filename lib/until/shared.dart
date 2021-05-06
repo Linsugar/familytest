@@ -3,13 +3,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Shared{
 
 
- Future getdata(String data)async{
+ static  getdata(String data)async{
    var result =await SharedPreferences.getInstance();
+   print("开始进行获取");
    return result.getString(data);
   }
 
- Future setdata(String token)async{
+ static  setdata(String KeyName,String value)async{
    var result =await SharedPreferences.getInstance();
-   return result.setString('roongtoken', token);
+   print("开始进行设置");
+   return result.setString(KeyName, value);
  }
 }

@@ -6,6 +6,7 @@ import 'package:familytest/pages/family/FamilyData.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/routes/Rout.dart';
+import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/wx.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -32,17 +33,16 @@ class MyApp  extends StatefulWidget{
 
 class MyAppState extends State<MyApp>{
   DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
-
+  bool token=false;
  @override
  void initState(){
    Roogyun.rooginit();
    Wx.initwx();
    getDevice();
+   getPreferecse();
    // TODO: implement initState
    super.initState();
  }
-
-
 
 
  void getDevice()async{
@@ -57,13 +57,34 @@ class MyAppState extends State<MyApp>{
    }
  }
 
+ getPreferecse()async{
+ var _token =  await Shared.getdata('token');
+ print("获取token值${_token}");
+  if(_token !=null){
+    var _avator =  await Shared.getdata('avator_image');
+    Provider.of<GlobalState>(context,listen: false).changeavator(_avator);
+    var _logintoken =  await Shared.getdata('token');
+    Provider.of<GlobalState>(context,listen: false).changlogintoken(_logintoken);
+    var _user_id=  await Shared.getdata('user_id');
+    Provider.of<GlobalState>(context,listen: false).changuserid(_user_id);
+    var _roogtoken=  await Shared.getdata('roogtoken');
+    Provider.of<GlobalState>(context,listen: false).changeroogtoken(_roogtoken);
+    var _user_name=  await Shared.getdata('user_name');
+    Provider.of<GlobalState>(context,listen: false).changeusername(_user_name);
+    setState(() {
+      token =true;
+    });
+  }
+ }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "家族",
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RoutePage.onGenerateRoute,
-      home: context.watch<GlobalState>().globalToken==false?MyHomePage():MainHome());
+      home: token==true?MainHome():MyHomePage());
   }
 }
 

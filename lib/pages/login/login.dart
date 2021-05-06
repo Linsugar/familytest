@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -144,12 +145,12 @@ class _MyHomePageState extends State<MyHomePage>{
       Provider.of<GlobalState>(context,listen: false).changeloads(false);
       if(loginResult['token'] !=null){
         PopupUntil.showToast(loginResult['msg']);
-        context.read<GlobalState>().changToken(false);
         context.read<GlobalState>().changlogintoken(loginResult['token']);
         context.read<GlobalState>().changuserid(loginResult['user_id']);
         context.read<GlobalState>().changeavator(loginResult['avator_image']);
         context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
         context.read<GlobalState>().changeusername(loginResult['user_name']);
+        _setprrferceAll(loginResult);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
             MainHome()));
       }
@@ -165,6 +166,17 @@ class _MyHomePageState extends State<MyHomePage>{
     }
     }
   }
+
+//  登录时进行缓存设置
+  _setprrferceAll(loginResult)async{
+    await Shared.setdata('token', loginResult['token']);
+    await Shared.setdata('user_id', loginResult['user_id']);
+    await Shared.setdata('avator_image', loginResult['avator_image']);
+    await Shared.setdata('roogtoken', loginResult['roogtoken']);
+    await Shared.setdata('user_name', loginResult['user_name']);
+  }
+
+
   void _createRive(contlr)async{
     rootBundle.load(_file).then(
 //      1.加载riv文件，

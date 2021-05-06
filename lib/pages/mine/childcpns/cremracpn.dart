@@ -66,9 +66,10 @@ class _cremacpnState extends State<cremacpn> {
                     Container(
                       height: MediaQuery.of(context).size.height/5,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(flex: 5,child: Padding(padding: EdgeInsets.all(10),child: Text("${snapshot.data[index].context}"))),
-                          Expanded(flex: 5,child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
+                          Expanded(flex: 5,child: Padding(padding: EdgeInsets.all(10),child: Text("${snapshot.data[index].context}",))),
+                          Expanded(flex: 5,child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [
                             for(var i=0;i<snapshot.data[index].imageurl!.length;i++)
                                   Container(width: MediaQuery.of(context).size.width/4.5,height: MediaQuery.of(context).size.width/5,child: Image(image: NetworkImage(snapshot.data[index].imageurl![i]),fit: BoxFit.cover,))
                           ],)),

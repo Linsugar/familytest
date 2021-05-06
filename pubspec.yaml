@@ -40,7 +40,7 @@ dependencies:
   fl_chart: ^0.20.1
   rive: ^0.7.3
   fluttertoast: ^8.0.3
-  permission_handler: ^6.1.1
+  permission_handler: ^7.1.0
   sqflite: ^2.0.0+3
   carousel_slider:  ^4.0.0-nullsafety.0
   rongcloud_im_plugin: ^5.1.0

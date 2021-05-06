@@ -39,9 +39,9 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
     var result = await Request.getNetwork('userinfo/',params: {
       'user_id':context.read<GlobalState>().userid
     });
-    result.forEach((value){
-      Provider.of<GlobalState>(context,listen: false).changeoveruser(userinfomodel(value));
-    });
+    for(var i=0;i<result.length;i++){
+      Provider.of<GlobalState>(context,listen: false).changealluser(userinfomodel(result[i]));
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -183,6 +183,7 @@ class dya extends StatelessWidget {
             return Container(child: ListView.separated(
                 itemBuilder: (context,index){
                   return  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTile(
                         leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator),),
@@ -190,13 +191,14 @@ class dya extends StatelessWidget {
                         subtitle:  Text("发布时间:${snapshot.data[index].time}"),
                       ),
                       Container(
+                        margin: EdgeInsets.only(left: 5),
                         constraints: BoxConstraints(
                           maxHeight: 100,
                           minHeight: 10,
                         ),
-                        child: Text("${snapshot.data[index].con}",maxLines: 3,overflow:TextOverflow.ellipsis),
+                        child:  Text("${snapshot.data[index].con}",textAlign: TextAlign.start,maxLines: 3,overflow:TextOverflow.ellipsis)
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(height: 10),
                       Container(
                         constraints: BoxConstraints(
                           minHeight: 50,
@@ -206,12 +208,13 @@ class dya extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,im){
                               return Container(
+                                margin: EdgeInsets.only(left: 5),
                                 width: 80,
                                 height: 50,
                                 child: Image(image: NetworkImage(snapshot.data[index].imagelist[im]),fit: BoxFit.cover,),
                               );
                             }, separatorBuilder: (context,im){
-                          return SizedBox(width: 10,);
+                          return SizedBox(width: 5,);
                         }, itemCount: snapshot.data[index].imagelist.length) ,
                       )
                     ],
