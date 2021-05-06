@@ -37,7 +37,7 @@ class MyAppState extends State<MyApp>{
  @override
  void initState(){
    Roogyun.rooginit();
-   Wx.initwx();
+//   Wx.initwx();
    getDevice();
    getPreferecse();
    // TODO: implement initState

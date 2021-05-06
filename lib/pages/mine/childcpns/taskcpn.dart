@@ -1,4 +1,5 @@
 
+import 'package:familytest/network/requests.dart';
 import 'package:flutter/material.dart';
 
 class task extends StatefulWidget{
@@ -25,12 +26,22 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
     // TODO: implement dispose
     super.dispose();
   }
+  
+  
+  _getTaskcls(int taskcls,int taststatu)async{
+   var result = await Request.getNetwork('/sendtask/',params: {
+      'taskcls':taskcls,
+      'taststatue':taststatu
+    });
+   return result;
+  }
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
         appBar: AppBar(title: Text("任务大厅"),actions: [MaterialButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>GetManger(data_3(),2)));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>GetManger(_getTaskcls(1,2))));
         },child: Text("领取记录"),)],),
         body:Container(
             constraints: BoxConstraints.expand(),
@@ -50,25 +61,25 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
                   children: [
                     Container(
                       child: Center(
-                        child: Futurwiget(data_3(),1),
+                        child: Futurwiget(_getTaskcls(1,1),),
                       ),
                     ),
                     RefreshIndicator(
                       onRefresh: (){
 //                        print("刷新数据：${this._DataList}");
-                        return data_3();
+                        return _getTaskcls(2,2);
                       },
                       child: Container(
                         child:
                         Center(
-                          child: Futurwiget(data_3(),1),
+                          child: Futurwiget(_getTaskcls(2,1)),
                         ) ,
                       ),
                     ),
                     Container(
                       child:
                       Center(
-                        child: Futurwiget(data_3(),1),
+                        child: Futurwiget(_getTaskcls(3,1)),
                       ) ,
                     ),
                   ]),
@@ -79,18 +90,6 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
   }
 
 
-}
-
-Future data_3()async{
-
-  var Data = Future.delayed(Duration(seconds: 1),(){
-    List _DataList =[];
-    for(var i=0;i<3;i++){
-      _DataList.add(1);
-    }
-    return _DataList;
-  });
-  return await Data;
 }
 
 
@@ -121,8 +120,7 @@ class Popuitemwidget extends StatelessWidget {
 
 class Futurwiget extends StatefulWidget {
   var data;
-  int dataStutes;
-  Futurwiget(this.data,this.dataStutes);
+  Futurwiget(this.data);
 
   @override
   _FuturwigetState createState() => _FuturwigetState();
@@ -139,8 +137,6 @@ class _FuturwigetState extends State<Futurwiget> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return FutureBuilder(
       future: widget.data,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -152,6 +148,7 @@ class _FuturwigetState extends State<Futurwiget> {
         if (snapshot.connectionState == ConnectionState.done) {
           print("当前状态：${snapshot.data}");
           if(snapshot.hasData){
+            var snda = snapshot.data;
             return ListView.separated( itemCount:snapshot.data.length,itemBuilder: (context,index){
               return GestureDetector(
                 onTap: (){
@@ -160,9 +157,9 @@ class _FuturwigetState extends State<Futurwiget> {
                 child: Dismissible(
                   key: ValueKey(index),
                   child: ListTile(
-                    leading: Text("${index}"),title: Text("今夜训练场200圈"),
-                    subtitle: Text("今夜训练场200圈"*4),
-                    trailing: MaterialButton(child: Text(this.widget.dataStutes==1?'领取':this.widget.dataStutes==2?'已领取':'已完成'),onPressed: (){},),
+                    leading: Text("${index+1}"),title: Text("${snda[index]['tasktitle']}"),
+                    subtitle: Text("${snda[index]['taskcontent']}"),
+                    trailing: MaterialButton(child: Text(snda[index]['taststatue']==1?'领取':(snda[index]['taststatue']==2?'已领取':'已完成')),onPressed: (){},),
                   ),
                 ),
               );
@@ -184,8 +181,7 @@ class _FuturwigetState extends State<Futurwiget> {
 //领取记录
 class GetManger extends StatefulWidget {
   var data;
-  int dataStutes;
-  GetManger(this.data,this.dataStutes);
+  GetManger(this.data);
 
   @override
   _GetMangerState createState() => _GetMangerState();
@@ -198,7 +194,7 @@ class _GetMangerState extends State<GetManger> {
       appBar: AppBar(title: Text("领取记录"),actions: [Popuitemwidget()],),
       body: Container(
         child: Center(
-          child: Futurwiget(widget.data,widget.dataStutes),
+          child: Futurwiget(widget.data),
         ),
       ),
     );
