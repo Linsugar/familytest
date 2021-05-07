@@ -2,6 +2,7 @@
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/TaskState.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -120,7 +121,13 @@ class _FuturwigetState extends State<Futurwiget> {
     super.initState();
   }
 
-
+_reciveTask(var _task,int _taststatue)async{
+    await Request.setNetwork('/taskonly/', {
+      'taskid':context.read<GlobalState>().userid,
+      'task':_task,
+      'taststatue':_taststatue
+    });
+}
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -142,7 +149,15 @@ class _FuturwigetState extends State<Futurwiget> {
                   child: ListTile(
                     leading: Text("${index+1}"),title: Text("${snda[index]['tasktitle']}"),
                     subtitle: Text("${snda[index]['taskcontent']}"),
-                    trailing: MaterialButton(child: Text(snda[index]['taststatue']==1?'领取':(snda[index]['taststatue']==2?'已领取':'已完成')),onPressed: (){},),
+                    trailing: MaterialButton(child: Text(snda[index]['taststatue']==1?'领取':(snda[index]['taststatue']==2?'已领取':'已完成')),onPressed: (){
+                      print("我点击了领取按钮${snda[index]['task']}");
+                      PopupUntil.showToast("任务领取成功,请尽快完成哦~");
+                      var _task = snda[index]['task'];
+                       _reciveTask(_task,2);
+                      setState(() {
+                      });
+                      
+                    },),
                   ),
                 ),
               );
