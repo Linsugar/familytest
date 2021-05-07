@@ -50,13 +50,11 @@ _getTaskcls(int taskcls,int taststatu)async{
   });
  return result;
 }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("任务大厅"),actions: [MaterialButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>GetManger(_TaskHistory(null,context))));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>GetManger()));
         },child: Text("领取记录"),)],),
         body:Container(
             constraints: BoxConstraints.expand(),
@@ -166,17 +164,15 @@ class _FuturwigetState extends State<Futurwiget> {
 //领取记录
 class GetManger extends StatefulWidget {
   var data;
-  GetManger(this.data);
 
   @override
   _GetMangerState createState() => _GetMangerState();
 }
 
 class _GetMangerState extends State<GetManger> {
-  int ?statue;
+  int ?_statue;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -189,9 +185,8 @@ class _GetMangerState extends State<GetManger> {
         onSelected: (value){
           int statue = int.parse(value.toString());
           setState(() {
-            _TaskHistory(statue,context);
+            _statue =statue;
           });
-
         },
         itemBuilder:(BuildContext context) => <PopupMenuItem<String>>[
           PopupMenuItem<String>(
@@ -207,7 +202,7 @@ class _GetMangerState extends State<GetManger> {
       body: Container(
         child: Center(
           child: FutureBuilder(
-            future:_TaskHistory(statue, context),
+            future:_TaskHistory(_statue, context),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if(snapshot.connectionState ==ConnectionState.waiting){
                 return CircularProgressIndicator();
