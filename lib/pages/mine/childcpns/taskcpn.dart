@@ -9,9 +9,10 @@ import 'package:provider/provider.dart';
 
 _TaskHistory(int ?statue,context)async{
   var result = await Request.getNetwork('/taskonly/',params: {
-    'taststatue':statue=null,
+    'taststatue':statue,
     'taskid':Provider.of<GlobalState>(context,listen: false).userid
   });
+  Provider.of<taskState>(context,listen: false).clearTask();
   Provider.of<taskState>(context,listen: false).changeTask(result);
   return result;
 }
@@ -47,13 +48,10 @@ _getTaskcls(int taskcls,int taststatu)async{
     'taskcls':taskcls,
     'taststatue':taststatu
   });
- Provider.of<taskState>(context,listen: false).changeTask(result);
  return result;
 }
 
 
-
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,8 +81,7 @@ _getTaskcls(int taskcls,int taststatu)async{
                     ),
                     RefreshIndicator(
                       onRefresh: (){
-//                        print("刷新数据：${this._DataList}");
-                        return _getTaskcls(2,2);
+                        return _getTaskcls(2,1);
                       },
                       child: Container(
                         child:
@@ -109,40 +106,6 @@ _getTaskcls(int taskcls,int taststatu)async{
 }
 
 
-class Popuitemwidget extends StatefulWidget {
-  @override
-  _PopuitemwidgetState createState() => _PopuitemwidgetState();
-}
-
-class _PopuitemwidgetState extends State<Popuitemwidget> {
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton(
-        padding: EdgeInsets.all(8),
-        offset: Offset(0,5.0),
-        onSelected: (value){
-          print("选中的值:$value");
-          setState(() {
-            _TaskHistory(2,context);
-          });
-
-        },
-        itemBuilder:(BuildContext context) => <PopupMenuItem<String>>[
-          PopupMenuItem<String>(
-              value: '选项一的值',
-              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.account_circle,color: Colors.lightBlue,),Text("仅看已完成")],)
-          ),
-          PopupMenuItem<String>(
-              value: '选项二的值',
-              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("仅看未完成")],)
-          )
-        ]
-    );
-  }
-}
-
-
-
 class Futurwiget extends StatefulWidget {
   var data;
   Futurwiget(this.data);
@@ -165,15 +128,13 @@ class _FuturwigetState extends State<Futurwiget> {
     return FutureBuilder(
       future:widget.data,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        print("当前状态1：${snapshot.connectionState}");
-        print("当前状态1：${snapshot}");
         if(snapshot.connectionState ==ConnectionState.waiting){
           return CircularProgressIndicator();
         }
         if (snapshot.connectionState == ConnectionState.done) {
           print("当前状态：${snapshot.data}");
           if(snapshot.hasData){
-            var snda = context.watch<taskState>().tasklist;
+            var snda = snapshot.data;
             return ListView.separated( itemCount:snda.length,itemBuilder: (context,index){
               return GestureDetector(
                 onTap: (){
@@ -212,14 +173,76 @@ class GetManger extends StatefulWidget {
 }
 
 class _GetMangerState extends State<GetManger> {
+  int ?statue;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var taskhiy =_TaskHistory(null, context);
     return Scaffold(
-      appBar: AppBar(title: Text("领取记录"),actions: [Popuitemwidget()],),
+      appBar: AppBar(title: Text("领取记录"),actions: [PopupMenuButton(
+      padding: EdgeInsets.all(8),
+        offset: Offset(0,5.0),
+        onSelected: (value){
+          int statue = int.parse(value.toString());
+          setState(() {
+            _TaskHistory(statue,context);
+          });
+
+        },
+        itemBuilder:(BuildContext context) => <PopupMenuItem<String>>[
+          PopupMenuItem<String>(
+              value: "2",
+              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.account_circle,color: Colors.lightBlue,),Text("仅看已完成")],)
+          ),
+          PopupMenuItem<String>(
+              value: "3",
+              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("仅看未完成")],)
+          )
+        ]
+    )],),
       body: Container(
         child: Center(
-          child: Futurwiget(taskhiy),
+          child: FutureBuilder(
+            future:_TaskHistory(statue, context),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if(snapshot.connectionState ==ConnectionState.waiting){
+                return CircularProgressIndicator();
+              }
+              if (snapshot.connectionState == ConnectionState.done) {
+                print("当前状态：${snapshot.data}");
+                var tasks = context.watch<taskState>().tasklist;
+                print("当前状态数据：${tasks}");
+                if(snapshot.hasData){
+                  return ListView.separated( itemCount:tasks.length,itemBuilder: (context,index){
+                    return GestureDetector(
+                      onTap: (){
+                      },
+                      child: Dismissible(
+                        key: ValueKey(index),
+                        child: ListTile(
+                          leading: Text("${index+1}"),title: Text("${tasks[index]['tasktitle']}"),
+                          subtitle: Text("${tasks[index]['taskcontent']}"),
+                          trailing: MaterialButton(child: Text(tasks[index]['taststatue']==1?'领取':(tasks[index]['taststatue']==2?'已领取':'已完成')),onPressed: (){},),
+                        ),
+                      ),
+                    );
+                  }, separatorBuilder: (context,index){
+                    return Divider();
+                  });
+                }
+                else{
+                  return Text("Error:1");
+                }
+              }
+              else {
+                return CircularProgressIndicator();
+              }
+            },
+          ),
         ),
       ),
     );

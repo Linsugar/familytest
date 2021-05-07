@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/mine/childcpns/taskcpn.dart';
 import 'package:familytest/pages/mine/myui.dart';
@@ -11,6 +13,7 @@ import 'package:familytest/routes/Rout.dart';
 import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/wx.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
@@ -99,6 +102,14 @@ class MainHome extends StatefulWidget {
 class _MainHomeState extends State<MainHome> {
   static int _index = 0;
   var _listwiget = [Home(),Family(),Chat(),myui()];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -5,10 +5,15 @@ class taskState extends ChangeNotifier{
 List tasklist = [];
 
 changeTask(value){
-  tasklist.clear();
   tasklist = value;
   notifyListeners();
 }
+
+clearTask(){
+  tasklist.clear();
+  notifyListeners();
+}
+
 
 
 }

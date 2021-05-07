@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/provider/homeState.dart';
-import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -47,6 +46,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     if(wx.wxlist.isEmpty){
       dynamic result = await Request.getNetwork("wxarticle/");
       result.forEach((value){
+        print("home:$value");
         wx.changewxlist(wxinfo(value));
       });
       return wxlist;
@@ -54,8 +54,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
       return wxlist;
     }
   }
-
-
 
   _Getimage()async{
     var im = await rootBundle.loadString('data/home.json');
@@ -165,6 +163,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                       slivers: [
                         SliverGrid(
                             delegate: SliverChildBuilderDelegate(
+
                                     (context,index){
                                   return InkWell(
                                     onTap: (){
