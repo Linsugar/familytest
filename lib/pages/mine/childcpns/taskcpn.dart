@@ -191,11 +191,11 @@ class _GetMangerState extends State<GetManger> {
         itemBuilder:(BuildContext context) => <PopupMenuItem<String>>[
           PopupMenuItem<String>(
               value: "2",
-              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.account_circle,color: Colors.lightBlue,),Text("仅看已完成")],)
+              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.account_circle,color: Colors.lightBlue,),Text("仅看未完成")],)
           ),
           PopupMenuItem<String>(
               value: "3",
-              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("仅看未完成")],)
+              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("仅看已完成")],)
           )
         ]
     )],),
