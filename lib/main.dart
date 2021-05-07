@@ -1,5 +1,7 @@
 import 'package:familytest/pages/login/login.dart';
+import 'package:familytest/pages/mine/childcpns/taskcpn.dart';
 import 'package:familytest/pages/mine/myui.dart';
+import 'package:familytest/provider/TaskState.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/pages/chat/Chat.dart';
 import 'package:familytest/pages/family/FamilyData.dart';
@@ -19,7 +21,8 @@ void main() =>runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_)=>GlobalState()),
-        ChangeNotifierProvider(create: (_)=>homeState(),child: Home(),)
+        ChangeNotifierProvider(create: (_)=>homeState(),child: Home(),),
+        ChangeNotifierProvider(create: (_)=>taskState(),child: task(),)
       ],
       child: MyApp(),));
 

@@ -1,6 +1,20 @@
 
 import 'package:familytest/network/requests.dart';
+import 'package:familytest/provider/TaskState.dart';
+import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+
+
+_TaskHistory(int ?statue,context)async{
+  var result = await Request.getNetwork('/taskonly/',params: {
+    'taststatue':statue=null,
+    'taskid':Provider.of<GlobalState>(context,listen: false).userid
+  });
+  Provider.of<taskState>(context,listen: false).changeTask(result);
+  return result;
+}
 
 class task extends StatefulWidget{
   @override
@@ -27,21 +41,24 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
     super.dispose();
   }
   
-  
-  _getTaskcls(int taskcls,int taststatu)async{
-   var result = await Request.getNetwork('/sendtask/',params: {
-      'taskcls':taskcls,
-      'taststatue':taststatu
-    });
-   return result;
-  }
-  
+
+_getTaskcls(int taskcls,int taststatu)async{
+ var result = await Request.getNetwork('/sendtask/',params: {
+    'taskcls':taskcls,
+    'taststatue':taststatu
+  });
+ Provider.of<taskState>(context,listen: false).changeTask(result);
+ return result;
+}
+
+
+
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("任务大厅"),actions: [MaterialButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>GetManger(_getTaskcls(1,2))));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>GetManger(_TaskHistory(null,context))));
         },child: Text("领取记录"),)],),
         body:Container(
             constraints: BoxConstraints.expand(),
@@ -89,11 +106,15 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
     );
   }
 
-
 }
 
 
-class Popuitemwidget extends StatelessWidget {
+class Popuitemwidget extends StatefulWidget {
+  @override
+  _PopuitemwidgetState createState() => _PopuitemwidgetState();
+}
+
+class _PopuitemwidgetState extends State<Popuitemwidget> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
@@ -101,6 +122,10 @@ class Popuitemwidget extends StatelessWidget {
         offset: Offset(0,5.0),
         onSelected: (value){
           print("选中的值:$value");
+          setState(() {
+            _TaskHistory(2,context);
+          });
+
         },
         itemBuilder:(BuildContext context) => <PopupMenuItem<String>>[
           PopupMenuItem<String>(
@@ -110,12 +135,12 @@ class Popuitemwidget extends StatelessWidget {
           PopupMenuItem<String>(
               value: '选项二的值',
               child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("仅看未完成")],)
-
           )
         ]
     );
   }
 }
+
 
 
 class Futurwiget extends StatefulWidget {
@@ -138,7 +163,7 @@ class _FuturwigetState extends State<Futurwiget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: widget.data,
+      future:widget.data,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         print("当前状态1：${snapshot.connectionState}");
         print("当前状态1：${snapshot}");
@@ -148,11 +173,10 @@ class _FuturwigetState extends State<Futurwiget> {
         if (snapshot.connectionState == ConnectionState.done) {
           print("当前状态：${snapshot.data}");
           if(snapshot.hasData){
-            var snda = snapshot.data;
-            return ListView.separated( itemCount:snapshot.data.length,itemBuilder: (context,index){
+            var snda = context.watch<taskState>().tasklist;
+            return ListView.separated( itemCount:snda.length,itemBuilder: (context,index){
               return GestureDetector(
                 onTap: (){
-
                 },
                 child: Dismissible(
                   key: ValueKey(index),
@@ -190,11 +214,12 @@ class GetManger extends StatefulWidget {
 class _GetMangerState extends State<GetManger> {
   @override
   Widget build(BuildContext context) {
+    var taskhiy =_TaskHistory(null, context);
     return Scaffold(
       appBar: AppBar(title: Text("领取记录"),actions: [Popuitemwidget()],),
       body: Container(
         child: Center(
-          child: Futurwiget(widget.data),
+          child: Futurwiget(taskhiy),
         ),
       ),
     );
