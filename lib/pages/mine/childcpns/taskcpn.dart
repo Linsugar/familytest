@@ -139,24 +139,21 @@ _reciveTask(var _task,int _taststatue)async{
         if (snapshot.connectionState == ConnectionState.done) {
           print("当前状态：${snapshot.data}");
           if(snapshot.hasData){
-            var snda = snapshot.data;
+            List snda = snapshot.data;
             return ListView.separated( itemCount:snda.length,itemBuilder: (context,index){
               return GestureDetector(
                 onTap: (){
                 },
                 child: Dismissible(
+                  background: Container(color: Colors.blue,child: Row(children: [MaterialButton(child: Text("领取..."),onPressed: (){})],)),
+                  secondaryBackground: Container(color: Colors.green,child: Row(mainAxisAlignment: MainAxisAlignment.end,children: [MaterialButton(child: Text("放弃...."),onPressed: (){})],)),
                   key: ValueKey(index),
                   child: ListTile(
                     leading: Text("${index+1}"),title: Text("${snda[index]['tasktitle']}"),
                     subtitle: Text("${snda[index]['taskcontent']}"),
                     trailing: MaterialButton(child: Text(snda[index]['taststatue']==1?'领取':(snda[index]['taststatue']==2?'已领取':'已完成')),onPressed: (){
                       print("我点击了领取按钮${snda[index]['task']}");
-                      PopupUntil.showToast("任务领取成功,请尽快完成哦~");
-                      var _task = snda[index]['task'];
-                       _reciveTask(_task,2);
-                      setState(() {
-                      });
-                      
+                      PopupUntil.showToast("请左滑领取任务~");
                     },),
                   ),
                 ),
