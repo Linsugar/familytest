@@ -34,7 +34,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     Future.delayed(Duration(seconds: 2),(){
       ShowAlerDialog(context);
     });
-    _Getimage();
   }
   @override
   void dispose() {
@@ -55,15 +54,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     }
   }
 
-  _Getimage()async{
-    var im = await rootBundle.loadString('data/home.json');
-    print("数据返回：${im}");
-    var imagedeoce  = json.decode(im);
-    print("数据返回：${imagedeoce.length}");
-    imagedeoce.forEach((value){
-      Provider.of<homeState>(context,listen: false).changelist(value);
-    });
-  }
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
@@ -97,7 +87,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
           ),
           SliverToBoxAdapter(
             child: AnimatedContainer(
-              duration: Duration(seconds: 1),
+              duration: Duration(milliseconds: 100),
               height: hei,
               child: PageView(
                 onPageChanged: (value){

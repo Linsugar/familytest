@@ -46,9 +46,21 @@ class MyAppState extends State<MyApp>{
 //   Wx.initwx();
    getDevice();
    getPreferecse();
+   _Getimage();
    // TODO: implement initState
    super.initState();
  }
+
+// 初始化首页图片-预加载图片
+  _Getimage()async{
+    var im = await rootBundle.loadString('data/home.json');
+    print("数据返回：${im}");
+    var imagedeoce  = json.decode(im);
+    print("数据返回：${imagedeoce.length}");
+    imagedeoce.forEach((value){
+      Provider.of<homeState>(context,listen: false).changelist(value);
+    });
+  }
 
 
  void getDevice()async{
