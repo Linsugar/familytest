@@ -29,6 +29,8 @@ class _MyHomePageState extends State<MyHomePage>{
   Artboard ?_riveArtboard;
   RiveAnimationController ?_controller;
   String _file = 'assets/139-250-walkcycle-try-02.riv';
+  String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
+
 
   @override
   void initState(){
@@ -46,97 +48,114 @@ class _MyHomePageState extends State<MyHomePage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Container(
-          width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           child: Stack(
+            clipBehavior: Clip.none,
             children: [
-              Container(
-                color: Colors.blue,
-                child: _riveArtboard == null
-                    ? const SizedBox():
-                Rive(artboard: _riveArtboard!,fit: BoxFit.cover,),
-              ),
-              context.read<GlobalState>().loadstatue?Center(child: CircularProgressIndicator()):Container(),
-              Positioned(top: 30,right: 10,child: MaterialButton(child: Text("注册",style: TextStyle(color: Colors.white),),onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
-              },)),
-              Positioned(
-                top: MediaQuery.of(context).size.height/3,
-                left: 0,
-                child: Opacity(
-                  opacity: 0.8,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20,right: 20),
-                    width: MediaQuery.of(context).size.width,
-                    height: 300,
-//                    color: Colors.white,
-                    child:Container(
-                      child: Form(
-                        autovalidateMode: AutovalidateMode.always,
-                        key: _fromglobalKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            TextFormField(
-                              controller: _Usercontroller,
-                              keyboardType: TextInputType.phone,
-                              maxLength: 13,
-                              validator: (user){
-                                if(user!.isEmpty || user.length<5){
-                                  return "用户名有误";
-                                }return null;
-                              },
-                              decoration: InputDecoration(
-                                  hintText: "请输入手机号码",
-                                  hintStyle: TextStyle(color: Colors.white),
-                                  icon: FaIcon(FontAwesomeIcons.mobileAlt,color: Colors.white,)),),
-                            TextFormField(
-                              onFieldSubmitted: (value){
-                                relogin(context);
-                              },
-                              validator: (pwd){
-                                if(pwd!.isEmpty || pwd.length<5){
-                                  return "密码有误";
-                                }return null;
-                              },
-                              textInputAction: TextInputAction.done,
-                              obscureText: true,
-                              keyboardType:TextInputType.number ,
-                              controller: _Pwdcontroller,
-                              decoration: InputDecoration(
-                                  hintText: "请输入密码",
-                                  hintStyle: TextStyle(color: Colors.white),
-                                  icon:FaIcon(FontAwesomeIcons.key,color: Colors.white,)),
-                              maxLength: 15,
-                            ),
-                            Row
-                              (mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-                              ElevatedButton.icon(onPressed: (){
-                                Provider.of<GlobalState>(context,listen: false).changeloads(true);
-                                   relogin(context);
-                                }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
-                              ElevatedButton.icon(onPressed: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
-                                }, icon: FaIcon(FontAwesomeIcons.registered), label: Text("注册"))
-                            ],),
-                            MaterialButton(onPressed: (){
-//                              Wx.wxlogin();
-                            PopupUntil.showToast("功能暂未开放");
-                            },child: Text("微信登录"),)
-                          ],
-                        ),
-                      ),
-                    ),
-
+              Flex(direction: Axis.vertical,children: [
+                Expanded(flex: 5,child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('images/first.jpg')
+                          ,fit: BoxFit.cover
+                      )
                   ),
                 ),),
+                Expanded(flex: 5,child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(topLeft:Radius.circular(10),topRight: Radius.circular(10)),
+                  ),
+                  child:Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Positioned(
+                          top: -10,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            padding: EdgeInsets.only(left: 10,right: 10),
+                            decoration: BoxDecoration(
+                            color: Colors.white,
+                              boxShadow: [BoxShadow(color: Colors.white30,spreadRadius: 0.2,offset: Offset(0.0,-1.0))],
+                              borderRadius: BorderRadius.only(topLeft:Radius.circular(10),topRight: Radius.circular(10)),
+                            ),
+                            height: MediaQuery.of(context).size.height/2+10,
+                            child:  Form(
+                              autovalidateMode: AutovalidateMode.always,
+                              key: _fromglobalKey,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  TextFormField(
+                                    controller: _Usercontroller,
+                                    keyboardType: TextInputType.phone,
+                                    maxLength: 13,
+                                    validator: (user){
+                                      if(user!.isEmpty || user.length<5){
+                                        return "用户名有误";
+                                      }return null;
+                                    },
+                                    decoration: InputDecoration(
+                                        hintText: "请输入手机号码",
+                                        icon: FaIcon(FontAwesomeIcons.mobileAlt,color: Colors.blue,)),),
+                                  TextFormField(
+                                    onFieldSubmitted: (value){
+                                      relogin(context);
+                                    },
+                                    validator: (pwd){
+                                      if(pwd!.isEmpty || pwd.length<5){
+                                        return "密码有误";
+                                      }return null;
+                                    },
+                                    textInputAction: TextInputAction.done,
+                                    obscureText: true,
+                                    keyboardType:TextInputType.number ,
+                                    controller: _Pwdcontroller,
+                                    decoration: InputDecoration(
+                                        hintText: "请输入密码",
+                                        icon:FaIcon(FontAwesomeIcons.key,color: Colors.blue,),),
+                                    maxLength: 15,
+
+                                  ),
+                                  Flex(direction: Axis.horizontal,children: [
+                                    Expanded(flex: 7,child: Container(height:50,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueAccent,
+                                        borderRadius: BorderRadius.circular(10)
+                                      ),
+                                      child:        ElevatedButton.icon(onPressed: (){
+                                        Provider.of<GlobalState>(context,listen: false).changeloads(true);
+                                        relogin(context);
+                                      }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
+                                    )),
+                                    Expanded(flex: 4, child: CircleAvatar(
+                                      child:InkWell(onTap: (){
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
+                                      },child: Text("注册")),
+                                    ),
+                                    ),
+                                  ],),
+                                  MaterialButton(onPressed: (){
+//                              Wx.wxlogin();
+                                    PopupUntil.showToast("功能暂未开放");
+                                  },child: Text("微信登录"),)
+                                ],
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                )),
+
+              ],)
             ],
           ),
         ),
-      ),
+      )
     );
   }
   Future relogin(BuildContext context) async {
@@ -198,5 +217,4 @@ class _MyHomePageState extends State<MyHomePage>{
   }
 
 }
-
 
