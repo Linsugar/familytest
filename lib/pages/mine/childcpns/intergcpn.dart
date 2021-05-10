@@ -1,6 +1,7 @@
 //我的积分页面
 
-
+import 'package:familytest/provider/grobleState.dart';
+import 'package:provider/provider.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -54,7 +55,7 @@ class _intergState extends State<interg> {
                         Text("97",style: TextStyle(fontSize: 20,color: Colors.white))
                       ],
                     ),
-                    ClipOval(child: Image(image: NetworkImage(_imagrurl),fit: BoxFit.cover,),)
+                    ClipOval(child: Image(image: NetworkImage(context.watch<GlobalState>().avator!),fit: BoxFit.cover,),)
                   ],
                 ),
               ),
