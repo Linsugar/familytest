@@ -24,25 +24,14 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
   void initState() {
     _Amc = AnimationController(vsync: this,duration: Duration(seconds: 300));
     Roogyun.rooglistn(context);
-    _getuserinfo();
     super.initState();
   }
-
   @override
   void dispose() {
     _Amc?.dispose();
     super.dispose();
   }
 
-  _getuserinfo()async{
-    Provider.of<GlobalState>(context,listen: false).overuser!.clear();
-    var result = await Request.getNetwork('userinfo/',params: {
-      'user_id':context.read<GlobalState>().userid
-    });
-    for(var i=0;i<result.length;i++){
-      Provider.of<GlobalState>(context,listen: false).changealluser(userinfomodel(result[i]));
-    }
-  }
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;

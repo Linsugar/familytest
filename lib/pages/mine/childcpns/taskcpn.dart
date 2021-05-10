@@ -26,7 +26,7 @@ class task extends StatefulWidget{
 class _taskState extends State<task> with SingleTickerProviderStateMixin{
 
   TabController ?_tabController;
-  TextStyle _textStyle = TextStyle(color: Colors.blue,fontSize: 20);
+  TextStyle _textStyle = TextStyle(color: Colors.blue,fontSize: 15);
   @override
   void initState() {
     // TODO: implement initState
@@ -42,15 +42,7 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
     // TODO: implement dispose
     super.dispose();
   }
-  
 
-_getTaskcls(int taskcls,int taststatu)async{
- var result = await Request.getNetwork('/sendtask/',params: {
-    'taskcls':taskcls,
-    'taststatue':taststatu
-  });
- return result;
-}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,31 +62,21 @@ _getTaskcls(int taskcls,int taststatu)async{
                     ] ),
               )),
               Flexible(flex: 9,child: Container(child:
-              TabBarView(
+                TabBarView(
                   controller: _tabController,
                   children: [
                     Container(
                       child: Center(
-                        child: Futurwiget(_getTaskcls(1,1),),
-                      ),
-                    ),
-                    RefreshIndicator(
-                      onRefresh: (){
-                        return _getTaskcls(2,1);
-                      },
-                      child: Container(
-                        child:
-                        Center(
-                          child: Futurwiget(_getTaskcls(2,1)),
-                        ) ,
+                        child: Futurwiget(1),
                       ),
                     ),
                     Container(
-                      child:
-                      Center(
-                        child: Futurwiget(_getTaskcls(3,1)),
-                      ) ,
-                    ),
+                        child:
+                        Center(
+                          child: Futurwiget(2),
+                        ) ,
+                      ),
+                    Futurwiget(3),
                   ]),
               )),
             ],)
@@ -121,41 +103,63 @@ class _FuturwigetState extends State<Futurwiget> {
     super.initState();
   }
 
-_reciveTask(var _task,int _taststatue)async{
+
+
+  _reciveTask(var _task,int _taststatue)async{
     await Request.setNetwork('/taskonly/', {
       'taskid':context.read<GlobalState>().userid,
       'task':_task,
       'taststatue':_taststatue
     });
-}
+  }
+
+  _getTaskcls(int taskcls,int taststatu)async{
+    var result = await Request.getNetwork('/sendtask/',params: {
+      'taskcls':taskcls,
+      'taststatue':taststatu
+    });
+    return result;
+  }
+
+  @override
+  void didUpdateWidget(covariant Futurwiget oldWidget) {
+    // TODO: implement didUpdateWidget
+    print("进入该页面重绘");
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future:widget.data,
+      future:_getTaskcls(widget.data,1),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if(snapshot.connectionState ==ConnectionState.waiting){
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator(),);
         }
         if (snapshot.connectionState == ConnectionState.done) {
           print("当前状态：${snapshot.data}");
           if(snapshot.hasData){
+            print("当前状态1：${snapshot.data}");
             List snda = snapshot.data;
+            if(snda.isEmpty){
+              return Center(child: Text("当前暂无任务,请等待任务发布"),);
+            }
             return ListView.separated( itemCount:snda.length,itemBuilder: (context,index){
               return GestureDetector(
                 onTap: (){
+                  print("进入任务详细");
                 },
-                child: Dismissible(
-                  background: Container(color: Colors.blue,child: Row(children: [MaterialButton(child: Text("领取..."),onPressed: (){})],)),
-                  secondaryBackground: Container(color: Colors.green,child: Row(mainAxisAlignment: MainAxisAlignment.end,children: [MaterialButton(child: Text("放弃...."),onPressed: (){})],)),
-                  key: ValueKey(index),
                   child: ListTile(
                     leading: Text("${index+1}"),title: Text("${snda[index]['tasktitle']}"),
                     subtitle: Text("${snda[index]['taskcontent']}"),
-                    trailing: MaterialButton(child: Text(snda[index]['taststatue']==1?'领取':(snda[index]['taststatue']==2?'已领取':'已完成')),onPressed: (){
+                    trailing: MaterialButton(child: Text(snda[index]['taststatue']==1?'领取':(snda[index]['taststatue']==2?'已领取':'已完成')),onPressed: ()async{
                       print("我点击了领取按钮${snda[index]['task']}");
-                      PopupUntil.showToast("请左滑领取任务~");
+                      var task = snda[index]['task'];
+                      PopupUntil.showToast("领取成功~");
+                      await _reciveTask(task,2);
+                      setState(() {
+                      });
                     },),
-                  ),
                 ),
               );
             }, separatorBuilder: (context,index){

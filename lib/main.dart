@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:familytest/pages/home/model.dart';
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/mine/childcpns/taskcpn.dart';
 import 'package:familytest/pages/mine/myui.dart';
@@ -19,6 +20,8 @@ import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 import 'dart:io';
 import 'package:familytest/roog/roogYun.dart';
+
+import 'network/requests.dart';
 
 void main() =>runApp(
     MultiProvider(
@@ -47,6 +50,7 @@ class MyAppState extends State<MyApp>{
    getDevice();
    getPreferecse();
    _Getimage();
+   _getuserinfo();
    // TODO: implement initState
    super.initState();
  }
@@ -62,7 +66,7 @@ class MyAppState extends State<MyApp>{
     });
   }
 
-
+//获取设备信息
  void getDevice()async{
    print("开始获取设备");
    var _device  =await _deviceInfo.androidInfo;
@@ -74,7 +78,7 @@ class MyAppState extends State<MyApp>{
      print("ios未操作");
    }
  }
-
+//获取缓存内容
  getPreferecse()async{
  var _token =  await Shared.getdata('token');
  print("获取token值${_token}");
@@ -94,6 +98,16 @@ class MyAppState extends State<MyApp>{
     });
   }
  }
+
+_getuserinfo()async{
+  Provider.of<GlobalState>(context,listen: false).overuser!.clear();
+  var result = await Request.getNetwork('userinfo/',params: {
+    'user_id':context.read<GlobalState>().userid
+  });
+  for(var i=0;i<result.length;i++){
+    Provider.of<GlobalState>(context,listen: false).changealluser(userinfomodel(result[i]));
+  }
+}
 
 
   @override

@@ -63,13 +63,13 @@ class myuistate extends State<myui>{
                 },leading: Icon(Icons.event,color: Colors.deepOrange,),title: Text("任务大厅"),trailing: Icon(Icons.chevron_right),),
                 ListTile(onTap: (){
                   Navigator.pushNamed(context, '/interg');
-                },leading: Icon(Icons.star,color: Colors.deepOrange,),title: Text("我的积分"),trailing: Icon(Icons.chevron_right),),
+                },leading: Icon(Icons.star,color: Colors.deepOrange,),title: Text("信用积分"),trailing: Icon(Icons.chevron_right),),
                 ListTile(onTap: (){
                 Navigator.pushNamed(context, '/cremacpn');
                  },leading: Icon(Icons.assessment,color: Colors.deepOrange,),title: Text("我的动态"),trailing: Icon(Icons.chevron_right),),
                 ListTile(onTap: (){
                   Navigator.pushNamed(context, '/familcpn');
-                },leading: Icon(Icons.audiotrack,color: Colors.deepOrange,),title: Text("家族职位"),trailing: Icon(Icons.chevron_right),),
+                },leading: Icon(Icons.audiotrack,color: Colors.deepOrange,),title: Text("团队管理"),trailing: Icon(Icons.chevron_right),),
                 ListTile(onTap: (){
                   Navigator.pushNamed(context, '/Photos');
                 },leading: Icon(Icons.panorama,color: Colors.deepOrange,),title: Text("我的相册"),trailing: Icon(Icons.chevron_right),),

@@ -31,9 +31,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     this.imagelist = [_imagrurl,_imagrurl,_imagrurl,_imagrurl];
     Roogyun.roogclient(context.read<GlobalState>().roogtoken);
     _GeWxContext();
-    Future.delayed(Duration(seconds: 2),(){
-      ShowAlerDialog(context);
-    });
+
   }
   @override
   void dispose() {
@@ -48,6 +46,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
         print("home:$value");
         wx.changewxlist(wxinfo(value));
       });
+     await ShowAlerDialog(context);
       return wxlist;
     }else{
       return wxlist;
