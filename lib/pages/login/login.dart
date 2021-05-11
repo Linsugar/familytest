@@ -122,21 +122,22 @@ class _MyHomePageState extends State<MyHomePage>{
 
                                   ),
                                   Flex(direction: Axis.horizontal,children: [
-                                    Expanded(flex: 7,child: Container(height:50,
-                                      decoration: BoxDecoration(
-                                        color: Colors.blueAccent,
-                                        borderRadius: BorderRadius.circular(10)
-                                      ),
+                                    Expanded(flex: 6,child: Container(height:50,
                                       child: ElevatedButton.icon(onPressed: (){
                                         Provider.of<GlobalState>(context,listen: false).changeloads(true);
                                         relogin(context);
                                       }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
                                     )),
-                                    Expanded(flex: 4, child: CircleAvatar(
-                                      child:InkWell(onTap: (){
+                                    SizedBox(width: 10,),
+                                    Expanded(flex: 4, child: Container(
+                                        height: 50,
+                                      child:ElevatedButton.icon(
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+                                          shape:MaterialStateProperty.all(BeveledRectangleBorder(borderRadius: BorderRadius.circular(20))) )
+                                      ,onPressed: (){
                                         Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
-                                      },child: Text("注册")),
-                                    ),
+                                      }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("注册"))),
                                     ),
                                   ],),
                                   MaterialButton(onPressed: (){

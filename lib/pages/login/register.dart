@@ -98,14 +98,11 @@ class RegisterState extends State<Regitser> {
                       },
                       controller: _phoneController,
                       keyboardType: TextInputType.phone,
-                      cursorColor: Colors.white,
-                      style: TextStyle(color: Colors.white),
                       maxLength: 13,
                       maxLines: 1,
                       decoration: InputDecoration(
-                          hintStyle: TextStyle(color: Colors.white),
                           icon: FaIcon(
-                            FontAwesomeIcons.mobileAlt, color: Colors.white,),
+                            FontAwesomeIcons.mobileAlt),
                           hintText: "请输入手机号码",
                           labelText: "手机号"
                       ),),
@@ -120,14 +117,11 @@ class RegisterState extends State<Regitser> {
                       },
                       keyboardType: TextInputType.name,
                       controller: _userController,
-                      cursorColor: Colors.white,
-                      style: TextStyle(color: Colors.white),
                       maxLength: 5,
                       maxLines: 1,
                       decoration: InputDecoration(
-                          hintStyle: TextStyle(color: Colors.white),
                           icon: FaIcon(
-                            FontAwesomeIcons.userTie, color: Colors.white,),
+                            FontAwesomeIcons.userTie),
                           hintText: "请输入用户名",
                           labelText: "用户名"
                       ),),
@@ -137,8 +131,6 @@ class RegisterState extends State<Regitser> {
                         await regis(context);
                       },
                       textInputAction: TextInputAction.done,
-                      cursorColor: Colors.white,
-                      style: TextStyle(color: Colors.white),
                       obscureText: true,
                       keyboardType: TextInputType.phone,
                       validator: (value) {
@@ -153,8 +145,7 @@ class RegisterState extends State<Regitser> {
                       maxLines: 1,
                       decoration: InputDecoration(
                           icon: FaIcon(
-                            FontAwesomeIcons.key, color: Colors.white,),
-                          hintStyle: TextStyle(color: Colors.white),
+                            FontAwesomeIcons.key),
                           hintText: "请输入密码",
                           labelText: "密码"
                       ),),
