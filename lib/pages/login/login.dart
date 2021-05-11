@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage>{
 
   @override
   void initState(){
-    _createRive(_controller);
+//    _createRive(_controller);
     super.initState();
   }
 
@@ -201,21 +201,21 @@ class _MyHomePageState extends State<MyHomePage>{
   }
 
 
-  void _createRive(contlr)async{
-    rootBundle.load(_file).then(
-//      1.加载riv文件，
-          (data) async {
-        print("data:$data");
-//            创建一个存储rive二进制的文件
-        final file =RiveFile.import(data);
-        print("$file文件");
-        final artboard = file.mainArtboard;
-//          添加一个控制器，随时进行控制动画
-        artboard.addController(contlr = SimpleAnimation('Walkcycle'));
-        setState(() => _riveArtboard = artboard);
-      },
-    );
-  }
+//  void _createRive(contlr)async{
+//    rootBundle.load(_file).then(
+////      1.加载riv文件，
+//          (data) async {
+//        print("data:$data");
+////            创建一个存储rive二进制的文件
+//        final file =RiveFile.import(data);
+//        print("$file文件");
+//        final artboard = file.mainArtboard;
+////          添加一个控制器，随时进行控制动画
+//        artboard.addController(contlr = SimpleAnimation('Walkcycle'));
+//        setState(() => _riveArtboard = artboard);
+//      },
+//    );
+//  }
 
 }
 

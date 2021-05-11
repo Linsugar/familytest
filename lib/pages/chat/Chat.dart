@@ -193,29 +193,49 @@ class dya extends StatelessWidget {
                           minHeight: 50,
                           maxHeight: 100,
                         ),
-                        child:ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context,im){
-                              return Container(
-                                margin: EdgeInsets.only(left: 5),
-                                width: 80,
-                                height: 50,
-                                child: Image(image: NetworkImage(snapshot.data[index].imagelist[im]),fit: BoxFit.cover,),
-                              );
-                            }, separatorBuilder: (context,im){
-                          return SizedBox(width: 5,);
-                        }, itemCount: snapshot.data[index].imagelist.length) ,
+                        child:Column(
+                          children: [
+                            Expanded(flex: 3,
+                              child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context,im){
+                                    return Container(
+                                      margin: EdgeInsets.only(left: 5),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        image: DecorationImage(
+                                          image: NetworkImage(snapshot.data[index].imagelist[im]),
+                                          fit: BoxFit.cover
+                                        )
+                                      ),
+                                      width: 80,
+                                    );
+                                  }, separatorBuilder: (context,im){
+                                return SizedBox(width: 5,height: 5,);
+                              }, itemCount: snapshot.data[index].imagelist.length),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Row(children: [
+                                MaterialButton(child: Text("点赞"),onPressed: (){}),
+                                MaterialButton(child: Text("评论"),onPressed: (){}),
+                              ],),
+                            ),
+                          ],
+                        ) ,
                       )
                     ],
                   );
                 }, separatorBuilder: (context,index){
-              return Divider();
+              return  Divider();
             }, itemCount: snapshot.data.length));
           }
         },),
     );;
   }
 }
+
+
 
 
 class header extends StatelessWidget {

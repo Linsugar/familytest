@@ -48,7 +48,6 @@ class chatChildState extends State<chatChild>{
 
   _getemijdata()async{
     var _data = await rootBundle.loadString('data/emij.json');
-//    print("长度：${_data.length}");
     var result = jsonDecode(_data);
     print("长度：${result.runtimeType}");
    for(var i=0;i<100;i++){
