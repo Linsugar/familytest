@@ -23,7 +23,7 @@ class loadingCircu extends StatelessWidget {
       future: loads,
         builder: (BuildContext context, AsyncSnapshot snapshot){
       if(snapshot.connectionState ==ConnectionState.waiting){
-        return CircularProgressIndicator();
+        return CircularProgressIndicator(backgroundColor: Colors.blueAccent,);
       }else{
         return Container();
       }

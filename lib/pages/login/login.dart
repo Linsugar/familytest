@@ -127,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage>{
                                         color: Colors.blueAccent,
                                         borderRadius: BorderRadius.circular(10)
                                       ),
-                                      child:        ElevatedButton.icon(onPressed: (){
+                                      child: ElevatedButton.icon(onPressed: (){
                                         Provider.of<GlobalState>(context,listen: false).changeloads(true);
                                         relogin(context);
                                       }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
@@ -159,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage>{
     );
   }
   Future relogin(BuildContext context) async {
-             if( _fromglobalKey!.currentState!.validate()){
+    if( _fromglobalKey!.currentState!.validate()){
       var userdata = FormData.fromMap({
         'user_mobile':_Usercontroller?.text,
         'password':_Pwdcontroller?.text
