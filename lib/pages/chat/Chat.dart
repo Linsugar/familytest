@@ -139,21 +139,29 @@ class chatabout extends StatelessWidget {
 
 //动态页
 
-class dya extends StatelessWidget {
+
+class dya extends StatefulWidget {
+  @override
+  _dyaState createState() => _dyaState();
+}
+
+class _dyaState extends State<dya> {
+
+  _getdynamic()async{
+    List<chatdynamic> dylist = [];
+    var result = await Request.getNetwork('dynamicall/',params: {
+      'user_id':context.read<GlobalState>().userid
+    },token:context.read<GlobalState>().logintoken);
+    result.forEach((value){
+      dylist.add(chatdynamic(value));
+    });
+    print("当前List；$dylist");
+    return dylist;
+  }
+
 
   @override
   Widget build(BuildContext context) {
-
-    _getdynamic()async{
-      List<chatdynamic> dylist = [];
-      var result = await Request.getNetwork('dynamicall/',params: {
-        'user_id':context.read<GlobalState>().userid
-      },token:context.read<GlobalState>().logintoken);
-      result.forEach((value){
-        dylist.add( chatdynamic(value));
-      });
-      return dylist;
-    }
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -180,12 +188,12 @@ class dya extends StatelessWidget {
                         subtitle:  Text("发布时间:${snapshot.data[index].time}"),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 5),
-                        constraints: BoxConstraints(
-                          maxHeight: 100,
-                          minHeight: 10,
-                        ),
-                        child:  Text("${snapshot.data[index].con}",textAlign: TextAlign.start,maxLines: 3,overflow:TextOverflow.ellipsis)
+                          margin: EdgeInsets.only(left: 5),
+                          constraints: BoxConstraints(
+                            maxHeight: 100,
+                            minHeight: 10,
+                          ),
+                          child:  Text("${snapshot.data[index].con}",textAlign: TextAlign.start,maxLines: 3,overflow:TextOverflow.ellipsis)
                       ),
                       SizedBox(height: 10),
                       Container(
@@ -202,11 +210,11 @@ class dya extends StatelessWidget {
                                     return Container(
                                       margin: EdgeInsets.only(left: 5),
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        image: DecorationImage(
-                                          image: NetworkImage(snapshot.data[index].imagelist[im]),
-                                          fit: BoxFit.cover
-                                        )
+                                          borderRadius: BorderRadius.circular(5),
+                                          image: DecorationImage(
+                                              image: NetworkImage(snapshot.data[index].imagelist[im]),
+                                              fit: BoxFit.cover
+                                          )
                                       ),
                                       width: 80,
                                     );
@@ -219,11 +227,11 @@ class dya extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                MaterialButton(child: Text("点赞"),onPressed: (){}),
-                                MaterialButton(child: Text("评论"),onPressed: (){
-                                  Navigator.pushNamed(context,'/reviewCpn',arguments:{'data':snapshot.data[index]} );
-                                }),
-                              ],),
+                                  MaterialButton(child: Text("点赞"),onPressed: (){}),
+                                  MaterialButton(child: Text("评论"),onPressed: (){
+                                    Navigator.pushNamed(context,'/reviewCpn',arguments:{'data':snapshot.data[index]} );
+                                  }),
+                                ],),
                             ),
                           ],
                         ) ,
@@ -235,7 +243,7 @@ class dya extends StatelessWidget {
             }, itemCount: snapshot.data.length));
           }
         },),
-    );;
+    );
   }
 }
 
