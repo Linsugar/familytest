@@ -216,7 +216,9 @@ class dya extends StatelessWidget {
                             ),
                             Expanded(
                               flex: 1,
-                              child: Row(children: [
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
                                 MaterialButton(child: Text("点赞"),onPressed: (){}),
                                 MaterialButton(child: Text("评论"),onPressed: (){}),
                               ],),
