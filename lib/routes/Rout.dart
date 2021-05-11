@@ -1,4 +1,5 @@
 import 'package:familytest/pages/chat/Chatchild.dart';
+import 'package:familytest/pages/chat/cpn/reviewcpn.dart';
 import 'package:familytest/pages/family/childcpns/ChildFamily.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/pages/home/childcps/videocnps.dart';
@@ -32,6 +33,7 @@ class RoutePage{
     '/videoWidget':(context,{argument})=>videoWidget(),
     '/webviewcpns':(context,{argument})=>webviewcpns(argument),
     '/MyHomePage':(context,{argument})=>MyHomePage(),
+    '/reviewCpn':(context,{argument})=>reviewCpn(argument),
   };
 
 // ignore: missing_return, top_level_function_literal_block

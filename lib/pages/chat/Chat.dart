@@ -220,7 +220,9 @@ class dya extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                 MaterialButton(child: Text("点赞"),onPressed: (){}),
-                                MaterialButton(child: Text("评论"),onPressed: (){}),
+                                MaterialButton(child: Text("评论"),onPressed: (){
+                                  Navigator.pushNamed(context,'/reviewCpn',arguments:{'data':snapshot.data[index]} );
+                                }),
                               ],),
                             ),
                           ],
