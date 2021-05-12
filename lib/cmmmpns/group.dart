@@ -55,7 +55,23 @@ class _createGroupState extends State<createGroup> {
                 )
               ],
             ),
-              Expanded(flex: 7,child: Container(color: Colors.blue,))
+            TextFormField(decoration: InputDecoration(hintText: "请输入团队宣言"),),
+            Row(children: [
+              Text("团队类型",textAlign: TextAlign.start,)
+            ],),
+            Expanded(
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  Text("11"),
+                  Text("11"),
+                  Text("11"),
+                  Text("11"),
+                ],
+              ),
+            ),
+            Expanded(flex: 7,child: Container(color: Colors.blue,)),
+
           ],
         ))
       ),
