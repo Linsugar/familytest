@@ -85,12 +85,3 @@ class _cremacpnState extends State<cremacpn> {
     );
   }
 }
-
-
-//ListTile(
-//leading: Text("$index"),
-//title:  Text("${dy[index].context}"),
-//subtitle: Flex(direction: Axis.horizontal,children: [
-
-//],),
-//trailing: MaterialButton(onPressed: (){},child: Text("查看")))

@@ -16,6 +16,7 @@ class reviewCpn extends StatefulWidget {
 class _reviewCpnState extends State<reviewCpn> {
   var data;
   TextEditingController _textEditingController = TextEditingController();
+  ScrollController  _scrollController = ScrollController();
   @override
   void initState() {
     // TODO: implement initState
@@ -103,7 +104,9 @@ class _reviewCpnState extends State<reviewCpn> {
                     ),
                   ),
                   Row(children: [SizedBox(width: 5,),Text("评论",textAlign:TextAlign.start,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),),],),
-                  Expanded(flex: 5,child:snda.isEmpty?Text("暂无评论，快来做第一个吧"):ListView.separated(itemBuilder: (context,index){
+                  Expanded(flex: 5,child:snda.isEmpty?Center(child: Text("暂无评论，快来做第一个吧")):ListView.separated(
+                    controller: _scrollController,
+                      itemBuilder: (context,index){
                     return ListTile(
                       leading: CircleAvatar(backgroundImage: NetworkImage(snda[index]['recview_avator']),),
                       title: Text("${snda[index]['review_name']}"),
@@ -125,8 +128,7 @@ class _reviewCpnState extends State<reviewCpn> {
                         await _getreview(data.dyid);
                         _textEditingController.clear();
                         PopupUntil.showToast("发布成功,请刷新页面");
-                        setState(() {
-                        });
+                        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
                       },))
                     ],
                   )
@@ -139,32 +141,3 @@ class _reviewCpnState extends State<reviewCpn> {
     );
   }
 }
-
-
-
-//FutureBuilder(
-//future: _getreview(data.dyid),
-//builder: (BuildContext context, AsyncSnapshot snapshot){
-//if(snapshot.connectionState==ConnectionState.waiting){
-//return Center(child: CircularProgressIndicator(),);
-//}if(snapshot.hasData){
-//List snda = snapshot.data;
-//if(snda.isEmpty){
-//return Center(child: Text("当前暂无评论"),);
-//}else{
-//return ListView.separated(itemBuilder: (context,index){
-//return ListTile(
-//leading: CircleAvatar(backgroundImage: NetworkImage(snda[index]['recview_avator']),),
-//title: Text("${snda[index]['review_name']}"),
-//subtitle: Text("${snda[index]['review_content']}"),
-//);
-//}, separatorBuilder: (context,index){
-//return Divider();
-//}, itemCount: snda.length);
-//}
-//}
-//else{
-//return Text("数据有误");
-//}
-//},
-//)

@@ -61,7 +61,9 @@ class _familcpnState extends State<familcpn> {
                     Row(
                       mainAxisAlignment:MainAxisAlignment.center,
                       children: [
-                        MaterialButton(child: Text("创建团队"),onPressed: (){}),
+                        MaterialButton(child: Text("创建团队"),onPressed: (){
+                          Navigator.pushNamed(context, '/createGroup');
+                        }),
                         MaterialButton(child: Text("加入团队"),onPressed: (){
                           PopupUntil.showToast("还未开放");
                         }),

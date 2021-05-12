@@ -3,6 +3,7 @@ import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/shared.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class myui extends StatefulWidget{
@@ -21,14 +22,82 @@ class myuistate extends State<myui>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    var _state = context.watch<GlobalState>();
+    var _size= MediaQuery.of(context).size;
     return Scaffold(
+      drawer: Container(
+        width: _size.width/2+20,
+        child: MediaQuery.removePadding(context: context,
+            removeTop: true,
+            child: Drawer(
+              child:Column(
+                  children: [
+                    DrawerHeader(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                flex: 6,
+                                child: ClipOval(
+                                  child: Container(
+                                    width:100,
+                                    height:100,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(_state.avator!),
+                                            fit: BoxFit.cover
+                                        )
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex:4,
+                                child: MaterialButton(child: Text("登出"),onPressed: (){
+                                  Navigator.pushReplacementNamed(context, "/MyHomePage");
+                                },),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 10,),
+                      FaIcon(FontAwesomeIcons.search),
+                        SizedBox(width: 10,),
+                      Text("换肤")
+              ],),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 10,),
+                        FaIcon(FontAwesomeIcons.search),
+                        SizedBox(width: 10,),
+                        Text("换肤")
+                      ],),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 10,),
+                        FaIcon(FontAwesomeIcons.search),
+                        SizedBox(width: 10,),
+                        Text("切换语言")
+                      ],),
+
+            ],
+          ),
+        )),
+      ),
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              actions: [IconButton(icon: Icon(Icons.fullscreen),
-                  onPressed: (){
-                    Navigator.pushReplacementNamed(context, "/MyHomePage");
-                  }),
+              actions: [
                 IconButton(icon: Icon(Icons.settings),
                     onPressed: (){
                       Navigator.pushNamed(context, '/mysetting');

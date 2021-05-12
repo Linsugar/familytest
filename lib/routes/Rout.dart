@@ -1,3 +1,4 @@
+import 'package:familytest/cmmmpns/group.dart';
 import 'package:familytest/pages/chat/Chatchild.dart';
 import 'package:familytest/pages/chat/cpn/reviewcpn.dart';
 import 'package:familytest/pages/family/childcpns/ChildFamily.dart';
@@ -34,6 +35,7 @@ class RoutePage{
     '/webviewcpns':(context,{argument})=>webviewcpns(argument),
     '/MyHomePage':(context,{argument})=>MyHomePage(),
     '/reviewCpn':(context,{argument})=>reviewCpn(argument),
+    '/createGroup':(context,{argument})=>createGroup(),
   };
 
 // ignore: missing_return, top_level_function_literal_block
