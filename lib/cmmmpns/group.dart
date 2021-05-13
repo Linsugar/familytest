@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/CreamUntil.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 class createGroup extends StatefulWidget {
   @override
@@ -14,12 +15,11 @@ class _createGroupState extends State<createGroup> {
   int stateus=0;
   int clickColor=0;
   int radioGroup=1;
-  bool switchbol = false;
+  bool switchValidation = false;
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
     var _state = context.watch<GlobalState>();
-
     return Scaffold(
       appBar: AppBar(title: Text("创建团队"),),
       body: Container(
@@ -37,9 +37,7 @@ class _createGroupState extends State<createGroup> {
                   Row(children: [
                     Text("团队类型",textAlign: TextAlign.start,)
                   ],),
-                  Expanded(
-                    child:checkTeamType(_size),
-                  ),
+                  Container(height: 40,child: checkTeamType(_size)),
                   Row(children: [Text("团队规模")],),
                   Row(
                     children: [
@@ -47,18 +45,44 @@ class _createGroupState extends State<createGroup> {
                         radioWidget(i)
                     ],
                   ),
-                  Row(children: [Text("是否开启验证"),Switch(value: switchbol, onChanged: (value){
+                  Row(children: [Text("是否开启验证"),Switch(value: switchValidation, onChanged: (value){
                     setState(() {
-                      switchbol = value;
+                      switchValidation = value;
                     });
                   })],),
-                  Expanded(flex: 7,child: Container(color: Colors.blue,)),
+                  Expanded(child: limitValidation(switchValidation)),
+                  Expanded(child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton.icon(onPressed: (){}, icon: FaIcon(FontAwesomeIcons.creativeCommonsSa), label: Text("重置")),
+                      ElevatedButton.icon(onPressed: (){}, icon: FaIcon(FontAwesomeIcons.hardHat), label: Text("创建")),
+                    ],
+                  ))
                 ],
               ))
       ),
     );
   }
 
+//  限制性别，限制地区，限制等级，限制积分
+  Widget limitValidation(bool validate){
+    return validate?Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text("地区限制"),
+            Text("城市")
+          ],),
+        Row( mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
+          Text("性别选择"),
+          Switch(value: false, onChanged: (bool ?value){
+          })
+        ],),
+        Row( mainAxisAlignment: MainAxisAlignment.spaceAround,children: [Text("等级"),Text("小于20级")],),
+        Row( mainAxisAlignment: MainAxisAlignment.spaceAround,children: [Text("积分"),Text("大于30分")],),
+      ],):Center(child: Text("您创建的团队任何人都可以加入"));
+  }
 //  上传团队封面
   Widget upCover(){
     return Row(
