@@ -1,8 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Shared{
-
-
  static  getdata(String data)async{
    var result =await SharedPreferences.getInstance();
    print("开始进行获取");

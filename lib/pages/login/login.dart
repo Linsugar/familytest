@@ -1,9 +1,7 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
-import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,6 +24,7 @@ class _MyHomePageState extends State<MyHomePage>{
   GlobalKey<FormState> ?_fromglobalKey = GlobalKey<FormState>();
   TextEditingController ?_Usercontroller  =TextEditingController();
   TextEditingController ?_Pwdcontroller  =TextEditingController();
+  var _userdata;
   Artboard ?_riveArtboard;
   RiveAnimationController ?_controller;
   String _file = 'assets/139-250-walkcycle-try-02.riv';
@@ -104,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage>{
                                         icon: FaIcon(FontAwesomeIcons.mobileAlt,color: Colors.blue,)),),
                                   TextFormField(
                                     onFieldSubmitted: (value){
-                                      relogin(context);
+                                      relogin(_userdata);
                                     },
                                     validator: (pwd){
                                       if(pwd!.isEmpty || pwd.length<5){
@@ -124,9 +123,16 @@ class _MyHomePageState extends State<MyHomePage>{
                                   Flex(direction: Axis.horizontal,children: [
                                     Expanded(flex: 6,child: Container(height:50,
                                       child: ElevatedButton.icon(onPressed: (){
-                                        Provider.of<GlobalState>(context,listen: false).changeloads(true);
-                                        relogin(context);
-                                      }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
+                                        if( _fromglobalKey!.currentState!.validate()){
+                                        _userdata = FormData.fromMap({
+                                        'user_mobile':_Usercontroller?.text,
+                                        'password':_Pwdcontroller?.text
+                                        });}
+                                        showDialog(context: context, builder: (_){
+                                          return ShowAlertProgress(relogin(_userdata));
+                                        });
+
+                                       }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
                                     )),
                                     SizedBox(width: 10,),
                                     Expanded(flex: 4, child: Container(
@@ -159,12 +165,9 @@ class _MyHomePageState extends State<MyHomePage>{
       )
     );
   }
-  Future relogin(BuildContext context) async {
-    if( _fromglobalKey!.currentState!.validate()){
-      var userdata = FormData.fromMap({
-        'user_mobile':_Usercontroller?.text,
-        'password':_Pwdcontroller?.text
-      });
+
+
+  Future relogin(userdata) async {
       var loginResult =  await Request.setNetwork('user/',userdata);
       Provider.of<GlobalState>(context,listen: false).changeloads(false);
       if(loginResult['token'] !=null){
@@ -188,6 +191,7 @@ class _MyHomePageState extends State<MyHomePage>{
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
           Regitser()));
     }
+      return loginResult;
     }
   }
 
@@ -217,5 +221,4 @@ class _MyHomePageState extends State<MyHomePage>{
 //    );
 //  }
 
-}
 

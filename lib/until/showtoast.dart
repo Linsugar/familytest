@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
@@ -12,25 +14,40 @@ class PopupUntil{
   }
 }
 
-class loadingCircu extends StatelessWidget {
-  loadingCircu(Future loads){
-    this.loads= loads;
-  }
-  var loads;
+
+
+//自定义进度条
+class ShowAlertProgress extends StatefulWidget {
+  ShowAlertProgress(this.requestCallback);
+  final Future<dynamic> requestCallback;
+
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: loads,
-        builder: (BuildContext context, AsyncSnapshot snapshot){
-      if(snapshot.connectionState ==ConnectionState.waiting){
-        return CircularProgressIndicator(backgroundColor: Colors.blueAccent,);
-      }else{
-        return Container();
-      }
-    });
-  }
+  _ShowAlertProgressState createState() => _ShowAlertProgressState();
 }
 
+class _ShowAlertProgressState extends State<ShowAlertProgress> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(milliseconds: 10), (){
+//      print("当前valu=====================1111：${await widget.requestCallback}");
+       widget.requestCallback.then((value) => {
+        print("当前valu=====================：${value['msg']}"),
+         if(value['msg']!='登录成功'){
+           Navigator.of(context).pop()
+         }
+      });
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+}
 
 
 
@@ -54,6 +71,7 @@ ShowAlerDialog(context)async{
       ],
     );
   });
+
 }
 
 
