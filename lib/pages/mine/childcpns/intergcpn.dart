@@ -40,9 +40,9 @@ class _intergState extends State<interg> {
               padding: EdgeInsets.all(10),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(112,182, 3, 1),
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: [BoxShadow(color: Color.fromRGBO(112, 182, 3,0.6),spreadRadius:1.2,blurRadius: 1.5)]
+                    color: Color.fromRGBO(112,182, 3, 1),
+                    borderRadius: BorderRadius.circular(5),
+                    boxShadow: [BoxShadow(color: Color.fromRGBO(112, 182, 3,0.6),spreadRadius:1.2,blurRadius: 1.5)]
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -69,38 +69,38 @@ class _intergState extends State<interg> {
               ],),
             Divider(),
             Expanded(flex: 8,child: Container(
-            padding: EdgeInsets.only(left: 10,right: 10),
+              padding: EdgeInsets.only(left: 10,right: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("积分处罚记录",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w900),),
                   Divider(),
                   Expanded(child:ListView.separated(
-                    controller: _scrollController,
+                      controller: _scrollController,
                       itemBuilder: (context,index){
-                    return Container(
-                      child: Row(
-                        children: [
-                          Expanded(flex: 7,child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        return Container(
+                          child: Row(
                             children: [
-                              Text("2020-07-15"),
-                              Text("歧视抵制/谩骂用户歧视抵制/谩骂用户歧视",maxLines: 2,overflow: TextOverflow.ellipsis,),
+                              Expanded(flex: 7,child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("2020-07-15"),
+                                  Text("歧视抵制/谩骂用户歧视抵制/谩骂用户歧视",maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                ],
+                              )),
+                              SizedBox(width: 10,),
+                              Expanded(flex: 3,child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("积分：- X"),
+                                  Text("封禁：Y小时"),
+                                  Text("罚款：Z 元"),
+                                ],
+                              )),
                             ],
-                          )),
-                          SizedBox(width: 10,),
-                          Expanded(flex: 3,child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("积分：- X"),
-                              Text("封禁：Y小时"),
-                              Text("罚款：Z 元"),
-                            ],
-                          )),
-                        ],
-                      ),
-                    );
-                  }, separatorBuilder: (context,index){
+                          ),
+                        );
+                      }, separatorBuilder: (context,index){
                     return Divider();
                   }, itemCount: 20))
                 ],
@@ -112,3 +112,34 @@ class _intergState extends State<interg> {
     );
   }
 }
+
+Widget Testvoid(){
+  return Flex(
+    direction: Axis.vertical,
+    children: [
+      /**   第一个 Expanded(flex: 4,child:header(),）
+          第二个 Expanded(flex: 6,child:stack(children：[ 放你的body ]),）
+       */
+      Expanded(flex: 4,child: Container(
+        color: Colors.green,
+
+      )),
+      Expanded(flex:6,child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(top: -70,left: 10,right: 10,
+              child: Container(
+                color: Colors.white,child: Column(
+                children: [
+                  TextField(decoration: InputDecoration(hintText: '请输入内容'),),
+                  TextField(),
+                  TextField(),
+                  TextField(),
+                ],
+              ),))
+        ],
+      )),
+    ],
+  );
+}
+

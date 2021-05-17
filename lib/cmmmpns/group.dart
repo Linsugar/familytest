@@ -21,7 +21,6 @@ class _createGroupState extends State<createGroup> {
   @override
   void initState() {
     // TODO: implement initState
-    testNum();
     super.initState();
   }
   @override
@@ -77,7 +76,7 @@ class _createGroupState extends State<createGroup> {
     return validate?Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text("地区限制"),
             Text("城市")
@@ -90,29 +89,6 @@ class _createGroupState extends State<createGroup> {
         Row( mainAxisAlignment: MainAxisAlignment.spaceAround,children: [Text("等级"),Text("小于20级")],),
         Row( mainAxisAlignment: MainAxisAlignment.spaceAround,children: [Text("积分"),Text("大于30分")],),
       ],):Center(child: Text("您创建的团队任何人都可以加入"));
-  }
-
-  void testNum(){
-    var a = 2;  // Bit presentation 10
-    var b = 3;  // Bit presentation 11
-
-    var result = (a & b);
-    print("(a & b) => ${result}");
-//    result = (a | b);
-//    print("(a | b) => ${result}");
-//    result = (a ^ b);
-//    print("(a ^ b) => ${result}");
-//
-//    result = (~b);
-//    print("(~b) => ${result}");
-//
-//    result = (a < b);
-//    print("(a < b) => ${result}");
-//
-//    result = (a > b);
-//    print("(a > b) => ${result}");
-
-
   }
 
 //  上传团队封面

@@ -2,6 +2,7 @@
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,6 @@ class cremacpn extends StatefulWidget {
 
 class _cremacpnState extends State<cremacpn> {
   var imagefile;
-
 
   @override
   void initState() {
@@ -45,42 +45,42 @@ class _cremacpnState extends State<cremacpn> {
           child: GestureDetector(onTap: (){
             Navigator.pushNamed(context, '/updynamic');
           },child: Text("发布动态")),)],),
-        body:Container(
-          constraints: BoxConstraints.expand(),
-          child: FutureBuilder(
-            future:_getUserdynamic(),
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              print('状态：${snapshot.data}');
-              if(snapshot.connectionState == ConnectionState.waiting){
-                return Center(child: CircularProgressIndicator());
-              }
-              if(snapshot.hasError){
-                return Center(child: Text("产生了一点小问题，请稍后"),);
-              }
-              if(snapshot.data.isEmpty){
-                return Center(child: Text("您当前还未发布动态哟~"),);
-              }
-              else{
-                return ListView.builder(itemCount: snapshot.data.length,itemBuilder: (context,index){
-                  return ExpansionTile(title: Align(alignment: Alignment.topLeft,child: Text("${snapshot.data[index].title}")),children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height/5,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(flex: 5,child: Padding(padding: EdgeInsets.all(10),child: Text("${snapshot.data[index].context}",))),
-                          Expanded(flex: 5,child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [
-                            for(var i=0;i<snapshot.data[index].imageurl!.length;i++)
-                                  Container(width: MediaQuery.of(context).size.width/4.5,height: MediaQuery.of(context).size.width/5,child: Image(image: NetworkImage(snapshot.data[index].imageurl![i]),fit: BoxFit.cover,))
-                          ],)),
-                        ],
-                      ),
-                    )
-                  ],);
-                });
-              }
-            },
-          )
+        body:  Container(
+            constraints: BoxConstraints.expand(),
+            child: FutureBuilder(
+              future:_getUserdynamic(),
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                print('状态：${snapshot.data}');
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return Center(child: CircularProgressIndicator());
+                }
+                if(snapshot.hasError){
+                  return Center(child: Text("产生了一点小问题，请稍后"),);
+                }
+                if(snapshot.data.isEmpty){
+                  return Center(child: Text("您当前还未发布动态哟~"),);
+                }
+                else{
+                  return ListView.builder(itemCount: snapshot.data.length,itemBuilder: (context,index){
+                    return ExpansionTile(title: Align(alignment: Alignment.topLeft,child: Text("${snapshot.data[index].title}")),children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height/5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(flex: 5,child: Padding(padding: EdgeInsets.all(10),child: Text("${snapshot.data[index].context}",))),
+                            Expanded(flex: 5,child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [
+                              for(var i=0;i<snapshot.data[index].imageurl!.length;i++)
+                                Container(width: MediaQuery.of(context).size.width/4.5,height: MediaQuery.of(context).size.width/5,child: Image(image: NetworkImage(snapshot.data[index].imageurl![i]),fit: BoxFit.cover,))
+                            ],)),
+                          ],
+                        ),
+                      )
+                    ],);
+                  });
+                }
+              },
+            )
         )
     );
   }
