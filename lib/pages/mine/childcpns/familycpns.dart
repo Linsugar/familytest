@@ -2,6 +2,7 @@
 
 
 import 'dart:convert';
+import 'package:familytest/pages/family/FamilyData.dart';
 import 'package:familytest/pages/mine/model/family.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +18,7 @@ class _familcpnState extends State<familcpn> {
 
   @override
   void initState() {
-    _getJson();
+//    _getJson();
     // TODO: implement initState
     super.initState();
   }
@@ -65,7 +66,8 @@ class _familcpnState extends State<familcpn> {
                           Navigator.pushNamed(context, '/createGroup');
                         }),
                         MaterialButton(child: Text("加入团队"),onPressed: (){
-                          PopupUntil.showToast("还未开放");
+//
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Family()));
                         }),
                       ],
                     )
