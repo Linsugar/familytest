@@ -5,8 +5,8 @@ class Request{
     connectTimeout: 5000,
 //    baseUrl: 'http://3ie5702133.wicp.vip/Jia/'
 ////    测试
-//    baseUrl: 'http://192.168.1.140:8000/Jia/',
-    baseUrl: 'http://192.168.5.211:8000/Jia/',
+    baseUrl: 'http://192.168.1.140:8000/Jia/',
+//    baseUrl: 'http://192.168.5.211:8000/Jia/',
   ))..interceptors.add(InterceptorsWrapper(
     onRequest:(options, handler) {
       print("进入拦截onRequest${options.data}");

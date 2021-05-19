@@ -26,7 +26,7 @@ class _createGroupState extends State<createGroup> {
   TextEditingController _TeamNamecontroller = TextEditingController();
   TextEditingController _TeamIntroductioncontroller = TextEditingController();
   var level = ['不限制','大于0~10','大于10~30','大于30~50','大于50~'];
-  var score = ['不限制','大于20','大于50','大于70','大于90'];
+  var score = [0,20,50,70,90];
   List<Widget> levelPoint = [];
   List<Widget> scorePoint = [];
   var currentlevel;
@@ -51,9 +51,11 @@ class _createGroupState extends State<createGroup> {
       'Team_Cover':[],
       'Team_Introduction':_TeamIntroductioncontroller.text,
       'Team_Size':radioGroup+00,
-      'Team_City':Null,
-      'Team_Score':Null,
-      'Team_sex':sexSelection?'女':'男',
+      'Team_City':'成都',
+      'Team_Score':currentscore,
+      'Team_Rank':currentlevel,
+      'Team_sex':sexSelection?0:1,
+
     });
     for(var i=0;i<imageDynamic.length;i++){
       data.files.add(
@@ -137,9 +139,9 @@ class _createGroupState extends State<createGroup> {
                           _rest();
                         });
                       }, icon: FaIcon(FontAwesomeIcons.creativeCommonsSa), label: Text("重置")),
-                      ElevatedButton.icon(onPressed: (){
+                      ElevatedButton.icon(onPressed: ()async{
                         if(_globalKey.currentState!.validate()){
-                          _createTeam();
+                        await _createTeam();
                           PopupUntil.showToast("创建成功，请稍后");
                           Navigator.popAndPushNamed(context, '/familcpn');
                         }
@@ -202,6 +204,9 @@ class _createGroupState extends State<createGroup> {
 //  限制性别，限制地区，限制等级，限制积分
   Widget limitValidation(bool validate){
     return validate?Table(
+      columnWidths:{
+        0:FixedColumnWidth(MediaQuery.of(context).size.width/1.5),
+      } ,
       children: [
         TableRow(
             children: [
@@ -229,55 +234,15 @@ class _createGroupState extends State<createGroup> {
         TableRow(
             children: [Text("等级"),InkWell(onTap: (){
               _showPicker(0);
-            },child: Row(children: [Text("等级：$currentlevel"),FaIcon(FontAwesomeIcons.database)],))]
+            },child: Row(children: [Text("等级：$currentlevel")],))]
         ),
         TableRow(
-            children: [Text("积分"),InkWell(onTap: (){
-              _showPicker(1);
-            },child: Row(children: [Text("积分：$currentscore"),FaIcon(FontAwesomeIcons.paw)],))]
+            children: [Text("积分",), InkWell(onTap: (){print("111");
+            _showPicker(1);
+            ;},child: Row(children: [Text("积分：$currentscore")],),)]
         ),
       ],
     ):Center(child: Text("您创建的团队任何人都可以加入"));
-  }
-
-  Widget testTable(){
-    return Table(
-      children: [
-        TableRow(
-          children: [
-            Text("地区"),
-            Row(children: [
-              Text("城市"),
-              InkWell(onTap: (){
-                _citySlect();
-              },child: FaIcon(FontAwesomeIcons.city))
-            ],),
-          ]
-        ),
-        TableRow(children: [
-          Text("性别选择"),
-          Row(
-            children: [
-              FaIcon(FontAwesomeIcons.male,color: sexSelection?Colors.black:Colors.blue,),
-              Switch(value: sexSelection, onChanged: (bool ?value){
-                setState(() {
-                  sexSelection=value!;
-                });
-              }),
-              FaIcon(FontAwesomeIcons.female,color: sexSelection?Colors.blue:Colors.black,),
-            ],)]),
-        TableRow(
-          children: [Text("等级"),InkWell(onTap: (){
-            _showPicker(0);
-          },child: Row(children: [Text("等级：$currentlevel"),FaIcon(FontAwesomeIcons.database)],))]
-        ),
-        TableRow(
-          children: [Text("积分"),InkWell(onTap: (){
-            _showPicker(1);
-          },child: Row(children: [Text("积分：$currentscore"),FaIcon(FontAwesomeIcons.paw)],))]
-        ),
-      ],
-    );
   }
 
 
