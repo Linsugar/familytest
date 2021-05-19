@@ -29,7 +29,7 @@ class RegisterState extends State<Regitser> {
   TextEditingController _pwdController = TextEditingController();
   String ?avator;
   String _file = 'assets/67-93-flux-capacitor.riv';
-
+  int ?selectSex = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -152,6 +152,19 @@ class RegisterState extends State<Regitser> {
                   ],
                 ),
               ),)),
+              Row(children: [
+                Text("请选择性别："),
+               Row(children: [Text("男"),Radio(value: 0, groupValue:selectSex, onChanged: (int ?value){
+                 setState(() {
+                   selectSex =value;
+                 });
+                print("选择$value");})],),
+                Row(children: [Text("女"),Radio(value: 1, groupValue: selectSex, onChanged: (int ?value){
+                  setState(() {
+                    selectSex =value;
+                  });
+                  print("选择$value");})],),
+              ],),
               Expanded(flex: 3,
                   child: Container(
                     margin: EdgeInsets.only(left: 20,right: 20),
@@ -200,6 +213,7 @@ class RegisterState extends State<Regitser> {
           'user_mobile': _phoneController.text,
           'password': _pwdController.text,
           'username': _userController.text,
+          'user_sex':selectSex,
           'city': context
               .read<GlobalState>()
               .city,

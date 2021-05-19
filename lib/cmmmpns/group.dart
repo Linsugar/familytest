@@ -25,7 +25,7 @@ class _createGroupState extends State<createGroup> {
   GlobalKey<FormState> _globalKey = GlobalKey();
   TextEditingController _TeamNamecontroller = TextEditingController();
   TextEditingController _TeamIntroductioncontroller = TextEditingController();
-  var level = ['不限制','大于0~10','大于10~30','大于30~50','大于50~'];
+  var level = [0,10,30,50,75];
   var score = [0,20,50,70,90];
   List<Widget> levelPoint = [];
   List<Widget> scorePoint = [];
@@ -47,15 +47,15 @@ class _createGroupState extends State<createGroup> {
     var data = FormData.fromMap({
       'Team_name':_TeamNamecontroller.text,
       'Team_init':context.read<GlobalState>().username,
+      'Team_initid':context.read<GlobalState>().userid,
       'Team_Type':"娱乐",
       'Team_Cover':[],
       'Team_Introduction':_TeamIntroductioncontroller.text,
-      'Team_Size':radioGroup+00,
+      'Team_Size':radioGroup*100,
       'Team_City':'成都',
       'Team_Score':currentscore,
-      'Team_Rank':currentlevel,
-      'Team_sex':sexSelection?0:1,
-
+      'Team_level':currentlevel,
+      'Team_sex':sexSelection?'女':'男',
     });
     for(var i=0;i<imageDynamic.length;i++){
       data.files.add(
@@ -67,7 +67,6 @@ class _createGroupState extends State<createGroup> {
     var _res =await Request.setNetwork('team/', data);
     print("返回结果：$_res");
   }
-
 //  重置数据
  void _rest(){
     _TeamIntroductioncontroller.text = '';
@@ -139,11 +138,11 @@ class _createGroupState extends State<createGroup> {
                           _rest();
                         });
                       }, icon: FaIcon(FontAwesomeIcons.creativeCommonsSa), label: Text("重置")),
-                      ElevatedButton.icon(onPressed: ()async{
+                      ElevatedButton.icon(onPressed: (){
                         if(_globalKey.currentState!.validate()){
-                        await _createTeam();
+                         _createTeam();
                           PopupUntil.showToast("创建成功，请稍后");
-                          Navigator.popAndPushNamed(context, '/familcpn');
+                          Navigator.of(context).pop();
                         }
 
                       }, icon: FaIcon(FontAwesomeIcons.hardHat), label: Text("创建")),

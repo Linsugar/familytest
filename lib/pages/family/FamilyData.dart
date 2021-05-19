@@ -1,6 +1,9 @@
 
+import 'package:familytest/network/requests.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'model/Familymodel.dart';
 
 class Family extends StatefulWidget{
   @override
@@ -10,14 +13,24 @@ class Family extends StatefulWidget{
   }
 }
 
+
 class FamilyState extends State<Family>{
   String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
+
+  _getTeam()async{
+    List<Familymodel> familyList = [];
+   var _res = await Request.getNetwork('team/');
+   _res.forEach((value){
+     familyList.add(Familymodel(value));
+   });
+   return familyList;
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text("家族数据"),actions: [MaterialButton(onPressed: (){},child: Icon(Icons.account_circle,color: Colors.lightBlueAccent,),)],),
+      appBar: AppBar(title: Text("团队"),actions: [MaterialButton(onPressed: (){},child: Icon(Icons.account_circle,color: Colors.lightBlueAccent,),)],),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -79,16 +92,27 @@ class FamilyState extends State<Family>{
                         Text("展示热点"),
                         Text("全部"),
                       ],),),),
-                      Flexible(flex: 7,child:ListView.builder(itemCount: 20,itemBuilder: (context,index){
-                        return ListTile(
-                          onTap: (){
-                            Navigator.pushNamed(context,  '/childfamily');
-                          },
-                          leading: CircleAvatar(backgroundImage: NetworkImage(_imagrurl),),
-                        title: Text("唐氏家族"),
-                        subtitle: Text("创建于2020-12-12，现任族长唐林",maxLines: 1,overflow: TextOverflow.ellipsis,),
-                        trailing: Text("￥230.000"),);
-                      })),
+                      Flexible(flex: 7,child:FutureBuilder(future: _getTeam(),builder: (BuildContext context, AsyncSnapshot snapshot){
+                        if(snapshot.connectionState ==ConnectionState.waiting){
+                          return Center(child: CircularProgressIndicator(),);
+                        }if(snapshot.hasData){
+                          List snp = snapshot.data;
+                          return ListView.builder(itemCount: snp.length,itemBuilder: (context,index){
+                            return ListTile(
+                              onTap: (){
+                                print("准备传入的参数${snp[index]}");
+                                Navigator.pushNamed(context,'/childfamily',arguments: snp[index]);
+                              },
+                              leading: CircleAvatar(backgroundImage: NetworkImage(snp[index].teamCover[0]),),
+                              title: Text("${snp[index].teamName}"),
+                              subtitle: Text("创建于${snp[index].teamTime}，现任族长：${snp[index].teamInit}",maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              trailing: Text("￥230.000"),);
+                          });
+                        }
+                        else{
+                          return Text("请稍后数据加载出现了一点问题");
+                        }
+                      },)),
                     ],)))),),
           ],
         ),
@@ -96,3 +120,6 @@ class FamilyState extends State<Family>{
     );
   }
 }
+
+
+

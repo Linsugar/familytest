@@ -23,7 +23,7 @@ class RoutePage{
     '/task':(context,{argument})=>task(),
     '/Photos':(context,{argument})=>Photos(),
     '/mysetting':(context,{argument})=>mysetting(),
-    '/childfamily':(context,{argument})=>childfamily(),
+    '/childfamily':(context,{argument})=>childfamily(argument),
     '/cremacpn':(context,{argument})=>cremacpn(),
     '/chatChild':(context,{argument})=>chatChild(argument),
     '/Home':(context,{argument})=>Home(),

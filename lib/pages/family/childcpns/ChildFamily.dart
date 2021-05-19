@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class childfamily extends StatefulWidget{
+  var arguments;
+  childfamily(this.arguments);
   @override
   State<StatefulWidget> createState() => childfamilystate();
 }
@@ -15,6 +17,7 @@ class childfamilystate extends State<childfamily>{
   @override
   void initState() {
     // TODO: implement initState
+    print("得到的参数：${widget.arguments}");
     super.initState();
   }
 
@@ -24,11 +27,11 @@ class childfamilystate extends State<childfamily>{
 
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text("子家族详情页"),),
+      appBar: AppBar(title: Text("${widget.arguments.teamName}"),),
       body: CustomScrollView(
         controller: _ctl,
         slivers: [
-          SliverPersistentHeader(delegate: Mysliverheader(_imagrurl),),
+          SliverPersistentHeader(delegate: Mysliverheader(_imagrurl,widget.arguments),),
           Sliverbody(imagrurl: _imagrurl,),
           SliverToBoxAdapter(
             child: LineChartSample3(),
@@ -112,8 +115,10 @@ class MychildList extends StatelessWidget {
 
 class Mysliverheader extends SliverPersistentHeaderDelegate{
   var image;
-  Mysliverheader(image){
+  var headerData;
+  Mysliverheader(image,headerData){
     this.image = image;
+    this.headerData = headerData;
   }
 
   @override
@@ -121,12 +126,16 @@ class Mysliverheader extends SliverPersistentHeaderDelegate{
     // TODO: implement build
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: Container(
-        margin: EdgeInsets.all(5),
-        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(image),fit: BoxFit.cover),color: Colors.blue,boxShadow: [BoxShadow(offset: Offset(10,20.0),color: Colors.black38,spreadRadius: 10.0,blurRadius: 10.0)]),
-        alignment: Alignment.center,
-        child: Text("唐氏家族"),
-      ),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+          itemCount: headerData.teamCover.length,
+          itemBuilder: (context,index){
+        return Container(
+          width: MediaQuery.of(context).size.width/1.5,
+          margin: EdgeInsets.all(5),
+          decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(headerData.teamCover[index]),fit: BoxFit.cover),color: Colors.blue,boxShadow: [BoxShadow(offset: Offset(10,20.0),color: Colors.black38,spreadRadius: 10.0,blurRadius: 10.0)]),
+        );
+      }),
     );
   }
 
@@ -145,12 +154,3 @@ class Mysliverheader extends SliverPersistentHeaderDelegate{
   }
 }
 
-//Column(
-//children: [
-//Text("族内权势滔天之人"),
-//Container(
-//height: 150,
-//child:,
-//)
-//],
-//)
