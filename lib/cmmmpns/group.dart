@@ -31,6 +31,7 @@ class _createGroupState extends State<createGroup> {
   List<Widget> scorePoint = [];
   var currentlevel;
   var currentscore;
+  bool s = true;
 
 
   @override
