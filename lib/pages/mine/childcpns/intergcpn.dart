@@ -55,7 +55,9 @@ class _intergState extends State<interg> {
                         Text("97",style: TextStyle(fontSize: 20,color: Colors.white))
                       ],
                     ),
-                    ClipOval(child: Image(image: NetworkImage(context.watch<GlobalState>().avator!),fit: BoxFit.cover,),)
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(context.watch<GlobalState>().avator!),)
+//
                   ],
                 ),
               ),
@@ -111,35 +113,5 @@ class _intergState extends State<interg> {
       ),
     );
   }
-}
-
-Widget Testvoid(){
-  return Flex(
-    direction: Axis.vertical,
-    children: [
-      /**   第一个 Expanded(flex: 4,child:header(),）
-          第二个 Expanded(flex: 6,child:stack(children：[ 放你的body ]),）
-       */
-      Expanded(flex: 4,child: Container(
-        color: Colors.green,
-
-      )),
-      Expanded(flex:6,child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Positioned(top: -70,left: 10,right: 10,
-              child: Container(
-                color: Colors.white,child: Column(
-                children: [
-                  TextField(decoration: InputDecoration(hintText: '请输入内容'),),
-                  TextField(),
-                  TextField(),
-                  TextField(),
-                ],
-              ),))
-        ],
-      )),
-    ],
-  );
 }
 
