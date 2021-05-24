@@ -12,7 +12,6 @@ class mysetting extends StatefulWidget{
 }
 
 class mysettingstate extends State<mysetting>{
-  String _imagrurl = 'http://qr0n4nltx.hn-bkt.clouddn.com/imagesp1.jpg';
   @override
   void initState(){
     super.initState();
@@ -28,7 +27,9 @@ class mysettingstate extends State<mysetting>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text("个人信息"),actions: [MaterialButton(onPressed: (){},child: Text("保存",style: TextStyle(color: Colors.white),),)],),
+      appBar: AppBar(
+
+        title: Text("个人信息"),actions: [MaterialButton(onPressed: (){},child: Text("保存",style: TextStyle(color: Colors.white),),)],),
       body: FutureBuilder(
         future:getuserdata() ,
         builder: (BuildContext context, AsyncSnapshot snapshot){
