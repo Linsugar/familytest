@@ -1,4 +1,5 @@
 import 'package:familytest/cmmmpns/group.dart';
+import 'package:familytest/main.dart';
 import 'package:familytest/pages/chat/Chatchild.dart';
 import 'package:familytest/pages/chat/cpn/reviewcpn.dart';
 import 'package:familytest/pages/family/FamilyData.dart';
@@ -37,6 +38,7 @@ class RoutePage{
     '/MyHomePage':(context,{argument})=>MyHomePage(),
     '/reviewCpn':(context,{argument})=>reviewCpn(argument),
     '/createGroup':(context,{argument})=>createGroup(),
+    '/MainHome':(context,{argument})=>MainHome(),
   };
 
 // ignore: missing_return, top_level_function_literal_block

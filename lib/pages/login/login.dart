@@ -178,8 +178,8 @@ class _MyHomePageState extends State<MyHomePage>{
         context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
         context.read<GlobalState>().changeusername(loginResult['user_name']);
         _setprrferceAll(loginResult);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-            MainHome()));
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
+            MainHome()), (route) => false);
       }
       if(loginResult['msg']=='密码或手机号有误'){
         Provider.of<GlobalState>(context,listen: false).changeloads(false);
