@@ -1,12 +1,12 @@
 
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
-import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:familytest/roog/roogYun.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'model.dart';
 class Home extends StatefulWidget{
@@ -149,6 +149,56 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+          Expanded(child: Container(
+            margin: EdgeInsets.all(5),
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(5)
+            ),
+            width: 150,height: 100,child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 7,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("病例档案",style: TextStyle(fontWeight: FontWeight.w900),),
+                      Text("日常记录健康指标"),
+                    ],
+                  ),
+                ),
+                Expanded(flex: 3,child: Center(child: FaIcon(FontAwesomeIcons.commentDots)))
+              ],
+            ),)),
+          Expanded(child: Container(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 7,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("找医生",style: TextStyle(fontWeight: FontWeight.w900),),
+                      Text("国内三级医院优秀医生在线问诊"),
+                    ],
+                  ),
+                ),
+                Expanded(flex: 3,child: Center(child: FaIcon(FontAwesomeIcons.commentDots)))
+              ],
+            ),
+            margin: EdgeInsets.all(5),
+            width: 150,height: 100,decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(5)
+            ),)),
+        ],),
         Container(
           height: 100,
           width: double.infinity,
