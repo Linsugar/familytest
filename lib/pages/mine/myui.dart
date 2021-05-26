@@ -1,4 +1,5 @@
 
+import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,105 +25,34 @@ class myuistate extends State<myui>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    var _state = context.watch<GlobalState>();
-    var _size= MediaQuery.of(context).size;
     return Scaffold(
-      drawer: Container(
-        width: _size.width/2+20,
-        child: MediaQuery.removePadding(context: context,
-            removeTop: true,
-            child: Drawer(
-              child:Column(
-                  children: [
-                    DrawerHeader(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Expanded(
-                                flex: 6,
-                                child: ClipOval(
-                                  child: Container(
-                                    width:100,
-                                    height:100,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: NetworkImage(_state.avator!),
-                                            fit: BoxFit.cover
-                                        )
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex:4,
-                                child: MaterialButton(child: Text("登出"),onPressed: (){
-                                  Navigator.pushReplacementNamed(context, "/MyHomePage");
-                                },),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 10,),
-                      FaIcon(FontAwesomeIcons.search),
-                        SizedBox(width: 10,),
-                      Text("换肤")
-              ],),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 10,),
-                        FaIcon(FontAwesomeIcons.search),
-                        SizedBox(width: 10,),
-                        Text("换肤")
-                      ],),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 10,),
-                        FaIcon(FontAwesomeIcons.search),
-                        SizedBox(width: 10,),
-                        Text("切换语言")
-                      ],),
-
-            ],
-          ),
-        )),
-      ),
         body: Container(
           child: Flex(
             direction: Axis.vertical,
             children: [
               Expanded(flex: 1,child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage('images/my.png')
-                )
-              ),
+                    color: Colors.white,
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('images/my.png')
+                    )
+                ),
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
                     Positioned(
-                      left: 30,
-                      bottom: 5,
+                        left: 30,
+                        bottom: 5,
                         child: Container(width: 100,height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          image: DecorationImage(
-                            image: NetworkImage(context.watch<GlobalState>().avator!),
-                            fit: BoxFit.cover
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              image: DecorationImage(
+                                  image: NetworkImage(context.watch<GlobalState>().avator!),
+                                  fit: BoxFit.cover
+                              ),
+                              borderRadius: BorderRadius.circular(50)
                           ),
-                          borderRadius: BorderRadius.circular(50)
-                        ),
                         ))
                   ],
                 ),
@@ -134,32 +64,32 @@ class myuistate extends State<myui>{
                     color: Colors.white,
                     padding: EdgeInsets.only(left: 20,right: 20),
                     child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("${context.watch<GlobalState>().username}",style: TextStyle(
-                            fontSize: 20,
-                              fontWeight:FontWeight.w800 ),),
-                          Text("身高-cm;体重-kg"),
-                        ],
-                      ),
-                      InkWell(
-                        onTap: (){
-                          Navigator.pushNamed(context, '/mysetting');
-                        },
-                        child: Container(width: 50,height: 50,decoration: BoxDecoration(
-                          color: Colors.orange[700],
-                          boxShadow: [BoxShadow(color: Colors.redAccent,blurRadius: 2.2,)],
-                          borderRadius: BorderRadius.circular(50)),
-                        child: Center(child: FaIcon(FontAwesomeIcons.edit,color: Colors.white,)),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${context.watch<GlobalState>().username}",style: TextStyle(
+                                fontSize: 20,
+                                fontWeight:FontWeight.w800 ),),
+                            Text("身高-cm;体重-kg"),
+                          ],
                         ),
-                      )
-                    ],
-                  ),
+                        InkWell(
+                          onTap: (){
+                            Navigator.pushNamed(context, '/mysetting');
+                          },
+                          child: Container(width: 50,height: 50,decoration: BoxDecoration(
+                              color: Colors.orange[700],
+                              boxShadow: [BoxShadow(color: Colors.redAccent,blurRadius: 2.2,)],
+                              borderRadius: BorderRadius.circular(50)),
+                            child: Center(child: FaIcon(FontAwesomeIcons.edit,color: Colors.white,)),
+                          ),
+                        )
+                      ],
+                    ),
                   )),
                   Expanded(flex:6,child: Container(
                     color: Colors.white,
@@ -169,15 +99,20 @@ class myuistate extends State<myui>{
                         Container(
                           margin: EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [BoxShadow(color: Colors.black45,blurRadius: 1.2,offset: Offset(-0.1,2.0))]
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              boxShadow: [BoxShadow(color: Colors.black45,blurRadius: 1.2,offset: Offset(0.0,1.0))]
                           ),
                           child: Column(
                             children: [
                               ListTile(leading: FaIcon(FontAwesomeIcons.ticketAlt),title: Text("优惠卷"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
                               Divider(indent: 20,endIndent: 20,),
-                              ListTile(leading: FaIcon(FontAwesomeIcons.yenSign),title: Text("我的余额"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
+                              ListTile(
+                                leading: FaIcon(FontAwesomeIcons.yenSign),title: Text("我的余额"),trailing: FaIcon(FontAwesomeIcons.angleRight),
+                                onTap: (){
+                                  Navigator.pushNamed(context, '/interg');
+                                },
+                              ),
                             ],
                           ),
                         ),
@@ -186,17 +121,23 @@ class myuistate extends State<myui>{
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(5),
-                              boxShadow: [BoxShadow(color: Colors.black45,blurRadius: 1.2,offset: Offset(-0.1,2.0))]
+                              boxShadow: [BoxShadow(color: Colors.black45,blurRadius: 1.2,offset: Offset(0.0,1.0))]
                           ),
                           child: Column(
                             children: [
                               ListTile(leading: FaIcon(FontAwesomeIcons.heartbeat),title: Text("所有服务"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
                               Divider(indent: 20,endIndent: 20,),
-                              ListTile(leading: FaIcon(FontAwesomeIcons.shoppingCart),title: Text("购买服务套餐"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
+                              ListTile(
+                                leading: FaIcon(FontAwesomeIcons.shoppingCart),title: Text("购买服务套餐"),trailing: FaIcon(FontAwesomeIcons.angleRight),
+                                onTap: (){
+                                  Navigator.pushNamed(context, '/task');
+                                },),
                               Divider(indent: 20,endIndent: 20,),
                               ListTile(leading: FaIcon(FontAwesomeIcons.clipboard),title: Text("服务订单"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
                               Divider(indent: 20,endIndent: 20,),
-                              ListTile(leading: FaIcon(FontAwesomeIcons.clipboardList),title: Text("商城订单"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
+                              ListTile(leading: FaIcon(FontAwesomeIcons.clipboardList),title: Text("发起话题"),trailing: FaIcon(FontAwesomeIcons.angleRight),onTap: (){
+                                Navigator.pushNamed(context, '/familcpn');
+                              },),
                             ],
                           ),
                         ),
@@ -205,11 +146,13 @@ class myuistate extends State<myui>{
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(5),
-                              boxShadow: [BoxShadow(color: Colors.black45,blurRadius: 1.2,offset: Offset(-0.1,2.0))]
+                              boxShadow: [BoxShadow(color: Colors.black45,blurRadius: 1.2,offset: Offset(0.0,1.0))]
                           ),
                           child: Column(
                             children: [
-                              ListTile(leading: FaIcon(FontAwesomeIcons.cogs),title: Text("设置"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
+                              ListTile(leading: FaIcon(FontAwesomeIcons.cogs),title: Text("设置"),trailing: FaIcon(FontAwesomeIcons.angleRight),onTap: (){
+                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>MyHomePage()), (route) => false);
+                              },),
                             ],
                           ),
                         ),
@@ -218,7 +161,7 @@ class myuistate extends State<myui>{
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(5),
-                              boxShadow: [BoxShadow(color: Colors.black45,blurRadius: 1.2,offset: Offset(-0.1,2.0))]
+                              boxShadow: [BoxShadow(color: Colors.black45,blurRadius: 1.2,offset: Offset(0.0,1.0))]
                           ),
                           child: Column(
                             children: [

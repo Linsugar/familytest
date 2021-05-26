@@ -162,87 +162,111 @@ class _dyaState extends State<dya> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      child:FutureBuilder(
-        future: _getdynamic(),
-        builder:(BuildContext context, AsyncSnapshot snapshot){
-          print("动态：${snapshot.data}");
-          if(snapshot.hasError){
-            return Icon(Icons.error);
-          }if(snapshot.connectionState ==ConnectionState.waiting){
-            return Center(child: CircularProgressIndicator());
-          }if(snapshot.data.isEmpty){
-            return Center(child: Text("目前还未有动态发布"),);
-          }
-          else{
-            return Container(child: ListView.separated(
-                itemBuilder: (context,index){
-                  return  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListTile(
-                        leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator),),
-                        title: Text("${snapshot.data[index].title}"),
-                        subtitle:  Text("发布时间:${snapshot.data[index].time}"),
-                      ),
-                      Container(
-                          margin: EdgeInsets.only(left: 5),
-                          constraints: BoxConstraints(
-                            maxHeight: 100,
-                            minHeight: 10,
-                          ),
-                          child:  Text("${snapshot.data[index].con}",textAlign: TextAlign.start,maxLines: 3,overflow:TextOverflow.ellipsis)
-                      ),
-                      SizedBox(height: 10),
-                      Container(
-                        constraints: BoxConstraints(
-                          minHeight: 50,
-                          maxHeight: 100,
+    return Column(
+      children: [
+        Container(
+          color: Colors.black12,
+          child: Row(children: [
+            Expanded(flex: 8,child: Container(
+              margin: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                  border: Border.all(color: Colors.white,width: 1.0),
+                borderRadius: BorderRadius.circular(20)
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  border: InputBorder.none
+                ),
+              ),)),
+            Expanded(flex: 1,child: FaIcon(FontAwesomeIcons.edgeLegacy,color: Colors.orange,)),
+            Expanded(flex: 1,child: InkWell(
+              onTap: (){
+                Navigator.of(context).pushNamed('/updynamic');
+              },
+              child: FaIcon(FontAwesomeIcons.edit,color: Colors.orange,),
+            )),
+    ],),),
+        FutureBuilder(
+          future: _getdynamic(),
+          builder:(BuildContext context, AsyncSnapshot snapshot){
+            print("动态：${snapshot.data}");
+            if(snapshot.hasError){
+              return Icon(Icons.error);
+            }if(snapshot.connectionState ==ConnectionState.waiting){
+              return Center(child: CircularProgressIndicator());
+            }if(snapshot.data.isEmpty){
+              return Center(child: Text("目前还未有动态发布"),);
+            }
+            else{
+              return Container(child: ListView.separated(
+                  itemBuilder: (context,index){
+                    return  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator),),
+                          title: Text("${snapshot.data[index].title}"),
+                          subtitle:  Text("发布时间:${snapshot.data[index].time}"),
                         ),
-                        child:Column(
-                          children: [
-                            Expanded(flex: 3,
-                              child: ListView.separated(
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context,im){
-                                    return Container(
-                                      margin: EdgeInsets.only(left: 5),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          image: DecorationImage(
-                                              image: NetworkImage(snapshot.data[index].imagelist[im]),
-                                              fit: BoxFit.cover
-                                          )
-                                      ),
-                                      width: 80,
-                                    );
-                                  }, separatorBuilder: (context,im){
-                                return SizedBox(width: 5,height: 5,);
-                              }, itemCount: snapshot.data[index].imagelist.length),
+                        Container(
+                            margin: EdgeInsets.only(left: 5),
+                            constraints: BoxConstraints(
+                              maxHeight: 100,
+                              minHeight: 10,
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  MaterialButton(child: Text("点赞"),onPressed: (){}),
-                                  MaterialButton(child: Text("评论"),onPressed: (){
-                                    Navigator.pushNamed(context,'/reviewCpn',arguments:{'data':snapshot.data[index]} );
-                                  }),
-                                ],),
-                            ),
-                          ],
-                        ) ,
-                      )
-                    ],
-                  );
-                }, separatorBuilder: (context,index){
-              return  Divider();
-            }, itemCount: snapshot.data.length));
-          }
-        },),
+                            child:  Text("${snapshot.data[index].con}",textAlign: TextAlign.start,maxLines: 3,overflow:TextOverflow.ellipsis)
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          constraints: BoxConstraints(
+                            minHeight: 50,
+                            maxHeight: 100,
+                          ),
+                          child:Column(
+                            children: [
+                              Expanded(flex: 3,
+                                child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context,im){
+                                      return Container(
+                                        margin: EdgeInsets.only(left: 5),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            image: DecorationImage(
+                                                image: NetworkImage(snapshot.data[index].imagelist[im]),
+                                                fit: BoxFit.cover
+                                            )
+                                        ),
+                                        width: 80,
+                                      );
+                                    }, separatorBuilder: (context,im){
+                                  return SizedBox(width: 5,height: 5,);
+                                }, itemCount: snapshot.data[index].imagelist.length),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    MaterialButton(child: Text("点赞"),onPressed: (){}),
+                                    MaterialButton(child: Text("评论"),onPressed: (){
+                                      Navigator.pushNamed(context,'/reviewCpn',arguments:{'data':snapshot.data[index]} );
+                                    }),
+                                  ],),
+                              ),
+                            ],
+                          ) ,
+                        )
+                      ],
+                    );
+                  }, separatorBuilder: (context,index){
+                return  Divider();
+              }, itemCount: snapshot.data.length));
+            }
+          },)
+      ],
     );
   }
 }
