@@ -1,7 +1,9 @@
 
 import 'package:familytest/network/requests.dart';
+import 'package:familytest/until/CommonUntil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'model/Familymodel.dart';
 
@@ -13,7 +15,7 @@ class Family extends StatefulWidget{
   }
 }
 
-class FamilyState extends State<Family>{
+class FamilyState extends State<Family> with SingleTickerProviderStateMixin{
   _getTeam()async{
     List<Familymodel> familyList = [];
    var _res = await Request.getNetwork('team/');
@@ -23,20 +25,33 @@ class FamilyState extends State<Family>{
    return familyList;
   }
 
+
+  List<Widget> _tabList = [Text("慢性肾炎"),Text("高血压"),Text("心脏病"),Text("痛风"),Text("结石"),];
+  TabController ?_tabController;
+  TextEditingController ?_textEditingController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    _tabController = TabController(length: 5, vsync: this);
+    _textEditingController =TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.orangeAccent,
-        title: Text("团队",),actions: [MaterialButton(onPressed: (){},child: Icon(Icons.account_circle),)],),
+        backgroundColor: Colors.orange,
+        title: Text("话题",),actions: [MaterialButton(onPressed: (){},child: Icon(Icons.account_circle),)],),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Flex(
           direction: Axis.vertical,
           children: [
-            Flexible(flex: 3,child: Flex(
+            Expanded(flex: 3,child: Flex(
               direction: Axis.horizontal,
               children: [
                 Flexible(flex: 2,child:Container(margin: EdgeInsets.all(10),
@@ -66,59 +81,22 @@ class FamilyState extends State<Family>{
               ),)
               ],
             ),),
-            Flexible(flex: 7,child: Container(
-              margin: EdgeInsets.only(left: 30,right: 30,bottom: 5),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                  boxShadow: [BoxShadow(color: Colors.black12,offset: Offset(-1.0,2.0),spreadRadius: 2.0)],
-                  borderRadius: BorderRadius.circular(10),),
-                child: ClipRRect(borderRadius: BorderRadius.circular(10),
-                    child: Container(child:Flex(direction: Axis.vertical,children: [
-                      Flexible(flex: 2,child: Container(
-                        margin: EdgeInsets.all(7),
-                        decoration: BoxDecoration(boxShadow: [BoxShadow(offset: Offset(0.0,3.0),color: Colors.deepPurpleAccent[100]!,blurRadius: 10.0)]),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(decoration: BoxDecoration(color: Colors.deepPurpleAccent[100]),
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-                            Column(mainAxisAlignment: MainAxisAlignment.center,children: [Icon(Icons.access_alarm),Text("闹钟"),],),
-                            Column(mainAxisAlignment: MainAxisAlignment.center,children: [Icon(Icons.access_alarm),Text("闹钟"),],),
-                            Column(mainAxisAlignment: MainAxisAlignment.center,children: [Icon(Icons.access_alarm),Text("闹钟"),],),
-                          ],),),
-                        ),
-                      )),
-                      Flexible(flex: 1,child: Container(padding: EdgeInsets.all(10),child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
-                        Text("展示热点"),
-                        Text("全部"),
-                      ],),),),
-                      Flexible(flex: 7,child:FutureBuilder(future: _getTeam(),builder: (BuildContext context, AsyncSnapshot snapshot){
-                        if(snapshot.connectionState ==ConnectionState.waiting){
-                          return Center(child: CircularProgressIndicator(),);
-                        }if(snapshot.hasData){
-                          List snp = snapshot.data;
-                          return ListView.builder(itemCount: snp.length,itemBuilder: (context,index){
-                            return ListTile(
-                              onTap: (){
-                                print("准备传入的参数${snp[index]}");
-                                Navigator.pushNamed(context,'/childfamily',arguments: snp[index]);
-                              },
-                              leading: CircleAvatar(backgroundImage: NetworkImage(snp[index].teamCover[0]),),
-                              title: Text("${snp[index].teamName}"),
-                              subtitle: Text("创建于${snp[index].teamTime}，现任族长：${snp[index].teamInit}",maxLines: 1,overflow: TextOverflow.ellipsis,),
-                              trailing: Text("￥230.000"),);
-                          });
-                        }
-                        else{
-                          return Text("请稍后数据加载出现了一点问题");
-                        }
-                      },)),
-                    ],)))),),
+            Expanded(flex: 7,child: Column(
+              children: [
+                TabBar(
+                  labelPadding: EdgeInsets.all(5),
+                  labelColor: Colors.black,
+                  tabs: _tabList,controller: _tabController,),
+                homeInput(_textEditingController!),
+                Expanded(flex: 6,child: TabBarView(
+                  controller: _tabController,
+                  children: [Text("1"),Text("1"),Text("1"),Text("1"),Text("1"),],
+                )),
+              ],
+            ),),
           ],
         ),
       ),
     );
   }
 }
-
-
-

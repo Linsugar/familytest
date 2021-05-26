@@ -50,15 +50,16 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
                 labelColor: Colors.orange,
                 indicatorColor: Colors.orange,
                 unselectedLabelColor: Colors.black,
+                labelPadding: EdgeInsets.all(10),
                 tabs: [
-                  Text("聊天",style: TextStyle(fontSize: 20,),),
-                  Text("动态",style: TextStyle(fontSize: 20,)),
+                  Text("动态"),
+                  Text("聊天"),
                 ],),),
           ),
           body:TabBarView(
             children: [
+              DynamicPage(),
               ChatPage(size: _size, headerimag: _headerimag, Amc: _Amc),
-              DynamicPage()
             ],
           )
       ),

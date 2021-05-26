@@ -163,8 +163,8 @@ class _MainHomeState extends State<MainHome> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.themeisle),label: "首页"),
-          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.users),label: "家族"),
-          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.sms),label: "消息"),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.users),label: "话题"),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.sms),label: "社区"),
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.monero),label: "我的"),
         ],
       ),

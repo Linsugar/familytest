@@ -1,6 +1,7 @@
 
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -23,8 +24,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   TabController ?tabcontroller;
   List<wxinfo> wxList = [];
   int index =0;
+  TextEditingController? _textEditingController;
   @override
   void initState() {
+    _textEditingController = TextEditingController();
     tabcontroller  =TabController(length: 4, vsync: this)..addListener(() {
       print("得到的数据:${tabcontroller!.index}");
       if(tabcontroller!.animation!.value ==tabcontroller!.index){
@@ -71,7 +74,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
               SliverAppBar(
                 backgroundColor: Colors.white,
                 pinned: true,
-                title:homeInput(),
+                title:homeInput(_textEditingController!),
                 expandedHeight: 120,
                 floating: false,
                 flexibleSpace: FlexibleSpaceBar(
@@ -241,21 +244,6 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-}
-
-//首页搜索框
-Widget homeInput(){
-  return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white,width: 1.0)),
-      padding: EdgeInsets.only(left: 10,right: 10),
-      child:TextField(
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            icon: Icon(Icons.search),suffixIcon: Icon(Icons.arrow_drop_down),hintText: '请输入搜索内容'),)
-  );
 }
 //待定
 Widget homeList(var iamgrulr,var wxcls){
