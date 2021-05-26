@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/provider/homeState.dart';
@@ -69,26 +69,16 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
             scrollDirection:Axis.vertical,
             slivers: [
               SliverAppBar(
+                backgroundColor: Colors.white,
                 pinned: true,
-                backgroundColor: Colors.blue[400],
-                title: homeInput(),
-                bottom: TabBar(
-                  indicatorColor: Colors.white,
-                  controller: tabcontroller,
-                  labelPadding: EdgeInsets.only(bottom: 15),
-                  tabs: [
-                    Text("首页"),
-                    Text("周边游"),
-                    Text("亲子时光"),
-                    Text("踏青赏花"),
-                  ],),
-                expandedHeight: 150,
+                title:homeInput(),
+                expandedHeight: 120,
                 floating: false,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Image.network(_imageUrl,fit: BoxFit.cover,),
                 ),
               ),
-              SliverToBoxAdapter(child: index==0?HomePage():index==1?HomeTwo():index==2?HomeTree():HomeFour(),),
+              SliverToBoxAdapter(child: HomePage()),
             ])
     );
   }
@@ -102,7 +92,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String _imageUrl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201311%2F02%2F112809qybz22ltn8ybxt2x.jpg&refer=http%3A%2F%2Fattach.bbs.miui.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1624344471&t=946bad365fde68214402444d79c26577';
   List imageList=[];
-  double _height = 200;
   @override
   void initState() {
     this.imageList = [_imageUrl,_imageUrl,_imageUrl,_imageUrl];
@@ -113,128 +102,53 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
     var wx = context.watch<GlobalState>().wxlist;
-    var homeList = context.watch<homeState>().homelist;
     return Column(
       children: [
-        AnimatedContainer(
-          duration: Duration(milliseconds: 100),
-          height: _height,
-          child: PageView(
-            onPageChanged: (value){
-              print("当前翻页;$value");
-              setState(() {
-                if(_height==200){
-                  _height =360;
-                }else{
-                  _height = 200;
-                }
-              });
-            },
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: CustomScrollView(
-                  physics: NeverScrollableScrollPhysics(),
-                  slivers: [
-                    SliverGrid(
-                        delegate: SliverChildBuilderDelegate(
-                                (context,index){
-                              return InkWell(
-                                onTap: ()async{
-                                  PopupUntil.showToast("功能暂未开放");
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.white,width: 1)
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Expanded(
-                                          flex: 2,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: NetworkImage(homeList[index]['url']),
-                                                    fit: BoxFit.cover
-                                                )
-                                            ),
-                                          )),
-                                      Expanded(flex: 1,child: Text("${homeList[index]['title']}",overflow:TextOverflow.ellipsis ,))
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },childCount: 15
-                        ), gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
-
-                        mainAxisExtent: 67,
-                        crossAxisCount: 5))
-                  ],
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: CustomScrollView(
-                  physics: NeverScrollableScrollPhysics(),
-                  slivers: [
-                    SliverGrid(
-                        delegate: SliverChildBuilderDelegate(
-
-                                (context,index){
-                              return InkWell(
-                                onTap: (){
-
-                                  PopupUntil.showToast("功能暂未开放");
-
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.white,width: 1)
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Expanded(flex: 2,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: NetworkImage(homeList[index]['url']),
-                                                    fit: BoxFit.cover
-                                                )
-                                            ),
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text("${homeList[index]['title']}",overflow:TextOverflow.ellipsis))
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },childCount: 26
-                        ), gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 60,
-                        crossAxisCount: 5))
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        Row(
+        Container(
+          height: _size.height/4,
+          color: Colors.orange,child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              width: _size.width/2,
-              child:homeCarousel(imageList) ,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(children: [
+                  CircleAvatar(backgroundImage: NetworkImage(context.watch<GlobalState>().avator!),),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text("Hi,${context.watch<GlobalState>().username}",style: TextStyle(fontWeight: FontWeight.w800),),Text("Hi,欢迎加入健康大家庭")],),
+                ],),
+                ElevatedButton.icon(
+                  style: ButtonStyle(backgroundColor:MaterialStateProperty.all(Colors.orange),
+                      shadowColor:MaterialStateProperty.all(Colors.white)
+                  ),
+                    onPressed: (){}, icon: Icon(Icons.forward), label: Text("管理情况"))
+              ],
             ),
             Container(
-              width: _size.width/2,
-              child:homeCarousel(imageList) ,
-            )
+              margin: EdgeInsets.only(left: 10,right: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5)
+              ),
+              height: _size.height/7,
+              child: Row(
+                children: [
+                  Expanded(flex: 3,child: Container(decoration: BoxDecoration(
+                      image: DecorationImage(image: AssetImage('images/help.png'),fit: BoxFit.cover)),)),
+                  Expanded(flex: 6,child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                    Text("快速了解【压一压】",style: TextStyle(fontWeight: FontWeight.w900),),
+                    Text("养成良好行为习惯 控制疾病早日康复")
+                  ],)),
+                  Expanded(flex: 1,child:Icon(Icons.forward))
+                ],
+              ),
+            ),
           ],
-        ),
+        ),),
         Container(
           height: 100,
           width: double.infinity,
@@ -279,50 +193,11 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class HomeTwo extends StatefulWidget {
-  @override
-  _HomeTwoState createState() => _HomeTwoState();
-}
-class _HomeTwoState extends State<HomeTwo> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-     child: Text("1"),
-    );
-  }
-}
-
-class HomeTree extends StatefulWidget {
-  @override
-  _HomeTreeState createState() => _HomeTreeState();
-}
-
-class _HomeTreeState extends State<HomeTree> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text("2"),
-    );
-  }
-}
-
-class HomeFour extends StatefulWidget {
-  @override
-  _HomeFourState createState() => _HomeFourState();
-}
-
-class _HomeFourState extends State<HomeFour> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(child: Text("3"),);
-  }
-}
-
-
 //首页搜索框
 Widget homeInput(){
   return Container(
       decoration: BoxDecoration(
+        color: Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Colors.white,width: 1.0)),
       padding: EdgeInsets.only(left: 10,right: 10),
@@ -396,7 +271,10 @@ Widget homeList(var iamgrulr,var wxcls){
 Widget homeCarousel(List imageList){
   return CarouselSlider(
     options: CarouselOptions(
+      aspectRatio: 2.0,
       viewportFraction: 1.0,
+      enlargeCenterPage: true,
+      scrollDirection: Axis.horizontal,
       autoPlay: true,
 //        enlargeCenterPage: true
     ),

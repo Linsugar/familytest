@@ -37,23 +37,28 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
     var _size = MediaQuery.of(context).size;
     // TODO: implement build
     return DefaultTabController(
+
       length: 2,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: PreferredSize(
             preferredSize:  Size.fromHeight(50),
             child: AppBar(
+              backgroundColor: Colors.white,
               bottom: TabBar(
                 isScrollable: false,
+                labelColor: Colors.orange,
+                indicatorColor: Colors.orange,
+                unselectedLabelColor: Colors.black,
                 tabs: [
-                  Text("聊天",style: TextStyle(fontSize: 20),),
-                  Text("动态",style: TextStyle(fontSize: 20)),
+                  Text("聊天",style: TextStyle(fontSize: 20,),),
+                  Text("动态",style: TextStyle(fontSize: 20,)),
                 ],),),
           ),
           body:TabBarView(
             children: [
-              chatabout(size: _size, headerimag: _headerimag, Amc: _Amc),
-              dya()
+              ChatPage(size: _size, headerimag: _headerimag, Amc: _Amc),
+              DynamicPage()
             ],
           )
       ),
@@ -62,8 +67,8 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
 }
 
 //聊天
-class chatabout extends StatelessWidget {
-  const chatabout({
+class ChatPage extends StatelessWidget {
+  const ChatPage({
     Key? key,
     required Size size,
     required String headerimag,
@@ -140,14 +145,15 @@ class chatabout extends StatelessWidget {
 //动态页
 
 
-class dya extends StatefulWidget {
+class DynamicPage extends StatefulWidget {
   @override
-  _dyaState createState() => _dyaState();
+  _DynamicPageState createState() => _DynamicPageState();
 }
 
-class _dyaState extends State<dya> {
+class _DynamicPageState extends State<DynamicPage> {
 
-  _getdynamic()async{
+//  获取动态
+  _getDynamic()async{
     List<chatdynamic> dylist = [];
     var result = await Request.getNetwork('dynamicall/',params: {
       'user_id':context.read<GlobalState>().userid
@@ -158,8 +164,6 @@ class _dyaState extends State<dya> {
     print("当前List；$dylist");
     return dylist;
   }
-
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -188,97 +192,95 @@ class _dyaState extends State<dya> {
               child: FaIcon(FontAwesomeIcons.edit,color: Colors.orange,),
             )),
     ],),),
-        FutureBuilder(
-          future: _getdynamic(),
-          builder:(BuildContext context, AsyncSnapshot snapshot){
-            print("动态：${snapshot.data}");
-            if(snapshot.hasError){
-              return Icon(Icons.error);
-            }if(snapshot.connectionState ==ConnectionState.waiting){
-              return Center(child: CircularProgressIndicator());
-            }if(snapshot.data.isEmpty){
-              return Center(child: Text("目前还未有动态发布"),);
-            }
-            else{
-              return Container(child: ListView.separated(
-                  itemBuilder: (context,index){
-                    return  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator),),
-                          title: Text("${snapshot.data[index].title}"),
-                          subtitle:  Text("发布时间:${snapshot.data[index].time}"),
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 5),
-                            constraints: BoxConstraints(
-                              maxHeight: 100,
-                              minHeight: 10,
-                            ),
-                            child:  Text("${snapshot.data[index].con}",textAlign: TextAlign.start,maxLines: 3,overflow:TextOverflow.ellipsis)
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          constraints: BoxConstraints(
-                            minHeight: 50,
-                            maxHeight: 100,
+        Expanded(
+          child: FutureBuilder(
+            future: _getDynamic(),
+            builder:(BuildContext context, AsyncSnapshot snapshot){
+              print("动态：${snapshot.data}");
+              if(snapshot.hasError){
+                return Icon(Icons.error);
+              }if(snapshot.connectionState ==ConnectionState.waiting){
+                return Center(child: CircularProgressIndicator());
+              }if(snapshot.data.isEmpty){
+                return Center(child: Text("目前还未有动态发布"),);
+              }
+              else{
+                return Container(child: ListView.separated(
+                    itemBuilder: (context,index){
+                      return  Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTile(
+                            leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator),),
+                            title: Text("${snapshot.data[index].title}"),
+                            subtitle:  Text("发布时间:${snapshot.data[index].time}"),
                           ),
-                          child:Column(
-                            children: [
-                              Expanded(flex: 3,
-                                child: ListView.separated(
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context,im){
-                                      return Container(
-                                        margin: EdgeInsets.only(left: 5),
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(5),
-                                            image: DecorationImage(
-                                                image: NetworkImage(snapshot.data[index].imagelist[im]),
-                                                fit: BoxFit.cover
-                                            )
-                                        ),
-                                        width: 80,
-                                      );
-                                    }, separatorBuilder: (context,im){
-                                  return SizedBox(width: 5,height: 5,);
-                                }, itemCount: snapshot.data[index].imagelist.length),
+                          Container(
+                              margin: EdgeInsets.only(left: 5),
+                              constraints: BoxConstraints(
+                                maxHeight: 100,
+                                minHeight: 10,
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    MaterialButton(child: Text("点赞"),onPressed: (){}),
-                                    MaterialButton(child: Text("评论"),onPressed: (){
-                                      Navigator.pushNamed(context,'/reviewCpn',arguments:{'data':snapshot.data[index]} );
-                                    }),
-                                  ],),
-                              ),
-                            ],
-                          ) ,
-                        )
-                      ],
-                    );
-                  }, separatorBuilder: (context,index){
-                return  Divider();
-              }, itemCount: snapshot.data.length));
-            }
-          },)
+                              child:  Text("${snapshot.data[index].con}",textAlign: TextAlign.start,maxLines: 3,overflow:TextOverflow.ellipsis)
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            constraints: BoxConstraints(
+                              minHeight: 50,
+                              maxHeight: 100,
+                            ),
+                            child:Column(
+                              children: [
+                                Expanded(flex: 3,
+                                  child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context,im){
+                                        return Container(
+                                          margin: EdgeInsets.only(left: 5),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(snapshot.data[index].imagelist[im]),
+                                                  fit: BoxFit.cover
+                                              )
+                                          ),
+                                          width: 80,
+                                        );
+                                      }, separatorBuilder: (context,im){
+                                    return SizedBox(width: 5,height: 5,);
+                                  }, itemCount: snapshot.data[index].imagelist.length),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      MaterialButton(child: Text("点赞"),onPressed: (){}),
+                                      MaterialButton(child: Text("评论"),onPressed: (){
+                                        Navigator.pushNamed(context,'/reviewCpn',arguments:{'data':snapshot.data[index]} );
+                                      }),
+                                    ],),
+                                ),
+                              ],
+                            ) ,
+                          )
+                        ],
+                      );
+                    }, separatorBuilder: (context,index){
+                  return  Divider();
+                }, itemCount: snapshot.data.length));
+              }
+            },),
+        )
       ],
     );
   }
 }
 
-
-
-
 class header extends StatelessWidget {
   const header({
     Key? key,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {

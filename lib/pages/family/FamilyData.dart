@@ -13,10 +13,7 @@ class Family extends StatefulWidget{
   }
 }
 
-
 class FamilyState extends State<Family>{
-  String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
-
   _getTeam()async{
     List<Familymodel> familyList = [];
    var _res = await Request.getNetwork('team/');
@@ -30,7 +27,9 @@ class FamilyState extends State<Family>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text("团队"),actions: [MaterialButton(onPressed: (){},child: Icon(Icons.account_circle,color: Colors.lightBlueAccent,),)],),
+      appBar: AppBar(
+        backgroundColor: Colors.orangeAccent,
+        title: Text("团队",),actions: [MaterialButton(onPressed: (){},child: Icon(Icons.account_circle),)],),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,

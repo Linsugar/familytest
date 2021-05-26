@@ -24,6 +24,7 @@ import 'package:familytest/roog/roogYun.dart';
 import 'network/requests.dart';
 
 void main() =>runApp(
+
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_)=>GlobalState()),
@@ -45,6 +46,11 @@ class MyAppState extends State<MyApp>{
   bool token=false;
  @override
  void initState(){
+   if (Platform.isAndroid) {
+     SystemUiOverlayStyle systemUiOverlayStyle =
+     SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+   }
    Roogyun.rooginit();
 //   Wx.initwx();
    getDevice();
@@ -134,13 +140,20 @@ class _MainHomeState extends State<MainHome> {
     // TODO: implement initState
     super.initState();
   }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.orange,
+        child: Icon(Icons.add),
+        onPressed:(){} ,
+      ),
       body:_listwiget[_index],
-      bottomNavigationBar:BottomNavigationBar(
+      backgroundColor: Colors.white,
+      bottomNavigationBar:
+      BottomNavigationBar(
+        selectedItemColor: Colors.orange,
         onTap: (value){print("value:$value");
         setState(() {
           _index = value;
