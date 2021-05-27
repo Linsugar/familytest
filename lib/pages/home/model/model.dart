@@ -21,3 +21,22 @@ class wxinfo{
     this.wxphoto = value['wximage'];
   }
 }
+
+
+class VideoInfo{
+  String ?videoCover;
+  String ?videoTime;
+  String ?videoUpUser;
+  String ?videoUrl;
+  String ?videoTitle;
+  String ?videoContext;
+
+  VideoInfo(value){
+    this.videoTitle = value['video_Title'];
+    this.videoContext = value['video_context'];
+    this.videoUrl = value['video_url'];
+    this.videoCover = value['video_cover'];
+    this.videoTime = value['video_Time'];
+    this.videoUpUser = value['video_upuserid'];
+  }
+}

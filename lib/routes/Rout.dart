@@ -33,7 +33,7 @@ class RoutePage{
     '/familcpn':(context,{argument})=>familcpn(),
     '/Regitser':(context,{argument})=>Regitser(),
     '/updynamic':(context,{argument})=>updynamic(),
-    '/videoWidget':(context,{argument})=>videoWidget(),
+    '/videoWidget':(context,{argument})=>videoWidget(argument),
     '/webviewcpns':(context,{argument})=>webviewcpns(argument),
     '/MyHomePage':(context,{argument})=>MyHomePage(),
     '/reviewCpn':(context,{argument})=>reviewCpn(argument),

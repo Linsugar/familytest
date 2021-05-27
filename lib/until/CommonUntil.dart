@@ -14,3 +14,17 @@ Widget homeInput(TextEditingController textController){
             icon: Icon(Icons.search),suffixIcon: Icon(Icons.arrow_drop_down),hintText: '请输入搜索内容'),)
   );
 }
+
+void shtest(context){
+  showDialog(
+    context: context,
+    builder: (context){
+      return Center(child: CircularProgressIndicator());
+    }
+  );
+}
+
+
+Widget TesxtDmoe(){
+  return Text("1");
+}

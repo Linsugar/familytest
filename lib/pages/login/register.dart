@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/CreamUntil.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
@@ -183,6 +184,7 @@ class RegisterState extends State<Regitser> {
                         child: Text("注册",style: TextStyle(color: Colors.white,fontSize: 20),),
                         onPressed: ()async{
                           Provider.of<GlobalState>(context,listen: false).changeloads(true);
+
                           await regis(context);
                         },
                         minWidth: double.infinity,
@@ -208,6 +210,7 @@ class RegisterState extends State<Regitser> {
 
   Future regis(BuildContext context) async {
     if (_globalKey.currentState!.validate()) {
+      shtest(context);
       if (avator != null) {
         var formdata = FormData.fromMap({
           'user_mobile': _phoneController.text,
@@ -234,10 +237,10 @@ class RegisterState extends State<Regitser> {
           context.read<GlobalState>().changeroogtoken(Resultdata['roogtoken']);
           context.read<GlobalState>().changeusername(Resultdata['username']);
           Provider.of<GlobalState>(context, listen: false).changeloads(false);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) {
-            return MainHome();
-          }));
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
+              MainHome()), (route) => false);
+        }else{
+          Navigator.pop(context);
         }
       } else {
         PopupUntil.showToast("能不能上传照片？");

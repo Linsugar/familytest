@@ -1,15 +1,25 @@
 
+import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:video_player/video_player.dart';
 class videoWidget extends StatefulWidget {
+  var value;
+  videoWidget(this.value);
   @override
   _videoWidgetState createState() => _videoWidgetState();
 }
-
-class _videoWidgetState extends State<videoWidget> {
-  String ?videourl ="https://edge.ivideo.sina.com.cn/34446276003.mp4?KID=sina,viask&Expires=1618588800&ssig=3N%2FjgGgM1B&reqid=";
+class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
+  String ?videoUrl;
   VideoPlayerController ?_videoPlayerController;
+  TextEditingController ?_textEditingController;
+  FocusNode _focusNode  =FocusNode();
+  int focusIndex =0;
+  int playState= 0;
+  bool inputbool = false;
+  bool emjstatue = true;
+  var argumentValue;
   List<String>? _messagelist = [
     "哇，好牛逼","牛啊 牛啊 牛啊","帅爆了",
     "哇，好牛逼","牛啊 牛啊 牛啊","帅爆了",
@@ -19,8 +29,21 @@ class _videoWidgetState extends State<videoWidget> {
   ];
   @override
   void initState() {
+
+    WidgetsBinding.instance!.addObserver(this);
     // TODO: implement initState
-    _videoPlayerController = VideoPlayerController.network(videourl!)
+    argumentValue = widget.value['value'];
+    videoUrl =argumentValue.videoUrl;
+    _textEditingController =TextEditingController();
+    _focusNode.addListener((){
+      if (_focusNode.hasFocus) {
+        print('得到焦点');
+
+      }else{
+        print('失去焦点');
+      }
+    });
+    _videoPlayerController = VideoPlayerController.network(videoUrl!)
     ..initialize().then((value) => {
           setState(() {
             print("player初始化完成");
@@ -34,31 +57,132 @@ class _videoWidgetState extends State<videoWidget> {
     _videoPlayerController!.dispose();
     super.dispose();
   }
+
+  @override
+  void didChangeMetrics() {
+    // TODO: implement didChangeMetrics
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      print("d当前结果：$focusIndex");
+      setState(() {
+        if(focusIndex ==0){
+          focusIndex =1;
+        }else{
+          focusIndex =0;
+        }
+      });
+    });
+    super.didChangeMetrics();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(title: Text("实时新闻"),),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          _videoPlayerController!.play();
-        },
-        child: Text("点击"),),
+      appBar: AppBar(
+        backgroundColor: Colors.orangeAccent,
+        title: Text(argumentValue.videoTitle),),
       body: Container(
-        color: Colors.blue,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("标题：叙利亚来访，中国军人勇武无敌",maxLines: 1,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 18),),
-            Expanded(flex: 5,child: _videoPlayerController!.value.isInitialized?AspectRatio(
-                aspectRatio: _videoPlayerController!.value.aspectRatio,child: VideoPlayer(_videoPlayerController!),):
+            Expanded(flex: 4,child: _videoPlayerController!.value.isInitialized?AspectRatio(
+                aspectRatio:focusIndex==0?_videoPlayerController!.value.aspectRatio:3.5/1,
+              child: Stack(
+                children: [
+                  VideoPlayer(_videoPlayerController!),
+                  Positioned(
+                      bottom: 10,
+                      left: 10,
+                      child: Row(children: [
+                    InkWell(child: FaIcon(playState==0?FontAwesomeIcons.play:FontAwesomeIcons.stop,color: Colors.orangeAccent,),onTap: (){
+                      setState(() {
+                        if(playState==0){
+                          playState = 1;
+                          _videoPlayerController!.play();
+                        }else{
+                          playState=0;
+                          _videoPlayerController!.pause();
+                        }
+                      });
+                    },),
+                  ],))
+                ],
+              ),):
             Center(child:Text("数据加载中"))),
-            Expanded(flex: 4,child: ListView.separated(itemBuilder: (context,index){
+            Expanded(flex: 6,child: ListView.separated(itemBuilder: (context,index){
               return Text("${_messagelist![index]}");
             }, separatorBuilder: (context,index){
               return Divider();
             }, itemCount: _messagelist!.length)),
-            Container(color: Colors.white,child: TextField(),)
+            Expanded(flex: 1,
+              child: Container(color: Colors.orange,
+                child: Row(
+                  children: [
+                    Expanded(
+                        flex: 7,child: Container(
+                          child: TextField(
+                          onChanged: (value){
+                            if(value.isEmpty){
+                              setState(() {
+                                inputbool = false;
+                              });
+                            }else{
+                              setState(() {
+                                inputbool = true;
+                                emjstatue =true;
+                              });
+                            }
+                          },
+                          controller: _textEditingController,
+                          minLines: 1,
+                          maxLines: 2,decoration: InputDecoration(
+                          isCollapsed: true,
+                          hintText: "请输入您要发表的意见",
+                          hintMaxLines: 20,
+                          border: InputBorder.none,
+                        ),)
+                    )),
+                    Expanded(
+                        flex:3,child:Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
+                           Icon(Icons.add_circle),
+                           inputbool?
+                        Container(
+                          width: 50,
+                          child: Material(
+                              borderRadius: BorderRadius.circular(5),
+
+                              child:InkWell(
+                                onTap: (){
+                                  if(_textEditingController!.text.isEmpty){
+                                    PopupUntil.showToast("你输入的内容为空");
+                                    return;
+                                  }
+                                  _messagelist!.add(_textEditingController!.text);
+                                  _textEditingController!.clear();
+                                  setState(() {
+                                    inputbool =false;
+                                    emjstatue =true;
+                                  });
+                                },
+                                child: Container(
+                                  child: Center(child: Text("发送")),
+                                ),
+                              )
+                          ),
+                        ): GestureDetector(onTap: (){
+                          print("进去");
+                          setState(() {
+                            emjstatue =!emjstatue;
+                          });
+                        },child: FaIcon(FontAwesomeIcons.smileWink))
+                      ],),
+                    ))
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

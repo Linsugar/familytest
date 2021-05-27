@@ -1,6 +1,7 @@
 
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import 'package:familytest/roog/roogYun.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'model.dart';
+import 'model/model.dart';
 class Home extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -19,8 +20,7 @@ class Home extends StatefulWidget{
 }
 
 class HomeState extends State<Home> with SingleTickerProviderStateMixin{
-  String _imageUrl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201311%2F02%2F112809qybz22ltn8ybxt2x.jpg&refer=http%3A%2F%2Fattach.bbs.miui.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1624344471&t=946bad365fde68214402444d79c26577';
-  List imageList=[];
+  String _imageUrl = 'http://qtr6xp7uf.hn-bkt.clouddn.com/imge.png';
   TabController ?tabcontroller;
   List<wxinfo> wxList = [];
   int index =0;
@@ -28,6 +28,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   @override
   void initState() {
     _textEditingController = TextEditingController();
+    _getWxContext();
     tabcontroller  =TabController(length: 4, vsync: this)..addListener(() {
       print("得到的数据:${tabcontroller!.index}");
       if(tabcontroller!.animation!.value ==tabcontroller!.index){
@@ -40,7 +41,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
       }
     });
     Roogyun.roogclient(context.read<GlobalState>().roogtoken);
-    _GeWxContext();
+
 
   }
   @override
@@ -48,7 +49,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     // TODO: implement dispose
     super.dispose();
   }
-  _GeWxContext()async{
+  _getWxContext()async{
     var wx = context.read<GlobalState>();
     if(wx.wxlist.isEmpty){
       dynamic result = await Request.getNetwork("wxarticle/");
@@ -62,6 +63,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
       return wxList;
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +95,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
-  String _imageUrl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201311%2F02%2F112809qybz22ltn8ybxt2x.jpg&refer=http%3A%2F%2Fattach.bbs.miui.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1624344471&t=946bad365fde68214402444d79c26577';
-  List imageList=[];
   @override
   void initState() {
-    this.imageList = [_imageUrl,_imageUrl,_imageUrl,_imageUrl];
     Roogyun.roogclient(context.read<GlobalState>().roogtoken);
     super.initState();
   }
@@ -159,7 +158,7 @@ class _HomePageState extends State<HomePage> {
             margin: EdgeInsets.all(5),
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Colors.deepOrange,
               borderRadius: BorderRadius.circular(5)
             ),
             width: 150,height: 100,child: Row(
@@ -198,14 +197,31 @@ class _HomePageState extends State<HomePage> {
             ),
             margin: EdgeInsets.all(5),
             width: 150,height: 100,decoration: BoxDecoration(
-              color: Colors.red,
+              color: Colors.orangeAccent,
               borderRadius: BorderRadius.circular(5)
             ),)),
         ],),
         Container(
           height: 100,
           width: double.infinity,
-          child: homeCarousel(imageList),
+          child: Column(children: [
+            Expanded(flex: 15,child: homeCarousel(context)),
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                for(var i=0;i<4;i++)
+                  Container(
+                    margin: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: i==context.watch<homeState>().carIndex?Colors.orange:Colors.blueGrey,
+                      borderRadius: BorderRadius.circular(5)
+                    ),
+                    width: 10,height: 10,),
+              ],),
+            )
+          ],),
         ),
         StaggeredGridView.countBuilder(
           padding: EdgeInsets.all(10),
@@ -245,85 +261,30 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-//待定
-Widget homeList(var iamgrulr,var wxcls){
-  List<wxinfo> wxlist = [];
-  _GeWxContext(int wxcls)async{
-    if(wxlist.isEmpty){
-      dynamic result = await Request.getNetwork("wxarticle/",params: {
-        "wxclass":wxcls
-      });
-      result.forEach((value){
-        wxlist.add(wxinfo(value));
-      });
-      return wxlist;
-    }else{
-      return wxlist;
-    }
-  }
-  return FutureBuilder(
-    future: _GeWxContext(wxcls),
-    builder: (BuildContext context, AsyncSnapshot snapshot){
-      if(snapshot.connectionState ==ConnectionState.waiting){
-        return Center(child: CircularProgressIndicator(),);
-      }if(snapshot.hasError){
-        return Text("数据有误");
-      }else{
-        return ListView.separated(
-            itemBuilder: (context,index){
-              return GestureDetector(
-                onTap: (){
-                  Navigator.pushNamed(context, '/webviewcpns',arguments: {
-                    "wxcontext":snapshot.data[index]
-                  });
-                },
-                child: Container(
-                  height: 100,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 100,
-                        child: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image(image: NetworkImage(snapshot.data[index].wxphoto),fit: BoxFit.cover,),),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(" 标题：${snapshot.data[index].wxtitle}",maxLines: 1,overflow: TextOverflow.ellipsis,),
-                          Text(" 发布时间:${snapshot.data[index].wxtime}"),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              );
-            }, separatorBuilder: (context,index){
-          return Divider();
-        }, itemCount: wxlist.length);
-      }
-    },
-  );
-}
 
 //首页轮播组件
-Widget homeCarousel(List imageList){
-  return CarouselSlider(
+Widget homeCarousel(context){
+  List listVideo = Provider.of<homeState>(context).videoList;
+  return  CarouselSlider(
     options: CarouselOptions(
-      aspectRatio: 2.0,
+      onPageChanged: (int index, CarouselPageChangedReason reason){
+        print("当前下标：$index");
+        Provider.of<homeState>(context,listen: false).changindex(index);
+      },
+      aspectRatio: 3.7,
       viewportFraction: 1.0,
       enlargeCenterPage: true,
       scrollDirection: Axis.horizontal,
       autoPlay: true,
-//        enlargeCenterPage: true
     ),
-    items: imageList.map((i) {
+    items: listVideo.map((value) {
       return Builder(
         builder: (BuildContext context) {
           return ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
               onTap: (){
-                Navigator.pushNamed(context, "/videoWidget");
+                Navigator.pushNamed(context, "/videoWidget",arguments: {'value':value});
               },
               child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -332,7 +293,7 @@ Widget homeCarousel(List imageList){
                       boxShadow: [BoxShadow(color: Colors.black,spreadRadius: 0.5,blurRadius: 0.9,)],
                       color: Colors.amber
                   ),
-                  child: Image(image: NetworkImage(i),fit: BoxFit.cover,)
+                  child: Image(image: NetworkImage(value.videoCover),fit: BoxFit.cover,)
               ),
             ),
           );

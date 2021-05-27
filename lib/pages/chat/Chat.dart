@@ -1,6 +1,6 @@
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/pages/chat/model/chatdynamic.dart';
-import 'package:familytest/pages/home/model.dart';
+import 'file:///D:/tang/Project/familytest/lib/pages/home/model/model.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';

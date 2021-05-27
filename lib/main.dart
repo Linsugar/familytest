@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:familytest/pages/home/model.dart';
+import 'file:///D:/tang/Project/familytest/lib/pages/home/model/model.dart';
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/mine/childcpns/taskcpn.dart';
 import 'package:familytest/pages/mine/myui.dart';
@@ -12,6 +12,7 @@ import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/routes/Rout.dart';
 import 'package:familytest/until/shared.dart';
+import 'package:familytest/until/showtoast.dart';
 import 'package:familytest/until/wx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +47,12 @@ class MyAppState extends State<MyApp>{
   bool token=false;
  @override
  void initState(){
+//   强制竖屏
+   SystemChrome.setPreferredOrientations([
+     DeviceOrientation.portraitUp,
+     DeviceOrientation.portraitDown
+   ]);
+
    if (Platform.isAndroid) {
      SystemUiOverlayStyle systemUiOverlayStyle =
      SystemUiOverlayStyle(statusBarColor: Colors.transparent);
@@ -55,8 +62,8 @@ class MyAppState extends State<MyApp>{
 //   Wx.initwx();
    getDevice();
    getPreferecse();
-   _Getimage();
    _getuserinfo();
+   _getVideoContext();
    // TODO: implement initState
    super.initState();
  }
@@ -115,7 +122,16 @@ _getuserinfo()async{
   }
 }
 
-
+//获取视频热点
+_getVideoContext()async{
+  List<VideoInfo> videoList= [];
+  List _res = await Request.getNetwork('video/');
+  _res.forEach((element) {
+    videoList.add(VideoInfo(element));
+  });
+  Provider.of<homeState>(context,listen: false).changeVideo(videoList);
+  print("得到的结果：${videoList}");
+}
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -147,7 +163,9 @@ class _MainHomeState extends State<MainHome> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
         child: Icon(Icons.add),
-        onPressed:(){} ,
+        onPressed:(){
+          PopupUntil.showToast("当前功能正在开发中");
+        } ,
       ),
       body:_listwiget[_index],
       backgroundColor: Colors.white,
