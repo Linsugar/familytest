@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'file:///D:/tang/Project/familytest/lib/pages/home/model/model.dart';
+import 'package:familytest/pages/home/model/model.dart';
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/mine/childcpns/taskcpn.dart';
 import 'package:familytest/pages/mine/myui.dart';
