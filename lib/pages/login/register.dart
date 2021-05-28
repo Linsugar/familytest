@@ -207,11 +207,10 @@ class RegisterState extends State<Regitser> {
       ),
     );
   }
-
   Future regis(BuildContext context) async {
     if (_globalKey.currentState!.validate()) {
-      shtest(context);
       if (avator != null) {
+        showLoading(context);
         var formdata = FormData.fromMap({
           'user_mobile': _phoneController.text,
           'password': _pwdController.text,

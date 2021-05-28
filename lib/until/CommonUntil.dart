@@ -15,7 +15,7 @@ Widget homeInput(TextEditingController textController){
   );
 }
 
-void shtest(context){
+void showLoading(context){
   showDialog(
     context: context,
     builder: (context){
