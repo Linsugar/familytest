@@ -28,7 +28,7 @@ class mysettingstate extends State<mysetting>{
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-
+        backgroundColor: Colors.orange,
         title: Text("个人信息"),actions: [MaterialButton(onPressed: (){},child: Text("保存",style: TextStyle(color: Colors.white),),)],),
       body: FutureBuilder(
         future:getuserdata() ,
@@ -46,7 +46,7 @@ class mysettingstate extends State<mysetting>{
                 margin: EdgeInsets.only(top: 5,bottom: 5),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    boxShadow: [BoxShadow(color: Colors.deepOrange,offset: Offset(0.0,1.0),spreadRadius: 1.0,blurRadius: 10.0)]
+                    boxShadow: [BoxShadow(color: Colors.black45,offset: Offset(0.0,1.0),spreadRadius: 1.0,blurRadius: 10.0)]
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -67,7 +67,7 @@ class mysettingstate extends State<mysetting>{
                 margin: EdgeInsets.only(top: 5,bottom: 5),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    boxShadow: [BoxShadow(color: Colors.deepOrange,offset: Offset(0.0,1.0),spreadRadius: 1.0,blurRadius: 10.0)]
+                    boxShadow: [BoxShadow(color: Colors.black45,offset: Offset(0.0,1.0),spreadRadius: 1.0,blurRadius: 10.0)]
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -81,7 +81,7 @@ class mysettingstate extends State<mysetting>{
                 margin: EdgeInsets.only(top: 5,),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    boxShadow: [BoxShadow(color: Colors.deepOrange,offset: Offset(0.0,1.0),spreadRadius: 1.0,blurRadius: 10.0)]
+                    boxShadow: [BoxShadow(color: Colors.black45,offset: Offset(0.0,1.0),spreadRadius: 1.0,blurRadius: 10.0)]
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

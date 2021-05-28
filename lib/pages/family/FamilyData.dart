@@ -1,6 +1,7 @@
 
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/until/CommonUntil.dart';
+import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -65,7 +66,8 @@ class FamilyState extends State<Family> with SingleTickerProviderStateMixin{
                 },itemBuilder: (context,index){
                     return GestureDetector(
                       onTap: (){
-                        Navigator.pushNamed(context, '/childfamily');
+                        PopupUntil.showToast("该功能正在开发中");
+//                        Navigator.pushNamed(context, '/childfamily');
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
