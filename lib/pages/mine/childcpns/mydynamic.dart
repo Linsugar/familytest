@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 
 import 'getdynamic.dart';
 
-class cremacpn extends StatefulWidget {
+class MyDynamic extends StatefulWidget {
   @override
-  _cremacpnState createState() => _cremacpnState();
+  _MyDynamicState createState() => _MyDynamicState();
 }
 
-class _cremacpnState extends State<cremacpn> {
+class _MyDynamicState extends State<MyDynamic> {
   var imagefile;
 
   @override
@@ -38,7 +38,9 @@ class _cremacpnState extends State<cremacpn> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-        appBar: AppBar(title: Text("动态"),actions: [MaterialButton(onPressed: ()async{
+        appBar: AppBar(
+          backgroundColor: Colors.orange,
+          title: Text("动态"),actions: [MaterialButton(onPressed: ()async{
          var sqlpath =  await getDatabasesPath();
          print("获取地址：$sqlpath");
         },
@@ -62,21 +64,32 @@ class _cremacpnState extends State<cremacpn> {
                 }
                 else{
                   return ListView.builder(itemCount: snapshot.data.length,itemBuilder: (context,index){
-                    return ExpansionTile(title: Align(alignment: Alignment.topLeft,child: Text("${snapshot.data[index].title}")),children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height/5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(flex: 5,child: Padding(padding: EdgeInsets.all(10),child: Text("${snapshot.data[index].context}",))),
-                            Expanded(flex: 5,child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [
-                              for(var i=0;i<snapshot.data[index].imageurl!.length;i++)
-                                Container(width: MediaQuery.of(context).size.width/4.5,height: MediaQuery.of(context).size.width/5,child: Image(image: NetworkImage(snapshot.data[index].imageurl![i]),fit: BoxFit.cover,))
-                            ],)),
-                          ],
-                        ),
-                      )
-                    ],);
+                    return Column(
+                      children: [
+                        Container(child: Align(alignment: Alignment.topLeft,child: Text(snapshot.data[index].title))),
+                        Container(
+                          height: 150,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text("${snapshot.data[index].context}",maxLines: 5,overflow: TextOverflow.ellipsis,),
+                              Expanded(flex: 5,child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [
+                                for(var i=0;i<snapshot.data[index].imageurl!.length;i++)
+                                  Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          image: DecorationImage(
+                                            image: NetworkImage(snapshot.data[index].imageurl![i]),fit: BoxFit.cover,
+                                          )
+                                        ),
+                                      margin: EdgeInsets.all(5),width: MediaQuery.of(context).size.width/4.5,
+                                  )
+                              ],)),
+                            ],
+                          ),
+                        )
+                      ],);;
                   });
                 }
               },

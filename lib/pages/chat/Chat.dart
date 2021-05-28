@@ -143,8 +143,6 @@ class ChatPage extends StatelessWidget {
 
 
 //动态页
-
-
 class DynamicPage extends StatefulWidget {
   @override
   _DynamicPageState createState() => _DynamicPageState();
@@ -184,7 +182,9 @@ class _DynamicPageState extends State<DynamicPage> {
                   border: InputBorder.none
                 ),
               ),)),
-            Expanded(flex: 1,child: FaIcon(FontAwesomeIcons.edgeLegacy,color: Colors.orange,)),
+            Expanded(flex: 1,child: InkWell(onTap: (){
+              Navigator.pushNamed(context, '/mydynamic');
+            },child: FaIcon(FontAwesomeIcons.thList,color: Colors.orange,))),
             Expanded(flex: 1,child: InkWell(
               onTap: (){
                 Navigator.of(context).pushNamed('/updynamic');

@@ -9,7 +9,7 @@ import 'package:familytest/pages/home/childcps/videocnps.dart';
 import 'package:familytest/pages/home/childcps/webviewcps.dart';
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/login/register.dart';
-import 'package:familytest/pages/mine/childcpns/cremracpn.dart';
+import 'package:familytest/pages/mine/childcpns/mydynamic.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicUp.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicpn.dart';
 import 'package:familytest/pages/mine/childcpns/familycpns.dart';
@@ -25,7 +25,7 @@ class RoutePage{
     '/Photos':(context,{argument})=>Photos(),
     '/mysetting':(context,{argument})=>mysetting(),
     '/childfamily':(context,{argument})=>childfamily(argument),
-    '/cremacpn':(context,{argument})=>cremacpn(),
+    '/mydynamic':(context,{argument})=>MyDynamic(),
     '/chatChild':(context,{argument})=>chatChild(argument),
     '/Home':(context,{argument})=>Home(),
     '/feedbook':(context,{argument})=>feedbook(),
