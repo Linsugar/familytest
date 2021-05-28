@@ -178,36 +178,67 @@ class _MainHomeState extends State<MainHome> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  InkWell(
-                      onTap: (){
-                        setState(() {
-                          _index =0;
-                        });
-                      }
-                      ,child: FaIcon(FontAwesomeIcons.themeisle,color: _index==0?Colors.deepOrange:Colors.black45,)),
-                  InkWell(
-                      onTap: (){
-                        setState(() {
-                          _index =1;
-                        });
-                      }
-                      ,child: FaIcon(
-                    FontAwesomeIcons.users,color: _index==1?Colors.deepOrange:Colors.black45)),
+                  Tooltip(
+                    message: '首页',
+                    child: InkWell(
+                        onTap: (){
+                          setState(() {
+                            _index =0;
+                          });
+                        }
+                        ,child:Column(
+                      children: [
+                        FaIcon(FontAwesomeIcons.themeisle,color: _index==0?Colors.deepOrange:Colors.black45,),
+                        Text("首页")
+                      ],
+                    )),
+                  ),
+                  Tooltip(
+                    message: '话题',
+                    child: InkWell(
+                        onTap: (){
+                          setState(() {
+                            _index =1;
+                          });
+                        }
+                        ,child: Column(
+                      children: [
+                        FaIcon(FontAwesomeIcons.users,color: _index==1?Colors.deepOrange:Colors.black45,),
+                        Text("话题")
+                      ],
+                    )),
+                  ),
                   SizedBox(),
-                  InkWell(
-                      onTap: (){
-                        setState(() {
-                          _index =2;
-                        });
-                      }
-                      ,child: FaIcon(FontAwesomeIcons.sms,color: _index==2?Colors.deepOrange:Colors.black45,)),
-                  InkWell(
-                      onTap: (){
-                        setState(() {
-                          _index =3;
-                        });
-                      }
-                      ,child: FaIcon(FontAwesomeIcons.monero,color: _index==3?Colors.deepOrange:Colors.black45,)),
+                  Tooltip(
+                    message: '消息',
+                    child: InkWell(
+                        onTap: (){
+                          setState(() {
+                            _index =2;
+                          });
+                        }
+                        ,child: Column(
+                      children: [
+                        FaIcon(FontAwesomeIcons.sms,color: _index==2?Colors.deepOrange:Colors.black45,),
+                        Text("消息")
+                      ],
+                    )),
+                  ),
+                  Tooltip(
+                    message: '我的',
+                    child: InkWell(
+                        onTap: (){
+                          setState(() {
+                            _index =3;
+                          });
+                        }
+                        ,child: Column(
+                      children: [
+                        FaIcon(FontAwesomeIcons.monero,color: _index==3?Colors.deepOrange:Colors.black45,),
+                        Text("我的")
+                      ],
+                    )),
+                  ),
                 ],
               ),
             )
