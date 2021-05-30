@@ -177,7 +177,9 @@ class _HomePageState extends State<HomePage> {
                 Expanded(flex: 3,child: Center(child: FaIcon(FontAwesomeIcons.commentDots)))
               ],
             ),)),
-          Expanded(child: Container(
+          Expanded(child: InkWell(onTap: (){
+            Navigator.pushNamed(context, '/doctor');
+          },child: Container(
             padding: EdgeInsets.all(5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -199,7 +201,7 @@ class _HomePageState extends State<HomePage> {
             width: 150,height: 100,decoration: BoxDecoration(
               color: Colors.orangeAccent,
               borderRadius: BorderRadius.circular(5)
-            ),)),
+          ),),)),
         ],),
         Container(
           height: 100,
