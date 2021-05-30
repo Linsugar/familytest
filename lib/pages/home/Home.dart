@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
           color: Colors.orange,child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Row(
+            Padding(padding: EdgeInsets.all(5),child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(children: [
@@ -121,14 +121,14 @@ class _HomePageState extends State<HomePage> {
                     children: [Text("Hi,${context.watch<GlobalState>().username}",style: TextStyle(fontWeight: FontWeight.w800),),Text("Hi,欢迎加入健康大家庭")],),
                 ],),
                 ElevatedButton.icon(
-                  style: ButtonStyle(backgroundColor:MaterialStateProperty.all(Colors.orange),
-                      shadowColor:MaterialStateProperty.all(Colors.white)
-                  ),
+                    style: ButtonStyle(backgroundColor:MaterialStateProperty.all(Colors.orange),
+                        shadowColor:MaterialStateProperty.all(Colors.white)
+                    ),
                     onPressed: (){}, icon: Icon(Icons.forward), label: Text("管理情况"))
               ],
-            ),
+            ),),
             Container(
-              margin: EdgeInsets.only(left: 10,right: 10),
+              margin: EdgeInsets.only(left: 10,right: 10,bottom: 5),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(5)
