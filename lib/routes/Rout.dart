@@ -5,6 +5,7 @@ import 'package:familytest/pages/chat/cpn/reviewcpn.dart';
 import 'package:familytest/pages/family/FamilyData.dart';
 import 'package:familytest/pages/family/childcpns/ChildFamily.dart';
 import 'package:familytest/pages/home/Home.dart';
+import 'package:familytest/pages/home/childcps/archives.dart';
 import 'package:familytest/pages/home/childcps/finddoctor.dart';
 import 'package:familytest/pages/home/childcps/videocnps.dart';
 import 'package:familytest/pages/home/childcps/webviewcps.dart';
@@ -41,6 +42,7 @@ class RoutePage{
     '/createGroup':(context,{argument})=>createGroup(),
     '/MainHome':(context,{argument})=>MainHome(),
     '/doctor':(context,{argument})=>FindDoctor(),
+    '/archives':(context,{argument})=>Archives(),
   };
 
 // ignore: missing_return, top_level_function_literal_block

@@ -13,6 +13,14 @@ class FindDoctor extends StatefulWidget {
 class _FindDoctorState extends State<FindDoctor> {
 
   TextEditingController _textEditingController =TextEditingController();
+  FocusNode _focusNode =FocusNode();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _focusNode.unfocus();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +30,7 @@ class _FindDoctorState extends State<FindDoctor> {
         padding: EdgeInsets.only(left: 10,right: 10,top: 5),
         child:Column(
         children: [
-          homeInput(_textEditingController),
+          homeInput(_textEditingController,_focusNode),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

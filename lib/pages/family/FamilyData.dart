@@ -29,9 +29,11 @@ class FamilyState extends State<Family> with SingleTickerProviderStateMixin{
   List<Widget> _tabList = [Text("慢性肾炎"),Text("高血压"),Text("心脏病"),Text("痛风"),Text("结石"),];
   TabController ?_tabController;
   TextEditingController ?_textEditingController;
+  FocusNode _focusNode = FocusNode();
   @override
   void initState() {
     // TODO: implement initState
+    _focusNode.unfocus();
     _tabController = TabController(length: 5, vsync: this);
     _textEditingController =TextEditingController();
     super.initState();
@@ -88,7 +90,7 @@ class FamilyState extends State<Family> with SingleTickerProviderStateMixin{
                   labelPadding: EdgeInsets.all(5),
                   labelColor: Colors.black,
                   tabs: _tabList,controller: _tabController,),
-                homeInput(_textEditingController!),
+                homeInput(_textEditingController!,_focusNode),
                 Expanded(flex: 6,child: TabBarView(
                   controller: _tabController,
                   children: [titleCdk(),titleCdk(),titleCdk(),titleCdk(),titleCdk(),],

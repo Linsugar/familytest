@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget homeInput(TextEditingController textController){
+Widget homeInput(TextEditingController textController,FocusNode focusNode){
   return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -9,6 +9,7 @@ Widget homeInput(TextEditingController textController){
       padding: EdgeInsets.only(left: 10,right: 10),
       child:TextField(
         controller: textController,
+        focusNode: focusNode,
         decoration: InputDecoration(
             border: InputBorder.none,
             icon: Icon(Icons.search),suffixIcon: Icon(Icons.arrow_drop_down),hintText: '请输入搜索内容'),)

@@ -63,13 +63,6 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
     // TODO: implement didChangeMetrics
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       print("d当前结果：$focusIndex");
-      setState(() {
-        if(focusIndex ==0){
-          focusIndex =1;
-        }else{
-          focusIndex =0;
-        }
-      });
     });
     super.didChangeMetrics();
   }
@@ -84,8 +77,8 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(flex: 4,child: _videoPlayerController!.value.isInitialized?AspectRatio(
-                aspectRatio:focusIndex==0?_videoPlayerController!.value.aspectRatio:3.5/1,
+            _videoPlayerController!.value.isInitialized?AspectRatio(
+              aspectRatio:focusIndex==0?_videoPlayerController!.value.aspectRatio:3.5/1,
               child: Stack(
                 children: [
                   VideoPlayer(_videoPlayerController!),
@@ -93,94 +86,92 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
                       bottom: 10,
                       left: 10,
                       child: Row(children: [
-                    InkWell(child: FaIcon(playState==0?FontAwesomeIcons.play:FontAwesomeIcons.stop,color: Colors.orangeAccent,),onTap: (){
-                      setState(() {
-                        if(playState==0){
-                          playState = 1;
-                          _videoPlayerController!.play();
-                        }else{
-                          playState=0;
-                          _videoPlayerController!.pause();
-                        }
-                      });
-                    },),
-                  ],))
+                        InkWell(child: FaIcon(playState==0?FontAwesomeIcons.play:FontAwesomeIcons.stop,color: Colors.orangeAccent,),onTap: (){
+                          setState(() {
+                            if(playState==0){
+                              playState = 1;
+                              _videoPlayerController!.play();
+                            }else{
+                              playState=0;
+                              _videoPlayerController!.pause();
+                            }
+                          });
+                        },),
+                      ],))
                 ],
               ),):
-            Center(child:Text("数据加载中"))),
-            Expanded(flex: 6,child: ListView.separated(itemBuilder: (context,index){
+            Center(child:Text("数据加载中")),
+            Expanded(child: ListView.separated(itemBuilder: (context,index){
               return Text("${_messagelist![index]}");
             }, separatorBuilder: (context,index){
               return Divider();
             }, itemCount: _messagelist!.length)),
-            Expanded(flex: 1,
-              child: Container(color: Colors.orange,
-                child: Row(
-                  children: [
-                    Expanded(
-                        flex: 7,child: Container(
-                          child: TextField(
-                          onChanged: (value){
-                            if(value.isEmpty){
-                              setState(() {
-                                inputbool = false;
-                              });
-                            }else{
-                              setState(() {
-                                inputbool = true;
-                                emjstatue =true;
-                              });
-                            }
-                          },
-                          controller: _textEditingController,
-                          minLines: 1,
-                          maxLines: 2,decoration: InputDecoration(
-                          isCollapsed: true,
-                          hintText: "请输入您要发表的意见",
-                          hintMaxLines: 20,
-                          border: InputBorder.none,
-                        ),)
-                    )),
-                    Expanded(
-                        flex:3,child:Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-                           Icon(Icons.add_circle),
-                           inputbool?
-                        Container(
-                          width: 50,
-                          child: Material(
-                              borderRadius: BorderRadius.circular(5),
+            Container(color: Colors.orange,
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 7,child: Container(
+                      child: TextField(
+                        onChanged: (value){
+                          if(value.isEmpty){
+                            setState(() {
+                              inputbool = false;
+                            });
+                          }else{
+                            setState(() {
+                              inputbool = true;
+                              emjstatue =true;
+                            });
+                          }
+                        },
+                        controller: _textEditingController,
+                        minLines: 1,
+                        maxLines: 2,decoration: InputDecoration(
+                        isCollapsed: true,
+                        hintText: "请输入您要发表的意见",
+                        hintMaxLines: 20,
+                        border: InputBorder.none,
+                      ),)
+                  )),
+                  Expanded(
+                      flex:3,child:Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
+                      Icon(Icons.add_circle),
+                      inputbool?
+                      Container(
+                        width: 50,
+                        child: Material(
+                            borderRadius: BorderRadius.circular(5),
 
-                              child:InkWell(
-                                onTap: (){
-                                  if(_textEditingController!.text.isEmpty){
-                                    PopupUntil.showToast("你输入的内容为空");
-                                    return;
-                                  }
-                                  _messagelist!.add(_textEditingController!.text);
-                                  _textEditingController!.clear();
-                                  setState(() {
-                                    inputbool =false;
-                                    emjstatue =true;
-                                  });
-                                },
-                                child: Container(
-                                  child: Center(child: Text("发送")),
-                                ),
-                              )
-                          ),
-                        ): GestureDetector(onTap: (){
-                          print("进去");
-                          setState(() {
-                            emjstatue =!emjstatue;
-                          });
-                        },child: FaIcon(FontAwesomeIcons.smileWink))
-                      ],),
-                    ))
-                  ],
-                ),
+                            child:InkWell(
+                              onTap: (){
+                                if(_textEditingController!.text.isEmpty){
+                                  PopupUntil.showToast("你输入的内容为空");
+                                  return;
+                                }
+                                _messagelist!.add(_textEditingController!.text);
+                                _textEditingController!.clear();
+                                setState(() {
+                                  inputbool =false;
+                                  emjstatue =true;
+                                });
+                              },
+                              child: Container(
+                                child: Center(child: Text("发送")),
+                              ),
+                            )
+                        ),
+                      ): GestureDetector(onTap: (){
+                        print("进去");
+                        setState(() {
+                          emjstatue =!emjstatue;
+                        });
+                      },child: FaIcon(FontAwesomeIcons.smileWink))
+                    ],),
+                  ))
+                ],
               ),
             )
           ],

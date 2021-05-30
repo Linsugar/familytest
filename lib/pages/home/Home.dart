@@ -24,9 +24,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   TabController ?tabcontroller;
   List<wxinfo> wxList = [];
   int index =0;
+  FocusNode _focusNode =FocusNode();
   TextEditingController? _textEditingController;
   @override
   void initState() {
+    _focusNode.unfocus();
     _textEditingController = TextEditingController();
     _getWxContext();
     tabcontroller  =TabController(length: 4, vsync: this)..addListener(() {
@@ -76,7 +78,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
               SliverAppBar(
                 backgroundColor: Colors.white,
                 pinned: true,
-                title:homeInput(_textEditingController!),
+                title:homeInput(_textEditingController!,_focusNode),
                 expandedHeight: 120,
                 floating: false,
                 flexibleSpace: FlexibleSpaceBar(
@@ -166,42 +168,12 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                   flex: 7,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("病例档案",style: TextStyle(fontWeight: FontWeight.w900),),
-                      Text("日常记录健康指标"),
-                    ],
-                  ),
+                  child: archivesWgt(context),
                 ),
                 Expanded(flex: 3,child: Center(child: FaIcon(FontAwesomeIcons.commentDots)))
               ],
             ),)),
-          Expanded(child: InkWell(onTap: (){
-            Navigator.pushNamed(context, '/doctor');
-          },child: Container(
-            padding: EdgeInsets.all(5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 7,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("找医生",style: TextStyle(fontWeight: FontWeight.w900),),
-                      Text("国内三级医院优秀医生在线问诊"),
-                    ],
-                  ),
-                ),
-                Expanded(flex: 3,child: Center(child: FaIcon(FontAwesomeIcons.commentDots)))
-              ],
-            ),
-            margin: EdgeInsets.all(5),
-            width: 150,height: 100,decoration: BoxDecoration(
-              color: Colors.orangeAccent,
-              borderRadius: BorderRadius.circular(5)
-          ),),)),
+          Expanded(child: findDoctor(context)),
         ],),
         Container(
           height: 100,
@@ -305,3 +277,47 @@ Widget homeCarousel(context){
   );
 }
 
+//病历档案
+Widget archivesWgt(context){
+  return InkWell(
+    onTap: (){
+      Navigator.of(context).pushNamed('/archives');
+    },
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("病例档案",style: TextStyle(fontWeight: FontWeight.w900),),
+        Text("日常记录健康指标"),
+      ],
+    ),
+  );
+}
+
+//找医生
+Widget findDoctor(context){
+  return InkWell(onTap: (){
+    Navigator.pushNamed(context, '/doctor');
+  },child: Container(
+    padding: EdgeInsets.all(5),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 7,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("找医生",style: TextStyle(fontWeight: FontWeight.w900),),
+              Text("国内三级医院优秀医生在线问诊"),
+            ],
+          ),
+        ),
+        Expanded(flex: 3,child: Center(child: FaIcon(FontAwesomeIcons.commentDots)))
+      ],
+    ),
+    margin: EdgeInsets.all(5),
+    width: 150,height: 100,decoration: BoxDecoration(
+      color: Colors.orangeAccent,
+      borderRadius: BorderRadius.circular(5)
+  ),),);
+}
