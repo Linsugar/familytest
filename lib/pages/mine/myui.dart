@@ -125,7 +125,9 @@ class myuistate extends State<myui>{
                           ),
                           child: Column(
                             children: [
-                              ListTile(leading: FaIcon(FontAwesomeIcons.heartbeat),title: Text("所有服务"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
+                              ListTile(onTap: (){
+                                Navigator.pushNamed(context, '/services');
+                              },leading: FaIcon(FontAwesomeIcons.heartbeat),title: Text("所有服务"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
                               Divider(indent: 20,endIndent: 20,),
                               ListTile(
                                 leading: FaIcon(FontAwesomeIcons.shoppingCart),title: Text("购买服务套餐"),trailing: FaIcon(FontAwesomeIcons.angleRight),
@@ -151,7 +153,7 @@ class myuistate extends State<myui>{
                           child: Column(
                             children: [
                               ListTile(leading: FaIcon(FontAwesomeIcons.cogs),title: Text("设置"),trailing: FaIcon(FontAwesomeIcons.angleRight),onTap: (){
-                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>MyHomePage()), (route) => false);
+                                Navigator.of(context).pushNamed('/servesetting');
                               },),
                             ],
                           ),

@@ -1,4 +1,6 @@
+import 'package:familytest/cmmmpns/allservices.dart';
 import 'package:familytest/cmmmpns/group.dart';
+import 'package:familytest/cmmmpns/servesetting.dart';
 import 'package:familytest/main.dart';
 import 'package:familytest/pages/chat/Chatchild.dart';
 import 'package:familytest/pages/chat/cpn/reviewcpn.dart';
@@ -43,6 +45,8 @@ class RoutePage{
     '/MainHome':(context,{argument})=>MainHome(),
     '/doctor':(context,{argument})=>FindDoctor(),
     '/archives':(context,{argument})=>Archives(),
+    '/services':(context,{argument})=>AllServices(),
+    '/servesetting':(context,{argument})=>ServiceSetting(),
   };
 
 // ignore: missing_return, top_level_function_literal_block
