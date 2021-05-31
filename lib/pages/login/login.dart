@@ -174,7 +174,6 @@ class _MyHomePageState extends State<MyHomePage>{
       var loginResult =  await Request.setNetwork('user/',userdata);
       Provider.of<GlobalState>(context,listen: false).changeloads(false);
       if(loginResult['token'] !=null){
-        Navigator.pop(context);
         context.read<GlobalState>().changlogintoken(loginResult['token']);
         context.read<GlobalState>().changuserid(loginResult['user_id']);
         context.read<GlobalState>().changeavator(loginResult['avator_image']);
