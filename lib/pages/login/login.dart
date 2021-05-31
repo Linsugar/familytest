@@ -191,8 +191,8 @@ class _MyHomePageState extends State<MyHomePage>{
       if(loginResult['msg']=='不存在'){
         Provider.of<GlobalState>(context,listen: false).changeloads(false);
         PopupUntil.showToast(loginResult['msg']);
+        Navigator.pop(context);
     }
-      Navigator.pop(context);
       return loginResult;
     }
   }
