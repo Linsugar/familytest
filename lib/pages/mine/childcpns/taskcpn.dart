@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 
 
-_TaskHistory(int ?statue,context)async{
+_taskHistory(int ?statue,context)async{
   var result = await Request.getNetwork('/taskonly/',params: {
     'taststatue':statue,
     'taskid':Provider.of<GlobalState>(context,listen: false).userid
@@ -18,15 +18,15 @@ _TaskHistory(int ?statue,context)async{
   return result;
 }
 
-class task extends StatefulWidget{
+class Task extends StatefulWidget{
   @override
-  _taskState createState() => _taskState();
+  _TaskState createState() => _TaskState();
 }
 
-class _taskState extends State<task> with SingleTickerProviderStateMixin{
+class _TaskState extends State<Task> with SingleTickerProviderStateMixin{
 
   TabController ?_tabController;
-  TextStyle _textStyle = TextStyle(color: Colors.blue,fontSize: 15);
+  TextStyle _textStyle = TextStyle(color: Colors.black,fontSize: 15);
   @override
   void initState() {
     // TODO: implement initState
@@ -46,7 +46,7 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("任务大厅"),actions: [MaterialButton(onPressed: (){
+        appBar: AppBar(title: Text("服务套餐",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),actions: [MaterialButton(onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (context)=>GetManger()));
         },child: Text("领取记录"),)],),
         body:Container(
@@ -56,9 +56,9 @@ class _taskState extends State<task> with SingleTickerProviderStateMixin{
                 child: TabBar(
                     controller: _tabController,
                     tabs: [
-                      Text("初级任务",style: _textStyle),
-                      Text("中级任务",style: _textStyle),
-                      Text("高级任务",style:_textStyle),
+                      Text("初级套餐",style: _textStyle),
+                      Text("中级套餐",style: _textStyle),
+                      Text("高级套餐",style:_textStyle),
                     ] ),
               )),
               Flexible(flex: 9,child: Container(child:
@@ -218,7 +218,7 @@ class _GetMangerState extends State<GetManger> {
       body: Container(
         child: Center(
           child: FutureBuilder(
-            future:_TaskHistory(_statue, context),
+            future:_taskHistory(_statue, context),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if(snapshot.connectionState ==ConnectionState.waiting){
                 return CircularProgressIndicator();

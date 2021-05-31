@@ -1,6 +1,7 @@
 import 'package:familytest/cmmmpns/allservices.dart';
 import 'package:familytest/cmmmpns/group.dart';
 import 'package:familytest/cmmmpns/servesetting.dart';
+import 'package:familytest/cmmmpns/seviceorder.dart';
 import 'package:familytest/main.dart';
 import 'package:familytest/pages/chat/Chatchild.dart';
 import 'package:familytest/pages/chat/cpn/reviewcpn.dart';
@@ -25,28 +26,29 @@ import 'package:flutter/material.dart';
 
 class RoutePage{
  static final routeName = {
-    '/task':(context,{argument})=>task(),
+    '/task':(context,{argument})=>Task(),
     '/Photos':(context,{argument})=>Photos(),
-    '/mysetting':(context,{argument})=>mysetting(),
+    '/mysetting':(context,{argument})=>MySetting(),
     '/childfamily':(context,{argument})=>childfamily(argument),
     '/mydynamic':(context,{argument})=>MyDynamic(),
-    '/chatChild':(context,{argument})=>chatChild(argument),
+    '/chatChild':(context,{argument})=>ChatChild(argument),
     '/Home':(context,{argument})=>Home(),
-    '/feedbook':(context,{argument})=>feedbook(),
+    '/feedbook':(context,{argument})=>FeedBook(),
     '/interg':(context,{argument})=>interg(),
-    '/familcpn':(context,{argument})=>familcpn(),
+    '/familcpn':(context,{argument})=>FamilyCpn(),
     '/Regitser':(context,{argument})=>Regitser(),
-    '/updynamic':(context,{argument})=>updynamic(),
+    '/updynamic':(context,{argument})=>UpDynamic(),
     '/videoWidget':(context,{argument})=>videoWidget(argument),
     '/webviewcpns':(context,{argument})=>webviewcpns(argument),
     '/MyHomePage':(context,{argument})=>MyHomePage(),
-    '/reviewCpn':(context,{argument})=>reviewCpn(argument),
-    '/createGroup':(context,{argument})=>createGroup(),
+    '/reviewCpn':(context,{argument})=>ReviewCpn(argument),
+    '/createGroup':(context,{argument})=>CreateGroup(),
     '/MainHome':(context,{argument})=>MainHome(),
     '/doctor':(context,{argument})=>FindDoctor(),
     '/archives':(context,{argument})=>Archives(),
     '/services':(context,{argument})=>AllServices(),
     '/servesetting':(context,{argument})=>ServiceSetting(),
+    '/order':(context,{argument})=>ServiceOrder(),
   };
 
 // ignore: missing_return, top_level_function_literal_block

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget homeInput(TextEditingController textController,FocusNode focusNode){
@@ -17,15 +18,11 @@ Widget homeInput(TextEditingController textController,FocusNode focusNode){
 }
 
 void showLoading(context){
-  showDialog(
+  showCupertinoDialog(
     context: context,
-    builder: (context){
+    builder: (_){
       return Center(child: CircularProgressIndicator());
     }
   );
 }
 
-
-Widget TesxtDmoe(){
-  return Text("1");
-}

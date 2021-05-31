@@ -7,12 +7,12 @@ import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class updynamic extends StatefulWidget {
+class UpDynamic extends StatefulWidget {
   @override
-  _updynamicState createState() => _updynamicState();
+  _UpDynamicState createState() => _UpDynamicState();
 }
 
-class _updynamicState extends State<updynamic> {
+class _UpDynamicState extends State<UpDynamic> {
   GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   TextEditingController _titlecontroller =TextEditingController();
   TextEditingController _contextcontroller =TextEditingController();

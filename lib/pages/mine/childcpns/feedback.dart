@@ -5,12 +5,13 @@ import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-class feedbook extends StatefulWidget {
+//反馈
+class FeedBook extends StatefulWidget {
   @override
-  _feedbookState createState() => _feedbookState();
+  _FeedBookState createState() => _FeedBookState();
 }
 
-class _feedbookState extends State<feedbook> {
+class _FeedBookState extends State<FeedBook> {
 
   TextEditingController _editingController = TextEditingController();
   var user_id;

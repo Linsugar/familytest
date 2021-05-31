@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:familytest/provider/grobleState.dart';
 
-class reviewCpn extends StatefulWidget {
+class ReviewCpn extends StatefulWidget {
   Map ?arguments;
-  reviewCpn(this.arguments);
+  ReviewCpn(this.arguments);
   @override
-  _reviewCpnState createState() => _reviewCpnState();
+  _ReviewCpnState createState() => _ReviewCpnState();
 }
 
-class _reviewCpnState extends State<reviewCpn> {
+class _ReviewCpnState extends State<ReviewCpn> {
   var data;
   TextEditingController _textEditingController = TextEditingController();
   ScrollController  _scrollController = ScrollController();

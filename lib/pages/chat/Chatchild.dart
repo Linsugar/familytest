@@ -9,17 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:familytest/roog/roogYun.dart';
 
-class chatChild extends StatefulWidget{
+class ChatChild extends StatefulWidget{
   Map ?arguments;
-  chatChild(this.arguments);
+  ChatChild(this.arguments);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return chatChildState();
+    return ChatChildState();
   }
 }
 
-class chatChildState extends State<chatChild>{
+class ChatChildState extends State<ChatChild>{
   var _streamController = StreamController<String>();
   var _textcontroller = TextEditingController();
   var userinfo;

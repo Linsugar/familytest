@@ -29,7 +29,7 @@ void main() =>runApp(
       providers: [
         ChangeNotifierProvider(create: (_)=>GlobalState()),
         ChangeNotifierProvider(create: (_)=>homeState(),child: Home(),),
-        ChangeNotifierProvider(create: (_)=>taskState(),child: task(),)
+        ChangeNotifierProvider(create: (_)=>taskState(),child: Task(),)
       ],
       child: MyApp(),));
 

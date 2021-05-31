@@ -9,12 +9,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-class createGroup extends StatefulWidget {
+
+//创建话题
+class CreateGroup extends StatefulWidget {
   @override
-  _createGroupState createState() => _createGroupState();
+  _CreateGroupState createState() => _CreateGroupState();
 }
 
-class _createGroupState extends State<createGroup> {
+class _CreateGroupState extends State<CreateGroup> {
 
   List imageDynamic = [];
   int stateus=0;
@@ -84,7 +86,7 @@ class _createGroupState extends State<createGroup> {
     var _state = context.watch<GlobalState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text("创建团队"),),
+      appBar: AppBar(title: Text("创建话题",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),),
       body: Container(
           width: _size.width,
           height: _size.height,

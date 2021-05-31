@@ -108,7 +108,7 @@ class myuistate extends State<myui>{
                               ListTile(leading: FaIcon(FontAwesomeIcons.ticketAlt),title: Text("优惠卷"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
                               Divider(indent: 20,endIndent: 20,),
                               ListTile(
-                                leading: FaIcon(FontAwesomeIcons.yenSign),title: Text("我的余额"),trailing: FaIcon(FontAwesomeIcons.angleRight),
+                                leading: FaIcon(FontAwesomeIcons.yenSign),title: Text("我的积分"),trailing: FaIcon(FontAwesomeIcons.angleRight),
                                 onTap: (){
                                   Navigator.pushNamed(context, '/interg');
                                 },
@@ -135,7 +135,11 @@ class myuistate extends State<myui>{
                                   Navigator.pushNamed(context, '/task');
                                 },),
                               Divider(indent: 20,endIndent: 20,),
-                              ListTile(leading: FaIcon(FontAwesomeIcons.clipboard),title: Text("服务订单"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
+                              ListTile(onTap: (){
+                                Navigator.pushNamed(context, "/order");
+                              },
+                                leading: FaIcon(FontAwesomeIcons.clipboard),title: Text("服务订单"),
+                                trailing: FaIcon(FontAwesomeIcons.angleRight),),
                               Divider(indent: 20,endIndent: 20,),
                               ListTile(leading: FaIcon(FontAwesomeIcons.clipboardList),title: Text("发起话题"),trailing: FaIcon(FontAwesomeIcons.angleRight),onTap: (){
                                 Navigator.pushNamed(context, '/familcpn');
@@ -167,7 +171,12 @@ class myuistate extends State<myui>{
                           ),
                           child: Column(
                             children: [
-                              ListTile(leading: FaIcon(FontAwesomeIcons.shareAlt),title: Text("分享"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
+                              ListTile(
+                                onTap: (){
+                                  sharePage(context);
+                                },
+                                leading: FaIcon(FontAwesomeIcons.shareAlt),title: Text("分享"),
+                                trailing: FaIcon(FontAwesomeIcons.angleRight),),
                               Divider(indent: 20,endIndent: 20,),
                               ListTile(leading: FaIcon(FontAwesomeIcons.globeAsia),title: Text("肾上线"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
                             ],
@@ -186,68 +195,55 @@ class myuistate extends State<myui>{
 }
 
 
-//CustomScrollView(
-//slivers: [
-//SliverAppBar(
-//actions: [
-//IconButton(icon: Icon(Icons.settings),
-//onPressed: (){
-//Navigator.pushNamed(context, '/mysetting');
-//})],
-//flexibleSpace: FlexibleSpaceBar(
-//background:Image.network(context.watch<GlobalState>().avator!,fit: BoxFit.cover,)
-//),
-//expandedHeight: 150,
-//),
-//SliverToBoxAdapter(
-//child: Container(margin: EdgeInsets.all(10),decoration: BoxDecoration(
-//color: Colors.white,
-//boxShadow: [BoxShadow(color: Colors.black38,offset: Offset(0.0, 0.0),spreadRadius: 1.0,blurRadius: 20)]
-//),height: 100,child: Row(
-//mainAxisAlignment: MainAxisAlignment.spaceAround,
-//children: [
-//Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [Text("粉丝"),Text("6578")],),
-//Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [Text("关注"),Text("503")],),
-//Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [Text("文章"),Text("85")],),
-//Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [Text("收藏"),Text("135")],),
-//],),),),
-//SliverToBoxAdapter(child: Container(
-//margin: EdgeInsets.all(10),
-//decoration: BoxDecoration(
-//color: Colors.white,
-//boxShadow: [BoxShadow(color: Colors.black38,offset: Offset(0.0,2.0),spreadRadius: 2.0,blurRadius: 10.0)]
-//),
-//height: 350,
-//child: Column(children: [
-//ListTile(onTap: (){
-//Navigator.pushNamed(context, '/task');
-//},leading: Icon(Icons.event,color: Colors.deepOrange,),title: Text("任务大厅"),trailing: Icon(Icons.chevron_right),),
-//ListTile(onTap: (){
-//Navigator.pushNamed(context, '/interg');
-//},leading: Icon(Icons.star,color: Colors.deepOrange,),title: Text("信用积分"),trailing: Icon(Icons.chevron_right),),
-//ListTile(onTap: (){
-//Navigator.pushNamed(context, '/cremacpn');
-//},leading: Icon(Icons.assessment,color: Colors.deepOrange,),title: Text("我的动态"),trailing: Icon(Icons.chevron_right),),
-//ListTile(onTap: (){
-//Navigator.pushNamed(context, '/familcpn');
-//},leading: Icon(Icons.audiotrack,color: Colors.deepOrange,),title: Text("团队管理"),trailing: Icon(Icons.chevron_right),),
-//ListTile(onTap: (){
-//Navigator.pushNamed(context, '/Photos');
-//},leading: Icon(Icons.panorama,color: Colors.deepOrange,),title: Text("我的相册"),trailing: Icon(Icons.chevron_right),),
-//ListTile(onTap: (){
-//Navigator.pushNamed(context, '/feedbook');
-//},leading: Icon(Icons.announcement,color: Colors.deepOrange,),title: Text("反馈意见"),trailing: Icon(Icons.chevron_right),),
-//],),
-//),),
-//SliverToBoxAdapter(child: Container(margin: EdgeInsets.only(left: 10),child: Text("标签：",style: TextStyle(color: Colors.orange),)),),
-//SliverToBoxAdapter(
-//child: Container(
-//margin: EdgeInsets.only(left: 10),
-//child: Wrap(spacing: 10.0,children: [
-//for(var i=0;i<10;i++)
-//MaterialButton(color: Colors.blue[200],onPressed: (){},child: Text("家族族长"),)
-//],),
-//),
-//)
-//],
-//)
+
+//渠道分享
+void sharePage(context){
+  showDialog(context: context, builder: (_){
+    return Dialog(
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+               Column(
+                 children: [
+                   FaIcon(FontAwesomeIcons.weixin,color: Colors.green,),
+                   Text("微信好友")
+                 ],
+               ),
+                Column(
+                  children: [
+                    FaIcon(FontAwesomeIcons.users,color: Colors.greenAccent,),
+                    Text("朋友圈")
+                  ],
+                ),
+                Column(
+                  children: [
+                    FaIcon(FontAwesomeIcons.shower,color: Colors.blue[200],),
+                    Text("收藏到微信")
+                  ],
+                ),
+                Column(
+                  children: [
+                    FaIcon(FontAwesomeIcons.link,color: Colors.deepOrange,),
+                    Text("复制链接")
+                  ],
+                ),
+              ],
+            ),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.orange),
+              ),
+              child: Text("取消"),onPressed: (){
+              Navigator.pop(context);
+            },)
+          ],
+        ),
+        height: 120,
+      ),
+    );
+  });
+}

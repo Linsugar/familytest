@@ -2,6 +2,7 @@
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
@@ -128,9 +129,10 @@ class _MyHomePageState extends State<MyHomePage>{
                                         'user_mobile':_Usercontroller?.text,
                                         'password':_Pwdcontroller?.text
                                         });}
-                                        showDialog(context: context, builder: (_){
-                                          return ShowAlertProgress(relogin(_userdata));
-                                        });
+                                        relogin(_userdata);
+//                                        showDialog(context: context, builder: (_){
+//                                          return ShowAlertProgress(relogin(_userdata));
+//                                        });
 
                                        }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
                                     )),
@@ -168,29 +170,30 @@ class _MyHomePageState extends State<MyHomePage>{
 
 
   Future relogin(userdata) async {
+      showLoading(context);
       var loginResult =  await Request.setNetwork('user/',userdata);
       Provider.of<GlobalState>(context,listen: false).changeloads(false);
       if(loginResult['token'] !=null){
-        PopupUntil.showToast(loginResult['msg']);
+        Navigator.pop(context);
         context.read<GlobalState>().changlogintoken(loginResult['token']);
         context.read<GlobalState>().changuserid(loginResult['user_id']);
         context.read<GlobalState>().changeavator(loginResult['avator_image']);
         context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
         context.read<GlobalState>().changeusername(loginResult['user_name']);
-        _setprrferceAll(loginResult);
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
             MainHome()), (route) => false);
       }
       if(loginResult['msg']=='密码或手机号有误'){
         Provider.of<GlobalState>(context,listen: false).changeloads(false);
         PopupUntil.showToast(loginResult['msg']);
+        Navigator.pop(context);
+
       }
       if(loginResult['msg']=='不存在'){
         Provider.of<GlobalState>(context,listen: false).changeloads(false);
-      PopupUntil.showToast(loginResult['msg']);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-          Regitser()));
+        PopupUntil.showToast(loginResult['msg']);
     }
+      Navigator.pop(context);
       return loginResult;
     }
   }

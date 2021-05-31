@@ -1,4 +1,4 @@
-//团队管理
+//话题管理
 
 
 import 'dart:convert';
@@ -8,13 +8,12 @@ import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-class familcpn extends StatefulWidget {
+class FamilyCpn extends StatefulWidget {
   @override
-  _familcpnState createState() => _familcpnState();
+  _FamilyCpn createState() => _FamilyCpn();
 }
 
-class _familcpnState extends State<familcpn> {
-  String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
+class _FamilyCpn extends State<FamilyCpn> {
 
   @override
   void initState() {
@@ -44,7 +43,7 @@ class _familcpnState extends State<familcpn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("团队"),),
+      appBar: AppBar(title: Text("话题",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),),
       body: Container(
         child: FutureBuilder(
           future: _Manger(),

@@ -17,10 +17,11 @@ class _ServiceSettingState extends State<ServiceSetting> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white70,
-      appBar: AppBar(title: Text("设置"),backgroundColor: Colors.orange,iconTheme: IconThemeData(color: Colors.white),),
+      appBar: AppBar(title: Text("设置",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),),
       body: Column(
         children: [
           Container(
+            margin: EdgeInsets.only(top: 10),
             color: Colors.white,
             child: ListTile(onTap: (){
               PopupUntil.showToast("功能尚在开发中");

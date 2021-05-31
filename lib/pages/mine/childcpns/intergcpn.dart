@@ -14,7 +14,6 @@ class interg extends StatefulWidget {
 }
 
 class _intergState extends State<interg> {
-  String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F201506%2F07%2F20150607152403_imWHZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619914237&t=515f1d7509029c6c468eda87127712e1';
   ScrollController _scrollController = ScrollController();
 
 
@@ -31,7 +30,7 @@ class _intergState extends State<interg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("我的积分"),),
+      appBar: AppBar(title: Text("我的积分",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),),
       body:Container(
         child: Flex(
           direction: Axis.vertical,
@@ -40,7 +39,7 @@ class _intergState extends State<interg> {
               padding: EdgeInsets.all(10),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Color.fromRGBO(112,182, 3, 1),
+                    color: Colors.orange,
                     borderRadius: BorderRadius.circular(5),
                     boxShadow: [BoxShadow(color: Color.fromRGBO(112, 182, 3,0.6),spreadRadius:1.2,blurRadius: 1.5)]
                 ),

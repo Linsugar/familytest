@@ -3,15 +3,15 @@ import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-class mysetting extends StatefulWidget{
+class MySetting extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return mysettingstate();
+    return MySettingState();
   }
 }
 
-class mysettingstate extends State<mysetting>{
+class MySettingState extends State<MySetting>{
   @override
   void initState(){
     super.initState();
