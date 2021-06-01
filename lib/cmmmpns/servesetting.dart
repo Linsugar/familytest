@@ -1,9 +1,8 @@
 import 'package:familytest/pages/login/login.dart';
+import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-
 
 
 //系统设置
@@ -16,6 +15,12 @@ class _ServiceSettingState extends State<ServiceSetting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          showLoading(context);
+        },
+        child: Text("进度条"),
+      ),
       backgroundColor: Colors.white70,
       appBar: AppBar(title: Text("设置",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),),
       body: Column(
