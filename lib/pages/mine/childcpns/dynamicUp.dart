@@ -42,7 +42,7 @@ void upDynamic()async{
     )
   );
   }
-  var result = await Request.setNetwork('DyImage/',data,token: context.read<GlobalState>().logintoken);
+  var result =  Request.setNetwork('DyImage/',data,token: context.read<GlobalState>().logintoken);
   try{
     if(result['user_id'] == context.read<GlobalState>().userid){
       PopupUntil.showToast('发布成功，请稍后');
@@ -54,10 +54,8 @@ void upDynamic()async{
     }
   }catch(e){
     Navigator.pop(context);
-    PopupUntil.showToast('请按照要求，填写数据');
+    PopupUntil.showToast('请重新进入动态页，填写数据');
   }
-
-
 }
 
 

@@ -116,8 +116,11 @@ class MyAppState extends State<MyApp>{
     var result = await Request.getNetwork('userinfo/',params: {
       'user_id':context.read<GlobalState>().userid
     });
-    for(var i=0;i<result.length;i++){
-      Provider.of<GlobalState>(context,listen: false).changealluser(userinfomodel(result[i]));
+    print("得到的结果：${result}");
+    if(result.length!=null){
+      for(var i=0;i<result.length;i++){
+        Provider.of<GlobalState>(context,listen: false).changealluser(userinfomodel(result[i]));
+      }
     }
   }
 

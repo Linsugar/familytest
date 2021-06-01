@@ -173,6 +173,7 @@ class _MyHomePageState extends State<MyHomePage>{
       showLoading(context);
       var loginResult =  await Request.setNetwork('user/',userdata);
       Provider.of<GlobalState>(context,listen: false).changeloads(false);
+
       if(loginResult['token'] !=null){
         context.read<GlobalState>().changlogintoken(loginResult['token']);
         context.read<GlobalState>().changuserid(loginResult['user_id']);
