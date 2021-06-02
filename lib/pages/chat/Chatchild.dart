@@ -21,18 +21,17 @@ class ChatChild extends StatefulWidget{
 
 class ChatChildState extends State<ChatChild>{
   var _streamController = StreamController<String>();
-  var _textcontroller = TextEditingController();
-  var userinfo;
-  List histortlist =[];
+  var _textController = TextEditingController();
+  var userInfo;
   FocusNode focusNode = FocusNode();
   ScrollController _controller = ScrollController();
-  bool inputbool = false;
-  bool emjstatue = true;
+  bool inputBool = false;
+  bool emjStatue = true;
 
   @override
   void initState() {
-    userinfo = widget.arguments!['userinfo'];
-    Roogyun.getConversation(userinfo.userid);
+    userInfo = widget.arguments!['userinfo'];
+    Roogyun.getConversation(userInfo.userid);
     getallmeg();
     getlistn();
     checkfoucde();
@@ -45,7 +44,7 @@ class ChatChildState extends State<ChatChild>{
     _streamController.close();
     super.dispose();
   }
-
+//获取emjo
   _getemijdata()async{
     var _data = await rootBundle.loadString('data/emij.json');
     var result = jsonDecode(_data);
@@ -64,20 +63,20 @@ class ChatChildState extends State<ChatChild>{
       }
     });
   }
-
+//获取融云历史消息
   getallmeg()async{
-    await Roogyun.roogHistoryMessages(userinfo.userid,context);
+    await Roogyun.roogHistoryMessages(userInfo.userid,context);
   }
+//  对融云进行监听
   getlistn()async{
     await Roogyun.rooglistn(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    var hisy =context.watch<GlobalState>().historylist;
-    var emij = context.watch<GlobalState>().emij;
+    var state =context.watch<GlobalState>();
     return Scaffold(
-      appBar: AppBar(title: Text(userinfo.name),actions: [CircleAvatar(backgroundImage: NetworkImage(userinfo.avator_image)),SizedBox(width: 10,)],),
+      appBar: AppBar(title: Text(userInfo.name),actions: [CircleAvatar(backgroundImage: NetworkImage(userInfo.avator_image)),SizedBox(width: 10,)],),
       body:WillPopScope(
         onWillPop: ()async{
           print("拦截");
@@ -93,11 +92,11 @@ class ChatChildState extends State<ChatChild>{
               child: ListView.separated(
                   controller: _controller,
                   itemBuilder: (context,index){
-                    var Data = hisy![index];
-                    return  hisy[index].senderUserId==userinfo.userid?talk1(Data: Data, userinfo: userinfo):talk2(Data: Data);
+                    var data = state.historylist![index];
+                    return state.historylist![index].senderUserId==userInfo.userid?talkLeft(userInfo,data):talkRight(state,data);
                   }, separatorBuilder: (context,index){
                 return Divider();
-              }, itemCount: hisy!.length),
+              }, itemCount: state.historylist!.length),
             )),
             Container(
                 width: MediaQuery.of(context).size.width,
@@ -117,17 +116,17 @@ class ChatChildState extends State<ChatChild>{
                           onChanged: (value){
                             if(value.isEmpty){
                               setState(() {
-                                inputbool = false;
+                                inputBool = false;
                               });
                             }else{
                               setState(() {
-                                inputbool = true;
-                                emjstatue =true;
+                                inputBool = true;
+                                emjStatue =true;
                               });
                             }
                           },
                           focusNode: focusNode,
-                          controller: _textcontroller,
+                          controller: _textController,
                           minLines: 1,
                           maxLines: 2,decoration: InputDecoration(
                           isCollapsed: true,
@@ -142,7 +141,7 @@ class ChatChildState extends State<ChatChild>{
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
                         Icon(Icons.add_circle),
-                        inputbool?
+                        inputBool?
                         Container(
                           width: 50,
                           child: Material(
@@ -150,16 +149,16 @@ class ChatChildState extends State<ChatChild>{
                               color: Colors.blue,
                               child:InkWell(
                                 onTap: (){
-                                  if(_textcontroller.text.isEmpty){
+                                  if(_textController.text.isEmpty){
                                     Fluttertoast.showToast(msg: "你输入的内容为空");
                                     return;
                                   }
-                                  print("当前输入内容：${_textcontroller.text},当前userid:${userinfo.userid}");
-                                  Roogyun.sedMessage(_textcontroller.text,userinfo.userid,context);
-                                  _textcontroller.clear();
+                                  print("当前输入内容：${_textController.text},当前userid:${userInfo.userid}");
+                                  Roogyun.sedMessage(_textController.text,userInfo.userid,context);
+                                  _textController.clear();
                                   setState(() {
-                                    inputbool =false;
-                                    emjstatue =true;
+                                    inputBool =false;
+                                    emjStatue =true;
                                   });
                                 },
                                 child: Container(
@@ -170,31 +169,14 @@ class ChatChildState extends State<ChatChild>{
                         ): GestureDetector(onTap: (){
                           print("进去");
                           setState(() {
-                            emjstatue =!emjstatue;
+                            emjStatue =!emjStatue;
                           });
                         },child: FaIcon(FontAwesomeIcons.smileWink))
                       ],),
                     ))
                   ],
                 )),
-            emjstatue?Container():Container(
-              height: 140,
-              color: Colors.blueGrey,
-              child: PageView(
-                children: [
-                  GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 10,
-                  ), itemBuilder: (context,index){
-                    return GestureDetector(
-                      onTap: (){
-                        _textcontroller.text = "${_textcontroller.text}" + "${String.fromCharCode(emij![index]['unicode'])}";
-                      },
-                        child: Text("${String.fromCharCode(emij![index]['unicode'])}"));
-                  },itemCount: 40,),
-                ],
-              ),
-            )
+            emjStatue?Container():emjContainer(_textController,state)
           ],
         ),
       ),
@@ -202,35 +184,42 @@ class ChatChildState extends State<ChatChild>{
   }
 }
 
-class talk1 extends StatelessWidget {
-  const talk1({
-    Key? key,
-    required this.Data,
-    required this.userinfo,
-  }) : super(key: key);
+//聊天表情
+Widget emjContainer(text,state){
+  return Container(
+    height: 140,
+    color: Colors.blueGrey,
+    child: PageView(
+      children: [
+        GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 10,
+          ), itemBuilder: (context,index){
+          return GestureDetector(
+              onTap: (){
+                text.text = "${text.text}" + "${String.fromCharCode(state.emij![index]['unicode'])}";
+              },
+              child: Text("${String.fromCharCode(state.emij![index]['unicode'])}"));
+        },itemCount: 40,),
+      ],
+    ),
+  );
+}
 
-  final Data;
-  final userinfo;
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(backgroundImage: NetworkImage(userinfo.avator_image),),
+//左
+Widget talkLeft(userInfo,data){
+  return ListTile(
+    leading: CircleAvatar(backgroundImage: NetworkImage(userInfo.avator_image),),
 //      title: Text("${Data.senderUserId}"),
-      subtitle: Text("${Data.content.content}"),
-    );
-  }
+    subtitle: Text("${data.content.content}"),
+  );
 }
-class talk2 extends StatelessWidget {
-  const talk2({
-    Key? key,
-    required this.Data,
-  }) : super(key: key);
-  final Data;
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      subtitle: Text("${Data.content.content}",textAlign: TextAlign.right,style: TextStyle(),),
-      trailing: CircleAvatar(backgroundImage: NetworkImage(context.watch<GlobalState>().avator!),),
-    );
-  }
+
+//右
+Widget talkRight(state,data){
+  return ListTile(
+    subtitle: Text("${data.content.content}",textAlign: TextAlign.right,style: TextStyle(),),
+    trailing: CircleAvatar(backgroundImage: NetworkImage(state.avator!),),
+  );
 }
+
