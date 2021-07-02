@@ -174,26 +174,30 @@ class _MyHomePageState extends State<MyHomePage>{
       var loginResult =  await Request.setNetwork('user/',userdata);
       Provider.of<GlobalState>(context,listen: false).changeloads(false);
 
-      if(loginResult['token'] !=null){
-        context.read<GlobalState>().changlogintoken(loginResult['token']);
-        context.read<GlobalState>().changuserid(loginResult['user_id']);
-        context.read<GlobalState>().changeavator(loginResult['avator_image']);
-        context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
-        context.read<GlobalState>().changeusername(loginResult['user_name']);
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
-            MainHome()), (route) => false);
-      }
-      if(loginResult['msg']=='密码或手机号有误'){
-        Provider.of<GlobalState>(context,listen: false).changeloads(false);
-        PopupUntil.showToast(loginResult['msg']);
-        Navigator.pop(context);
+      try{
+        if(loginResult['token'] !=null){
+          context.read<GlobalState>().changlogintoken(loginResult['token']);
+          context.read<GlobalState>().changuserid(loginResult['user_id']);
+          context.read<GlobalState>().changeavator(loginResult['avator_image']);
+          context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
+          context.read<GlobalState>().changeusername(loginResult['user_name']);
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
+              MainHome()), (route) => false);
+        }
+        if(loginResult['msg']=='密码或手机号有误'){
+          Provider.of<GlobalState>(context,listen: false).changeloads(false);
+          PopupUntil.showToast(loginResult['msg']);
+          Navigator.pop(context);
 
-      }
-      if(loginResult['msg']=='不存在'){
-        Provider.of<GlobalState>(context,listen: false).changeloads(false);
-        PopupUntil.showToast(loginResult['msg']);
+        }
+        if(loginResult['msg']=='不存在'){
+          Provider.of<GlobalState>(context,listen: false).changeloads(false);
+          PopupUntil.showToast(loginResult['msg']);
+          Navigator.pop(context);
+        }
+      }catch(e){
         Navigator.pop(context);
-    }
+      }
       return loginResult;
     }
   }

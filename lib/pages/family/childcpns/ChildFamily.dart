@@ -13,7 +13,6 @@ class childfamily extends StatefulWidget{
 class childfamilystate extends State<childfamily>{
   String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
   ScrollController _ctl = ScrollController();
-  static bool  _scl = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -23,7 +22,6 @@ class childfamilystate extends State<childfamily>{
 
   @override
   Widget build(BuildContext context) {
-    Size _size = MediaQuery.of(context).size;
 
     // TODO: implement build
     return Scaffold(

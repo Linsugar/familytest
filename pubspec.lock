@@ -28,7 +28,7 @@ packages:
       name: carousel_slider
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.0-nullsafety.0"
+    version: "4.0.0"
   characters:
     dependency: transitive
     description:
@@ -151,6 +151,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.1"
+  flutter_qr_reader:
+    dependency: "direct main"
+    description:
+      name: flutter_qr_reader
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.5"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:

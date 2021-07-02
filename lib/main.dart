@@ -138,6 +138,7 @@ class MyAppState extends State<MyApp>{
   Widget build(BuildContext context) {
     return MaterialApp(
         title: "家族",
+
         debugShowCheckedModeBanner: false,
         onGenerateRoute: RoutePage.onGenerateRoute,
         home: token==true?MainHome():MyHomePage());
@@ -253,20 +254,3 @@ class _MainHomeState extends State<MainHome> {
 
 
 
-//
-//BottomNavigationBar(
-//selectedItemColor: Colors.orange,
-//onTap: (value){print("value:$value");
-//setState(() {
-//_index = value;
-//});
-//},
-//currentIndex: _index,
-//type: BottomNavigationBarType.fixed,
-//items: [
-//BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.themeisle),label: "首页"),
-//BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.users),label: "话题"),
-//BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.sms),label: "社区"),
-//BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.monero),label: "我的"),
-//],
-//)

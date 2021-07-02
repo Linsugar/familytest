@@ -85,7 +85,7 @@ class ChatPage extends StatelessWidget {
       child: Container(padding: EdgeInsets.only(top: 10),width: _size.width,height: _size.height,
         child: Column(
           children: [
-            header(),
+            Header(),
             Expanded(
               child: FutureBuilder(
                 future: Roogyun.getallConversation(),
@@ -159,8 +159,19 @@ class _DynamicPageState extends State<DynamicPage> {
     result.forEach((value){
       dylist.add(chatdynamic(value));
     });
-    print("当前List；$dylist");
     return dylist;
+  }
+  FocusNode _focusNode = FocusNode();
+  ScrollController _scrollController =ScrollController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    print("进入动态页");
+    _focusNode.unfocus();
+    _scrollController.addListener(() {
+      _focusNode.unfocus();
+    });
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -177,6 +188,7 @@ class _DynamicPageState extends State<DynamicPage> {
                 borderRadius: BorderRadius.circular(20)
               ),
               child: TextField(
+                focusNode: _focusNode,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
                   border: InputBorder.none
@@ -206,6 +218,7 @@ class _DynamicPageState extends State<DynamicPage> {
               }
               else{
                 return Container(child: ListView.separated(
+                    controller: _scrollController,
                     itemBuilder: (context,index){
                       return  Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,6 +246,7 @@ class _DynamicPageState extends State<DynamicPage> {
                               children: [
                                 Expanded(flex: 3,
                                   child: ListView.separated(
+
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context,im){
                                         return Container(
@@ -277,65 +291,35 @@ class _DynamicPageState extends State<DynamicPage> {
   }
 }
 
-class header extends StatelessWidget {
-  const header({
+class Header extends StatelessWidget {
+  const Header({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var spdate =context.watch<GlobalState>().overuser;
+    var sPDate =context.watch<GlobalState>().overuser;
     return Container(
         height: 80,
         padding: EdgeInsets.all(5),child:
-    ListView.separated(scrollDirection: Axis.horizontal,itemBuilder: (context,index){
+     ListView.separated(scrollDirection: Axis.horizontal,itemBuilder: (context,index){
       return GestureDetector(
         onTap: (){
           Navigator.pushNamed(context,'/chatChild',arguments:{
-            "userinfo":spdate![index]
+            "userinfo":sPDate![index]
           });
         },
         child: Container(
             height: 50,
             width: 50,
             margin: EdgeInsets.all(5),decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 2.0),shape:BoxShape.circle ,
-            boxShadow: [BoxShadow(color: Colors.blue,offset: Offset(0.0,1.0))],image: DecorationImage(image: NetworkImage(spdate![index].avator_image),fit: BoxFit.cover)
+            boxShadow: [BoxShadow(color: Colors.blue,offset: Offset(0.0,1.0))],image: DecorationImage(image: NetworkImage(sPDate![index].avator_image),fit: BoxFit.cover)
         )),
       );
-    },itemCount: spdate!.length,separatorBuilder: (context,index){
+    },itemCount: sPDate!.length,separatorBuilder: (context,index){
       return SizedBox(width: 10,);
     },)
     );
   }
 }
-
-
-class PopuWidget extends StatelessWidget {
-  const PopuWidget({
-    Key ?key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton(
-        padding: EdgeInsets.all(8),
-        offset: Offset(0,5.0),
-        onSelected: (value){
-          print("选中的值:$value");
-        },
-        itemBuilder:(BuildContext context) => <PopupMenuItem<String>>[
-          PopupMenuItem<String>(
-              value: '选项一的值',
-              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.account_circle,color: Colors.lightBlue,),Text("添加好友")],)
-          ),
-          PopupMenuItem<String>(
-              value: '选项二的值',
-              child: Row(mainAxisSize: MainAxisSize.min,children: [Icon(Icons.search,color: Colors.lightBlue,),Text("搜索好友")],)
-
-          )
-        ]
-    );
-  }
-}
-
 

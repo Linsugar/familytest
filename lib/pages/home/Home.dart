@@ -26,6 +26,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   int index =0;
   FocusNode _focusNode =FocusNode();
   TextEditingController? _textEditingController;
+  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     _focusNode.unfocus();
@@ -43,12 +44,15 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
       }
     });
     Roogyun.roogclient(context.read<GlobalState>().roogtoken);
-
+    _scrollController.addListener(() {
+      _focusNode.unfocus();
+    });
 
   }
   @override
   void dispose() {
     // TODO: implement dispose
+    _focusNode.dispose();
     super.dispose();
   }
   _getWxContext()async{
@@ -74,6 +78,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
         resizeToAvoidBottomInset: false,
         body: CustomScrollView(
             scrollDirection:Axis.vertical,
+            controller: _scrollController,
             slivers: [
               SliverAppBar(
                 backgroundColor: Colors.white,

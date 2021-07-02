@@ -47,6 +47,7 @@ class ChatChildState extends State<ChatChild>{
 //获取emjo
   _getemijdata()async{
     var _data = await rootBundle.loadString('data/emij.json');
+
     var result = jsonDecode(_data);
     print("长度：${result.runtimeType}");
    for(var i=0;i<100;i++){
@@ -220,6 +221,20 @@ Widget talkRight(state,data){
   return ListTile(
     subtitle: Text("${data.content.content}",textAlign: TextAlign.right,style: TextStyle(),),
     trailing: CircleAvatar(backgroundImage: NetworkImage(state.avator!),),
+  );
+}
+
+
+Widget test(){
+  return Column(
+    children: [
+      Expanded(child: ListView(
+        children: [
+          Container(height: 10,child: Text("我是文本"),),
+    
+        ],
+      ))
+    ],
   );
 }
 
