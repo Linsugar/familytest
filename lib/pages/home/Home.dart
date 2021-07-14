@@ -87,7 +87,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                 expandedHeight: 120,
                 floating: false,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Image.network(_imageUrl,fit: BoxFit.cover,),
+                  background: Image.asset('images/homebg.jpg',fit: BoxFit.cover,),
                 ),
               ),
               SliverToBoxAdapter(child: HomePage()),

@@ -3,11 +3,11 @@ import 'package:dio/dio.dart';
 class Request{
   static Dio network = new Dio(BaseOptions(
     connectTimeout: 5000,
-    baseUrl:'http://tlapp.club:8002/Jia/'
+//    baseUrl:'http://tlapp.club:8002/Jia/'
 //    baseUrl: 'http://3ie5702133.wicp.vip/Jia/'
 ////    测试
 //    baseUrl: 'http://192.168.1.5:8000/Jia/',
-//    baseUrl: 'http://192.168.5.208:8000/Jia/',
+    baseUrl: 'http://192.168.5.208:8000/Jia/',
   ))..interceptors.add(InterceptorsWrapper(
     onRequest:(options, handler) {
       print("进入拦截onRequest${options.data}");
