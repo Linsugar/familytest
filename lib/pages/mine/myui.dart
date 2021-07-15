@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class myui extends StatefulWidget{
+class MyUi extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return myuistate();
+    return MyUiState();
   }
 }
 
 
-class myuistate extends State<myui>{
+class MyUiState extends State<MyUi>{
 
 @override
   void initState() {

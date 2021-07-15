@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/until/CommonUntil.dart';
+import 'package:familytest/until/CreamUntil.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
 
 //系统设置
 class ServiceSetting extends StatefulWidget {
@@ -12,6 +15,16 @@ class ServiceSetting extends StatefulWidget {
 }
 
 class _ServiceSettingState extends State<ServiceSetting> {
+  Storage  storage = Storage();
+  String token  ='cyIcJU0RXy1nD1t0I6DauqqCblEcFX1npjtld5Ky:huKG-Ckj5U4ZBeDFCtAX-xXax7s=:eyJzY29wZSI6InRhbmdodWFkb25nIiwiZGVhZGxpbmUiOjE2MjYzNDIyNjB9';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +41,13 @@ class _ServiceSettingState extends State<ServiceSetting> {
           Container(
             margin: EdgeInsets.only(top: 10),
             color: Colors.white,
-            child: ListTile(onTap: (){
-              PopupUntil.showToast("功能尚在开发中");
+            child: ListTile(onTap: ()async{
+              var res = await Creamer.GetGrally();
+              storage.putFile(File(res), token)
+                  .then((value) => print("上传结果：${value.key}"))
+              .catchError((onError)=>{
+                print("上传错误：$onError")
+              });
             },leading: Text("账号绑定设置"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
           ),
          Container(

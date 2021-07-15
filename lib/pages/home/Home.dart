@@ -44,29 +44,34 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     _scrollController.addListener(() {
       _focusNode.unfocus();
     });
+    _getQiuNiuToken();
 
   }
+  //  获取微信文章
+  _getWxContext()async{
+    var wx = context.read<GlobalState>();
+    if(wx.wxlist.isEmpty){
+      dynamic result = await Request.getNetwork("wxarticle/",token: context.read<GlobalState>().logintoken);
+      var wxContent = jsonDecode(result);
+      dynamic wxItem = wxContent['item'];
+      wxItem.forEach((value){
+        wx.changewxlist(wxinfo(value['content']['news_item'][0]));
+      });
+      await ShowAlerDialog(context);
+    }
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
     _focusNode.dispose();
     super.dispose();
   }
-  _getWxContext()async{
-    var wx = context.read<GlobalState>();
-    if(wx.wxlist.isEmpty){
-      dynamic result = await Request.getNetwork("wxarticle/",token: context.read<GlobalState>().logintoken);
-      var js = jsonDecode(result);
-      dynamic itm = js['item'];
-      itm.forEach((value){
-        print("home:$value");
-        wx.changewxlist(wxinfo(value['content']['news_item'][0]));
-      });
-      await ShowAlerDialog(context);
-    }
 
+  _getQiuNiuToken()async{
+    dynamic result = await Request.setNetwork('qiniu/', null,token: context.read<GlobalState>().logintoken);
+    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
   }
-
 
   @override
   Widget build(BuildContext context) {

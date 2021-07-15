@@ -14,6 +14,18 @@ class GlobalState with ChangeNotifier{
   List ?emij = [];
   bool loadstatue =false;
   List wxlist = [];
+  List upImageList = [];
+  String ?qiNiuToken;
+
+  changeQiNiu(value){
+    qiNiuToken =value;
+    notifyListeners();
+  }
+
+  changeUpImage(value){
+    upImageList.add(value);
+    notifyListeners();
+  }
 
 
   changewxlist(value){

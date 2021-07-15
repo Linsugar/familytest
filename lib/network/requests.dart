@@ -29,7 +29,6 @@ class Request{
     );
     try{
       var getResult = await network.get(url,queryParameters: params,options: options);
-      print("返回的数据：${getResult.data}");
       return getResult.data;
 
     }catch(e){

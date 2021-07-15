@@ -132,7 +132,6 @@ class MyAppState extends State<MyApp>{
       videoList.add(VideoInfo(element));
     });
     Provider.of<homeState>(context,listen: false).changeVideo(videoList);
-    print("得到的结果：${videoList}");
   }
   @override
   Widget build(BuildContext context) {
@@ -152,7 +151,7 @@ class MainHome extends StatefulWidget {
 
 class _MainHomeState extends State<MainHome> {
   static int _index = 0;
-  var _listwiget = [Home(),Family(),Chat(),myui(),UpDiseaseCase()];
+  var _listWiget = [Home(),Family(),Chat(),MyUi(),UpDiseaseCase()];
 
   @override
   void initState() {
@@ -173,7 +172,7 @@ class _MainHomeState extends State<MainHome> {
             });
           } ,
         ),
-        body:_listwiget[_index],
+        body:_listWiget[_index],
         backgroundColor: Colors.white,
         bottomNavigationBar:
         BottomAppBar(

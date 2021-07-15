@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
+import 'package:provider/provider.dart';
 
 Widget homeInput(TextEditingController textController,FocusNode focusNode){
   return Container(
@@ -26,6 +31,14 @@ void showLoading(context){
       return Center(child:CircularProgressIndicator());
     }
   );
+}
+
+
+//七牛云上传图片返回地址
+qiNiuUpImage(String path,String token)async{
+  Storage stroge = Storage();
+  var result =  await stroge.putFile(File(path),token);
+  return result;
 }
 
 //

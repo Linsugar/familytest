@@ -18,6 +18,7 @@ class _UpDynamicState extends State<UpDynamic> {
   TextEditingController _titlecontroller =TextEditingController();
   TextEditingController _contextcontroller =TextEditingController();
   List imageDynamic = [];
+  List<String> upImage = [];
   var stateus=0;
 
 
@@ -26,7 +27,6 @@ class _UpDynamicState extends State<UpDynamic> {
 void upDynamic()async{
   showLoading(context);
   var data  = FormData.fromMap({
-    'image':[],
     'user_id':context.read<GlobalState>().userid,
     'new_filename':'${DateTime.now().microsecondsSinceEpoch}'+'.jpg',
     'up_title':_titlecontroller.text,
@@ -34,14 +34,15 @@ void upDynamic()async{
     'up_addres':context.read<GlobalState>().city,
     'up_name':context.read<GlobalState>().username,
     'up_avator':context.read<GlobalState>().avator,
+    'image':upImage
   });
-  for(var i=0;i<imageDynamic.length;i++){
-    data.files.add(
-        MapEntry('image',
-            await MultipartFile.fromFile(imageDynamic[i])
-    )
-  );
-  }
+//  for(var i=0;i<imageDynamic.length;i++){
+//    data.files.add(
+//        MapEntry('image',
+//            await MultipartFile.fromFile(imageDynamic[i])
+//    )
+//  );
+//  }
   var result =  Request.setNetwork('DyImage/',data,token: context.read<GlobalState>().logintoken);
   try{
     if(result['user_id'] == context.read<GlobalState>().userid){
@@ -61,6 +62,7 @@ void upDynamic()async{
 
   @override
   Widget build(BuildContext context) {
+  String token = context.watch<GlobalState>().qiNiuToken!;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -123,14 +125,15 @@ void upDynamic()async{
                         ),),
                       imageDynamic.length==4?Text(""):MaterialButton(
                         onPressed: ()async{
-                          var reslut = await Creamer.GetGrally();
-                          print("得到的结果：${reslut}");
+                          var result = await Creamer.GetGrally();
+                          var ImagePath = await qiNiuUpImage(result,token);
                           setState(() {
-                            if(reslut !=null){
-                              imageDynamic.add(reslut);
+                            if(result !=null){
+                              imageDynamic.add(result);
+                              upImage.add(ImagePath.key);
                               stateus=1;
                               print("得到的图片内容：${imageDynamic}");
-                              print("得到的图片长度：${imageDynamic.length}");
+                              print("得到的七牛云图片内容：${upImage}");
                             }
                           });
                         },
