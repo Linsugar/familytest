@@ -15,11 +15,12 @@ class wxinfo{
   String ?wxurl;
   String ?wxphoto;
   wxinfo(value){
-    this.wxtitle = value['wxtitle'];
-    this.wxtime = value['wxtime'];
-    this.wxurl = value['wxurl'];
-    this.wxphoto = value['wximage'];
+    this.wxtitle = value['title'];
+    this.wxtime = value['author'];
+    this.wxurl = value['url'];
+    this.wxphoto = value['thumb_url'];
   }
+
 }
 
 

@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/provider/homeState.dart';
@@ -20,9 +22,7 @@ class Home extends StatefulWidget{
 }
 
 class HomeState extends State<Home> with SingleTickerProviderStateMixin{
-  String _imageUrl = 'http://qtr6xp7uf.hn-bkt.clouddn.com/imge.png';
   TabController ?tabcontroller;
-  List<wxinfo> wxList = [];
   int index =0;
   FocusNode _focusNode =FocusNode();
   TextEditingController? _textEditingController;
@@ -33,13 +33,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     _textEditingController = TextEditingController();
     _getWxContext();
     tabcontroller  =TabController(length: 4, vsync: this)..addListener(() {
-      print("得到的数据:${tabcontroller!.index}");
       if(tabcontroller!.animation!.value ==tabcontroller!.index){
-        print("重复调用进行过滤");
       }else{
         setState(() {
           index = tabcontroller!.index;
-          print("打印");
         });
       }
     });
@@ -58,16 +55,16 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   _getWxContext()async{
     var wx = context.read<GlobalState>();
     if(wx.wxlist.isEmpty){
-      dynamic result = await Request.getNetwork("wxarticle/");
-      result.forEach((value){
+      dynamic result = await Request.getNetwork("wxarticle/",token: context.read<GlobalState>().logintoken);
+      var js = jsonDecode(result);
+      dynamic itm = js['item'];
+      itm.forEach((value){
         print("home:$value");
-        wx.changewxlist(wxinfo(value));
+        wx.changewxlist(wxinfo(value['content']['news_item'][0]));
       });
       await ShowAlerDialog(context);
-      return wxList;
-    }else{
-      return wxList;
     }
+
   }
 
 
@@ -102,15 +99,17 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
+  var wx;
   @override
   void initState() {
     Roogyun.roogclient(context.read<GlobalState>().roogtoken);
+
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
-    var wx = context.watch<GlobalState>().wxlist;
+    wx = context.watch<GlobalState>().wxlist;
     return Column(
       children: [
         Container(
@@ -203,7 +202,7 @@ class _HomePageState extends State<HomePage> {
           ],),
         ),
         StaggeredGridView.countBuilder(
-          padding: EdgeInsets.all(10),
+         padding: EdgeInsets.all(10),
           shrinkWrap: true,
           physics:NeverScrollableScrollPhysics() ,
           crossAxisCount: 4,
