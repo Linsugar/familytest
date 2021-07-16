@@ -15,7 +15,10 @@ class chatdynamic{
     this.avator = value['Up_avator'];
     this.title = value['Up_Title'];
     this.con = value['Up_Context'];
-    var jsonimage = jsonDecode(value['Up_ImageUrl']);
+    var k = value["Up_ImageUrl"];
+    var jsonimage = jsonDecode(k);
+    print("jsonimage多少：${jsonimage}");
+    print("jsonimage多少：${jsonimage.runtimeType}");
     this.imagelist = jsonimage;
     this.time = value['Up_Time'];
   }

@@ -38,7 +38,7 @@ void showLoading(context){
 qiNiuUpImage(String path,String token)async{
   Storage stroge = Storage();
   var result =  await stroge.putFile(File(path),token);
-  return result;
+  return "http://qw4kwhslj.hd-bkt.clouddn.com/${result.key}";
 }
 
 //

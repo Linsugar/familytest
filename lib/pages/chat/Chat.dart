@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/pages/chat/model/chatdynamic.dart';
 import 'package:familytest/provider/grobleState.dart';
@@ -153,10 +155,9 @@ class _DynamicPageState extends State<DynamicPage> {
 //  获取动态
   _getDynamic()async{
     List<chatdynamic> dylist = [];
-    var result = await Request.getNetwork('dynamicall/',params: {
-      'user_id':context.read<GlobalState>().userid
-    },token:context.read<GlobalState>().logintoken);
+    var result = await Request.getNetwork('DyImage/',params: {},token:context.read<GlobalState>().logintoken);
     result.forEach((value){
+      print("获取所有动态：${value}");
       dylist.add(chatdynamic(value));
     });
     return dylist;
@@ -166,7 +167,6 @@ class _DynamicPageState extends State<DynamicPage> {
   @override
   void initState() {
     // TODO: implement initState
-    print("进入动态页");
     _focusNode.unfocus();
     _scrollController.addListener(() {
       _focusNode.unfocus();

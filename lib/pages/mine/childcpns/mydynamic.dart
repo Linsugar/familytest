@@ -3,7 +3,6 @@ import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:provider/provider.dart';
 
 import 'getdynamic.dart';
@@ -24,10 +23,10 @@ class _MyDynamicState extends State<MyDynamic> {
 
   _getUserdynamic()async{
     List<dynamicdata> dy =[];
-    print("进入请求");
    var result = await Request.getNetwork('DyImage/',params: {
       'user_id':context.read<GlobalState>().userid
     },token:context.read<GlobalState>().logintoken );
+   print("获取自身的动态");
    result.forEach((value){
        dy.add(dynamicdata(value));
    });
@@ -41,8 +40,6 @@ class _MyDynamicState extends State<MyDynamic> {
         appBar: AppBar(
           backgroundColor: Colors.orange,
           title: Text("动态"),actions: [MaterialButton(onPressed: ()async{
-         var sqlpath =  await getDatabasesPath();
-         print("获取地址：$sqlpath");
         },
           child: GestureDetector(onTap: (){
             Navigator.pushNamed(context, '/updynamic');

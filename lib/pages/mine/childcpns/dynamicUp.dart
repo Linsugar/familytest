@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
@@ -18,7 +19,7 @@ class _UpDynamicState extends State<UpDynamic> {
   TextEditingController _titlecontroller =TextEditingController();
   TextEditingController _contextcontroller =TextEditingController();
   List imageDynamic = [];
-  List<String> upImage = [];
+  List <String> upImage=[];
   var stateus=0;
 
 
@@ -26,6 +27,7 @@ class _UpDynamicState extends State<UpDynamic> {
 //  发布动态
 void upDynamic()async{
   showLoading(context);
+
   var data  = FormData.fromMap({
     'user_id':context.read<GlobalState>().userid,
     'new_filename':'${DateTime.now().microsecondsSinceEpoch}'+'.jpg',
@@ -58,7 +60,6 @@ void upDynamic()async{
     PopupUntil.showToast('请重新进入动态页，填写数据');
   }
 }
-
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +131,7 @@ void upDynamic()async{
                           setState(() {
                             if(result !=null){
                               imageDynamic.add(result);
-                              upImage.add(ImagePath.key);
+                              upImage.add(ImagePath);
                               stateus=1;
                               print("得到的图片内容：${imageDynamic}");
                               print("得到的七牛云图片内容：${upImage}");
