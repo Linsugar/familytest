@@ -30,7 +30,6 @@ class _ServiceSettingState extends State<ServiceSetting> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          showLoading(context);
         },
         child: Text("进度条"),
       ),

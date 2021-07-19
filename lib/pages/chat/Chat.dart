@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/pages/chat/model/chatdynamic.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:familytest/roog/roogYun.dart';
@@ -18,18 +17,30 @@ class Chat extends StatefulWidget{
 }
 
 class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
-  AnimationController ?_Amc;
   String _headerimag = 'http://qr0n4nltx.hn-bkt.clouddn.com/p3.jpg';
-
+  TabController ?_tabController;
+  TextEditingController _textEditingController =TextEditingController();
+  FocusNode _focusNode =FocusNode();
+  int paGeIndex= 0;
   @override
   void initState() {
-    _Amc = AnimationController(vsync: this,duration: Duration(seconds: 300));
+    _focusNode.unfocus();
     Roogyun.rooglistn(context);
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController!.addListener(() {
+      print(_tabController!.index);
+      _focusNode.unfocus();
+      setState(() {
+        paGeIndex = _tabController!.index;
+      });
+
+    });
     super.initState();
   }
+
+
   @override
   void dispose() {
-    _Amc?.dispose();
     super.dispose();
   }
 
@@ -37,35 +48,56 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
     // TODO: implement build
-    return DefaultTabController(
-
-      length: 2,
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: PreferredSize(
-            preferredSize:  Size.fromHeight(50),
-            child: AppBar(
-              backgroundColor: Colors.white,
-              bottom: TabBar(
-                isScrollable: false,
-                labelColor: Colors.orange,
-                indicatorColor: Colors.orange,
-                unselectedLabelColor: Colors.black,
-                labelPadding: EdgeInsets.all(10),
-                tabs: [
-                  Text("动态"),
-                  Text("聊天"),
-                ],),),
-          ),
-          body:TabBarView(
-            children: [
-              DynamicPage(),
-              ChatPage(size: _size, headerimag: _headerimag, Amc: _Amc),
-            ],
-          )
-      ),
+    return  Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: PreferredSize(
+          preferredSize:  Size.fromHeight(50),
+          child: AppBar(
+            backgroundColor: Colors.white,
+            bottom: TabBar(
+              isScrollable: false,
+              labelColor: Colors.orange,
+              indicatorColor: Colors.orange,
+              unselectedLabelColor: Colors.black,
+              labelPadding: EdgeInsets.all(10),
+              controller: _tabController!,
+              tabs: [
+                Text("动态"),
+                Text("聊天"),
+              ],),),
+        ),
+        body:Flex(
+          direction: Axis.vertical,
+          children: [
+            paGeIndex==0?Expanded(
+              flex: 1,
+              child: Row(
+                children: [
+                  Expanded(flex: 8,child: homeInput(_textEditingController,_focusNode)),
+                  Expanded(flex: 1,child: InkWell(onTap: (){
+                    Navigator.pushNamed(context, '/mydynamic');
+                  },child: FaIcon(FontAwesomeIcons.thList,color: Colors.orange,))),
+                  Expanded(flex: 1,child: InkWell(
+                    onTap: (){
+                      Navigator.of(context).pushNamed('/updynamic');
+                    },
+                    child: FaIcon(FontAwesomeIcons.edit,color: Colors.orange,),
+                  )),
+                ],)):Container(),
+            Expanded(
+              flex: 9,
+                child:TabBarView(
+                controller: _tabController!,
+                children: [
+                  DynamicPage(),
+                  ChatPage(size: _size, headerimag: _headerimag),
+              ],
+            ))
+          ],
+        )
     );
   }
+
 }
 
 //聊天
@@ -74,12 +106,10 @@ class ChatPage extends StatelessWidget {
     Key? key,
     required Size size,
     required String headerimag,
-    required AnimationController? Amc,
-  }) : _size = size, _headerimag = headerimag, _Amc = Amc, super(key: key);
+  }) : _size = size, _headerimag = headerimag,super(key: key);
 
   final Size _size;
   final String _headerimag;
-  final AnimationController? _Amc;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +153,6 @@ class ChatPage extends StatelessWidget {
                               leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator_image),),
                               title: Text(snapshot.data[index].name),trailing: MaterialButton(onPressed: (){
                               print("点击$index");
-                              _Amc?.forward();
                               Navigator.pushNamed(context,'/chatChild',arguments:{
                                 'userinfo': snapshot.data[index]
                               });
@@ -144,71 +173,49 @@ class ChatPage extends StatelessWidget {
 }
 
 
-//动态页
+
 class DynamicPage extends StatefulWidget {
   @override
   _DynamicPageState createState() => _DynamicPageState();
 }
 
-class _DynamicPageState extends State<DynamicPage> {
+class _DynamicPageState extends State<DynamicPage>{
+  FocusNode _focusNode = FocusNode();
+  ScrollController _scrollController =ScrollController();
 
-//  获取动态
+  //  获取动态
   _getDynamic()async{
     List<chatdynamic> dylist = [];
     var result = await Request.getNetwork('DyImage/',params: {},token:context.read<GlobalState>().logintoken);
     result.forEach((value){
-      print("获取所有动态：${value}");
       dylist.add(chatdynamic(value));
     });
     return dylist;
   }
-  FocusNode _focusNode = FocusNode();
-  ScrollController _scrollController =ScrollController();
+
   @override
   void initState() {
-    // TODO: implement initState
     _focusNode.unfocus();
     _scrollController.addListener(() {
       _focusNode.unfocus();
     });
     super.initState();
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          color: Colors.black12,
-          child: Row(children: [
-            Expanded(flex: 8,child: Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                  border: Border.all(color: Colors.white,width: 1.0),
-                borderRadius: BorderRadius.circular(20)
-              ),
-              child: TextField(
-                focusNode: _focusNode,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  border: InputBorder.none
-                ),
-              ),)),
-            Expanded(flex: 1,child: InkWell(onTap: (){
-              Navigator.pushNamed(context, '/mydynamic');
-            },child: FaIcon(FontAwesomeIcons.thList,color: Colors.orange,))),
-            Expanded(flex: 1,child: InkWell(
-              onTap: (){
-                Navigator.of(context).pushNamed('/updynamic');
-              },
-              child: FaIcon(FontAwesomeIcons.edit,color: Colors.orange,),
-            )),
-    ],),),
         Expanded(
           child: FutureBuilder(
-            future: _getDynamic(),
+            future:_getDynamic(),
             builder:(BuildContext context, AsyncSnapshot snapshot){
-              print("动态：${snapshot.data}");
               if(snapshot.hasError){
                 return Icon(Icons.error);
               }if(snapshot.connectionState ==ConnectionState.waiting){
@@ -246,7 +253,6 @@ class _DynamicPageState extends State<DynamicPage> {
                               children: [
                                 Expanded(flex: 3,
                                   child: ListView.separated(
-
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context,im){
                                         return Container(
@@ -287,10 +293,12 @@ class _DynamicPageState extends State<DynamicPage> {
             },),
         )
       ],
-    );
+    );;
   }
 }
 
+
+//聊天头部展示所有用户
 class Header extends StatelessWidget {
   const Header({
     Key? key,

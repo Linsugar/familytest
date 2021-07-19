@@ -170,10 +170,9 @@ class _MyHomePageState extends State<MyHomePage>{
 
 
   Future relogin(userdata) async {
-      showLoading(context);
+//      showLoading(context);
       var loginResult =  await Request.setNetwork('user/',userdata);
       Provider.of<GlobalState>(context,listen: false).changeloads(false);
-
       try{
         if(loginResult['token'] !=null){
           context.read<GlobalState>().changlogintoken(loginResult['token']);
@@ -187,29 +186,18 @@ class _MyHomePageState extends State<MyHomePage>{
         if(loginResult['msg']=='密码或手机号有误'){
           Provider.of<GlobalState>(context,listen: false).changeloads(false);
           PopupUntil.showToast(loginResult['msg']);
-          Navigator.pop(context);
-
         }
         if(loginResult['msg']=='不存在'){
           Provider.of<GlobalState>(context,listen: false).changeloads(false);
           PopupUntil.showToast(loginResult['msg']);
-          Navigator.pop(context);
         }
       }catch(e){
-        Navigator.pop(context);
+
       }
       return loginResult;
     }
   }
 
-//  登录时进行缓存设置
-  _setprrferceAll(loginResult)async{
-    await Shared.setdata('token', loginResult['token']);
-    await Shared.setdata('user_id', loginResult['user_id']);
-    await Shared.setdata('avator_image', loginResult['avator_image']);
-    await Shared.setdata('roogtoken', loginResult['roogtoken']);
-    await Shared.setdata('user_name', loginResult['user_name']);
-  }
 
 
 //  void _createRive(contlr)async{

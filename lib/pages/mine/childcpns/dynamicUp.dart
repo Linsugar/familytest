@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
@@ -26,8 +26,6 @@ class _UpDynamicState extends State<UpDynamic> {
 
 //  发布动态
 void upDynamic()async{
-  showLoading(context);
-
   var data  = FormData.fromMap({
     'user_id':context.read<GlobalState>().userid,
     'new_filename':'${DateTime.now().microsecondsSinceEpoch}'+'.jpg',
@@ -133,8 +131,6 @@ void upDynamic()async{
                               imageDynamic.add(result);
                               upImage.add(ImagePath);
                               stateus=1;
-                              print("得到的图片内容：${imageDynamic}");
-                              print("得到的七牛云图片内容：${upImage}");
                             }
                           });
                         },

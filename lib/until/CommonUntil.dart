@@ -1,13 +1,12 @@
 import 'dart:io';
-
-import 'package:familytest/provider/grobleState.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
-import 'package:provider/provider.dart';
 
 Widget homeInput(TextEditingController textController,FocusNode focusNode){
   return Container(
+    margin: EdgeInsets.all(3),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -24,13 +23,23 @@ Widget homeInput(TextEditingController textController,FocusNode focusNode){
 
 
 
-void showLoading(context){
-  showCupertinoDialog(
-    context: context,
-    builder: (_){
-      return Center(child:CircularProgressIndicator());
-    }
-  );
+Widget loadingShow(){
+  return Center(child: CircularProgressIndicator(),);
+}
+
+class LoadingShow{
+  static setEasyStyle (){
+    EasyLoading.instance
+    ..indicatorType =EasyLoadingIndicatorType.wave
+    ..loadingStyle=EasyLoadingStyle.light;
+  }
+  static showLoading(){
+    setEasyStyle();
+    return EasyLoading.show();
+  }
+  static disLoading(){
+    return EasyLoading.dismiss();
+  }
 }
 
 
@@ -41,58 +50,6 @@ qiNiuUpImage(String path,String token)async{
   return "http://qw4kwhslj.hd-bkt.clouddn.com/${result.key}";
 }
 
-//
-//class test01 extends StatefulWidget {
-//  @override
-//  _test01State createState() => _test01State();
-//}
-//
-//class _test01State extends State<test01> with SingleTickerProviderStateMixin{
-//  AnimationController ?animation;
-//  double currentProgress = 0.6;
-//  Tween<double> ?tween;
-//  @override
-//  void initState() {
-//    animation = AnimationController(
-//      // 这个动画应该持续的时间长短。
-//      duration: const Duration(milliseconds: 900),
-//      vsync: this,
-//      // void addListener(
-//      //   VoidCallback listener
-//      // )
-//      // 每次动画值更改时调用监听器
-//      // 可以使用removeListener删除监听器
-//    )..addListener(() {
-//      setState(() {});
-//    });
-//    // Tween({T begin, T end })：创建tween（补间）
-//    tween = Tween<double>(
-//      begin: 0.0,
-//      end: 1.0,
-//    );
-//    // 开始向前运行这个动画（朝向最后）
-//    animation!.forward();
-//    super.initState();
-//  }
-//  @override
-//  Widget build(BuildContext context) {
-//    print("${tween!.animate(animation!).value}");
-//    return Container(
-//      child: AnimatedBuilder(
-//        animation:animation! ,
-//        builder:(BuildContext context, Widget? child){
-//          return Center(child:LinearProgressIndicator(value: tween!.animate(animation!).value,),);
-//        } ,
-//      ),
-//    );
-//  }
-//  @override
-//  void dispose() {
-//    // TODO: implement dispose
-//    animation!.dispose();
-//    super.dispose();
-//  }
-//}
 
 
 

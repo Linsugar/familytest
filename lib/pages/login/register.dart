@@ -210,7 +210,6 @@ class RegisterState extends State<Regitser> {
   Future regis(BuildContext context) async {
     if (_globalKey.currentState!.validate()) {
       if (avator != null) {
-        showLoading(context);
         var formdata = FormData.fromMap({
           'user_mobile': _phoneController.text,
           'password': _pwdController.text,
@@ -231,6 +230,7 @@ class RegisterState extends State<Regitser> {
         String ?token = Resultdata['token'];
         if (token!.isNotEmpty) {
           PopupUntil.showToast(Resultdata['msg']);
+          context.read<GlobalState>().changlogintoken(Resultdata['token']);
           context.read<GlobalState>().changuserid(Resultdata['user_id']);
           context.read<GlobalState>().changeavator(Resultdata['avator_image']);
           context.read<GlobalState>().changeroogtoken(Resultdata['roogtoken']);

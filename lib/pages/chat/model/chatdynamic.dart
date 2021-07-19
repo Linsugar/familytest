@@ -17,8 +17,6 @@ class chatdynamic{
     this.con = value['Up_Context'];
     var k = value["Up_ImageUrl"];
     var jsonimage = jsonDecode(k);
-    print("jsonimage多少：${jsonimage}");
-    print("jsonimage多少：${jsonimage.runtimeType}");
     this.imagelist = jsonimage;
     this.time = value['Up_Time'];
   }

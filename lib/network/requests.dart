@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:familytest/until/CommonUntil.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class Request{
   static Dio network = new Dio(BaseOptions(
@@ -11,17 +14,20 @@ class Request{
   ))..interceptors.add(InterceptorsWrapper(
     onRequest:(options, handler) {
       print("进入拦截onRequest${options.data}");
-      print("header1:${options.headers}");
+      LoadingShow.showLoading();
       return handler.next(options);
     },
     onResponse:(response,handler) {
 //      print("进入拦截onResponse${response.data}");
+      LoadingShow.disLoading();
       return handler.next(response); // continue
     },
+    onError: ( DioError e, ErrorInterceptorHandler handler,){
+      LoadingShow.disLoading();
+    }
   ));
 
   static getNetwork(url,{Map<String, dynamic> ?params,token})async{
-
     var options = Options(
       headers: {
         "Authorization":token==null?'':token
@@ -30,12 +36,10 @@ class Request{
     try{
       var getResult = await network.get(url,queryParameters: params,options: options);
       return getResult.data;
-
     }catch(e){
       print("get：$e");
     }
   }
-
   static setNetwork(String url,data,{String ?token})async{
     var options = Options(
         headers: {

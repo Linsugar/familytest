@@ -14,6 +14,7 @@ import 'package:familytest/until/showtoast.dart';
 import 'package:familytest/until/wx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
@@ -137,10 +138,11 @@ class MyAppState extends State<MyApp>{
   Widget build(BuildContext context) {
     return MaterialApp(
         title: "家族",
-
         debugShowCheckedModeBanner: false,
         onGenerateRoute: RoutePage.onGenerateRoute,
-        home: token==true?MainHome():MyHomePage());
+        home: token==true?MainHome():MyHomePage(),
+      builder: EasyLoading.init(),
+    );
   }
 }
 
