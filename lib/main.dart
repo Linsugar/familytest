@@ -64,21 +64,17 @@ class MyAppState extends State<MyApp>{
     getPreferecse();
     _getuserinfo();
     _getVideoContext();
+    _getQiuNiuToken();
     // TODO: implement initState
     super.initState();
   }
 
 // 初始化首页图片-预加载图片
-  _Getimage()async{
-    var im = await rootBundle.loadString('data/home.json');
-    print("数据返回：${im}");
-    var imagedeoce  = json.decode(im);
-    print("数据返回：${imagedeoce.length}");
-    imagedeoce.forEach((value){
-      Provider.of<homeState>(context,listen: false).changelist(value);
-    });
+  _getQiuNiuToken()async{
+    dynamic result = await Request.setNetwork('qiniu/',null);
+    print("获取七牛云token:$result");
+    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
   }
-
 //获取设备信息
   void getDevice()async{
     print("开始获取设备");

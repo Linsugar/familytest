@@ -44,7 +44,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     _scrollController.addListener(() {
       _focusNode.unfocus();
     });
-    _getQiuNiuToken();
 
   }
   //  获取微信文章
@@ -66,11 +65,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     // TODO: implement dispose
     _focusNode.dispose();
     super.dispose();
-  }
-
-  _getQiuNiuToken()async{
-    dynamic result = await Request.setNetwork('qiniu/', null,token: context.read<GlobalState>().logintoken);
-    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
   }
 
   @override

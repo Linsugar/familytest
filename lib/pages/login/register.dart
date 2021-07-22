@@ -39,6 +39,7 @@ class RegisterState extends State<Regitser> {
 
   @override
   Widget build(BuildContext context) {
+    String token = context.watch<GlobalState>().qiNiuToken!;
     // TODO: implement build
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -61,8 +62,9 @@ class RegisterState extends State<Regitser> {
                       GestureDetector(
                         onTap: () async {
                           var path = await Creamer.GetGrally();
+                          var avatorpath= await qiNiuUpImage(path,token);
                           setState(() {
-                            avator = path;
+                            avator = avatorpath;
                           }
                           );
                         },
@@ -72,8 +74,9 @@ class RegisterState extends State<Regitser> {
                             width: 70,
                             height: 70,
                             child: avator == null ? Center(
-                                child: FaIcon(FontAwesomeIcons.camera)) : Image(
-                              image: FileImage(File(avator!)),
+                                child: FaIcon(FontAwesomeIcons.camera)) :
+                            Image(
+                              image:NetworkImage(avator!),
                               fit: BoxFit.cover,),
                           ),
                         ),
@@ -224,17 +227,17 @@ class RegisterState extends State<Regitser> {
           'platform': context
               .read<GlobalState>()
               .platform,
-          'avator_image': await MultipartFile.fromFile(avator!)
+          'avator_image': avator!
         });
-        var Resultdata = await Request.setNetwork('user/', formdata);
-        String ?token = Resultdata['token'];
+        var resultData = await Request.setNetwork('user/', formdata);
+        String ?token = resultData['token'];
         if (token!.isNotEmpty) {
-          PopupUntil.showToast(Resultdata['msg']);
-          context.read<GlobalState>().changlogintoken(Resultdata['token']);
-          context.read<GlobalState>().changuserid(Resultdata['user_id']);
-          context.read<GlobalState>().changeavator(Resultdata['avator_image']);
-          context.read<GlobalState>().changeroogtoken(Resultdata['roogtoken']);
-          context.read<GlobalState>().changeusername(Resultdata['username']);
+          PopupUntil.showToast(resultData['msg']);
+          context.read<GlobalState>().changlogintoken(resultData['token']);
+          context.read<GlobalState>().changuserid(resultData['user_id']);
+          context.read<GlobalState>().changeavator(resultData['avator_image']);
+          context.read<GlobalState>().changeroogtoken(resultData['roogtoken']);
+          context.read<GlobalState>().changeusername(resultData['username']);
           Provider.of<GlobalState>(context, listen: false).changeloads(false);
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
               MainHome()), (route) => false);

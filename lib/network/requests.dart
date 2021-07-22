@@ -10,6 +10,7 @@ class Request{
 //    baseUrl: 'http://3ie5702133.wicp.vip/Jia/'
 ////    测试
 //    baseUrl: 'http://192.168.1.5:8000/Jia/',
+//      baseUrl:'https://tlapp.club/Jia/',
     baseUrl: 'http://192.168.5.208:8000/Jia/',
   ))..interceptors.add(InterceptorsWrapper(
     onRequest:(options, handler) {
