@@ -133,6 +133,10 @@ void upDynamic()async{
                             imageDynamic.length==4?Text(""):MaterialButton(
                               onPressed: ()async{
                                 var result = await Creamer.GetGrally();
+                                print("得到的 结果：$result");
+                                if(result == null){
+                                  return;
+                                }
                                 var ImagePath = await qiNiuUpImage(result,token);
                                 setState(() {
                                   if(result !=null){

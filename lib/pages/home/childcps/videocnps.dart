@@ -74,9 +74,10 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
          PopupUntil.showToast(res["msg"]);
          getVideoReviews();
          setState(() {
+           _focusNode.unfocus();
            _textEditingController!.text = "";
-           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
          });
+         _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
        }else{
          PopupUntil.showToast(res["msg"]);
        }
