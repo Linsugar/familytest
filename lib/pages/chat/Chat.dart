@@ -248,8 +248,8 @@ class _DynamicPageState extends State<DynamicPage>{
                             SizedBox(height: 10),
                             Container(
                               constraints: BoxConstraints(
-                                minHeight: 50,
-                                maxHeight: 100,
+                                minHeight:50,
+                                maxHeight: 120,
                               ),
                               child:Column(
                                 children: [
@@ -266,7 +266,7 @@ class _DynamicPageState extends State<DynamicPage>{
                                                     fit: BoxFit.cover
                                                 )
                                             ),
-                                            width: 80,
+                                            width: MediaQuery.of(context).size.width/4.5,
                                           );
                                         }, separatorBuilder: (context,im){
                                       return SizedBox(width: 5,height: 5,);

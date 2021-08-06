@@ -28,7 +28,6 @@ class _ReviewCpnState extends State<ReviewCpn> {
   _getreview(int ?dyid)async{
     Provider.of<homeState>(context,listen: false).reviewlist.clear();
    var _result = await Request.getNetwork('review/',params: {'review_rd':dyid});
-   print("得到的结果数据：$_result");
    _result.forEach((value){
      Provider.of<homeState>(context,listen: false).changereview(value);
    });
@@ -42,8 +41,15 @@ class _ReviewCpnState extends State<ReviewCpn> {
      'review_content':_textEditingController.text,
      'review_name':context.read<GlobalState>().username,
      'review_bool':1,
-   });
-   return _result;
+   },token: context.read<GlobalState>().logintoken);
+   print("得到的结果:$_result");
+   if(_result['msg'] == "成功" && _result['code']==200){
+     PopupUntil.showToast(_result['msg']);
+     _getreview(dyid);
+   }else{
+     PopupUntil.showToast(_result['msg']);
+     return;
+   }
   }
 
 
@@ -125,10 +131,8 @@ class _ReviewCpnState extends State<ReviewCpn> {
                       )),
                       Expanded(flex: 3,child: MaterialButton(child: Text("发送"),onPressed: ()async{
                         await _postreview(data.dyid);
-                        await _getreview(data.dyid);
                         _textEditingController.clear();
                         PopupUntil.showToast("发布成功,请刷新页面");
-                        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
                       },))
                     ],
                   )

@@ -1,7 +1,9 @@
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
+import 'package:familytest/pages/chat/Chat.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/CreamUntil.dart';
@@ -21,7 +23,7 @@ class _UpDynamicState extends State<UpDynamic> {
   FocusNode _titleFocus = FocusNode();
   FocusNode _contextFocus = FocusNode();
   List imageDynamic = [];
-  List <String> upImage=[];
+  List upImage=[];
   var stateus=0;
 
 
@@ -31,12 +33,12 @@ void upDynamic()async{
   var data  = FormData.fromMap({
     'user_id':context.read<GlobalState>().userid,
     'new_filename':'${DateTime.now().microsecondsSinceEpoch}'+'.jpg',
-    'up_title':_titlecontroller.text,
-    'up_context':_contextcontroller.text,
-    'up_addres':context.read<GlobalState>().city,
-    'up_name':context.read<GlobalState>().username,
-    'up_avator':context.read<GlobalState>().avator,
-    'image':upImage
+    'Up_Title':_titlecontroller.text,
+    'Up_Context':_contextcontroller.text,
+    'Up_addres':context.read<GlobalState>().city,
+    'Up_name':context.read<GlobalState>().username,
+    'Up_avator':context.read<GlobalState>().avator,
+    'image':jsonEncode(upImage)
   });
 //  for(var i=0;i<imageDynamic.length;i++){
 //    data.files.add(
@@ -45,20 +47,18 @@ void upDynamic()async{
 //    )
 //  );
 //  }
-  var result =  Request.setNetwork('DyImage/',data,token: context.read<GlobalState>().logintoken);
-  try{
-    if(result['user_id'] == context.read<GlobalState>().userid){
-      PopupUntil.showToast('发布成功，请稍后');
-      Navigator.pop(context);
-      Navigator.pop(context);
+  var result = await Request.setNetwork('DyImage/',data,token: context.read<GlobalState>().logintoken);
+   print("返回的结果：$result");
+     if(upImage.length==0){
+       PopupUntil.showToast("请上传图片");
+       return;
+     }
+    if(result["msg"] =="成功" && result["statues"] =="成功"){
+      PopupUntil.showToast(result["msg"]);
     }else{
-      Navigator.pop(context);
-      PopupUntil.showToast('上传失败,请稍后重试');
+      PopupUntil.showToast(result["msg"]);
+      return;
     }
-  }catch(e){
-    Navigator.pop(context);
-    PopupUntil.showToast('请重新进入动态页，填写数据');
-  }
 }
 
   @override
@@ -74,7 +74,6 @@ void upDynamic()async{
       },child: Text("发表",style: TextStyle(color: Colors.black),),)],),
       body: GestureDetector(
         onTap: (){
-          print("1111");
           _titleFocus.unfocus();
           _contextFocus.unfocus();
         },
