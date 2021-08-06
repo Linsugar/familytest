@@ -5,8 +5,6 @@ import 'package:familytest/cmmmpns/seviceorder.dart';
 import 'package:familytest/main.dart';
 import 'package:familytest/pages/chat/Chatchild.dart';
 import 'package:familytest/pages/chat/cpn/reviewcpn.dart';
-import 'package:familytest/pages/family/FamilyData.dart';
-import 'package:familytest/pages/family/childcpns/ChildFamily.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/pages/home/childcps/archives.dart';
 import 'package:familytest/pages/home/childcps/finddoctor.dart';
@@ -29,7 +27,6 @@ class RoutePage{
     '/task':(context,{argument})=>Task(),
     '/Photos':(context,{argument})=>Photos(),
     '/mysetting':(context,{argument})=>MySetting(),
-    '/childfamily':(context,{argument})=>childfamily(argument),
     '/mydynamic':(context,{argument})=>MyDynamic(),
     '/chatChild':(context,{argument})=>ChatChild(argument),
     '/Home':(context,{argument})=>Home(),

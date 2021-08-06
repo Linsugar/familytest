@@ -10,8 +10,6 @@ import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/routes/Rout.dart';
 import 'package:familytest/until/shared.dart';
-import 'package:familytest/until/showtoast.dart';
-import 'package:familytest/until/wx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -64,16 +62,18 @@ class MyAppState extends State<MyApp>{
     getPreferecse();
     _getuserinfo();
     _getVideoContext();
-    _getQiuNiuToken();
     // TODO: implement initState
     super.initState();
   }
 
-// 初始化首页图片-预加载图片
-  _getQiuNiuToken()async{
-    dynamic result = await Request.setNetwork('qiniu/',null);
-    print("获取七牛云token:$result");
-    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
+  _getVideoContext()async{
+    List<VideoInfo> videoList= [];
+    List _res = await Request.getNetwork('videolist/');
+    print("获取到视频:$_res");
+    _res.forEach((element) {
+      videoList.add(VideoInfo(element));
+    });
+    Provider.of<homeState>(context,listen: false).changeVideo(videoList);
   }
 //获取设备信息
   void getDevice()async{
@@ -121,15 +121,7 @@ class MyAppState extends State<MyApp>{
     }
   }
 
-//获取视频热点
-  _getVideoContext()async{
-    List<VideoInfo> videoList= [];
-    List _res = await Request.getNetwork('video/');
-    _res.forEach((element) {
-      videoList.add(VideoInfo(element));
-    });
-    Provider.of<homeState>(context,listen: false).changeVideo(videoList);
-  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -22,11 +22,6 @@ Widget homeInput(TextEditingController textController,FocusNode focusNode){
 }
 
 
-
-Widget loadingShow(){
-  return Center(child: CircularProgressIndicator(),);
-}
-
 class LoadingShow{
   static setEasyStyle (){
     EasyLoading.instance
@@ -45,9 +40,11 @@ class LoadingShow{
 
 //七牛云上传图片返回地址
 qiNiuUpImage(String path,String token)async{
+  LoadingShow.showLoading();
   Storage stroge = Storage();
   var result =  await stroge.putFile(File(path),token);
-  return "http://qw4kwhslj.hd-bkt.clouddn.com/${result.key}";
+  LoadingShow.disLoading();
+  return "http://cdn.tlapp.club/${result.key}";
 }
 
 

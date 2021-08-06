@@ -1,3 +1,4 @@
+import 'package:familytest/until/CommonUntil.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Creamer{
@@ -15,10 +16,12 @@ class Creamer{
  static  Future GetGrally()async{
    try{
      var result =  await _imagePicker.getImage(source:ImageSource.gallery);
+
      return result?.path;
    }catch(e){
      print("e:$e");
    }
+
   }
 
 }

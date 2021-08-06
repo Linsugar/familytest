@@ -1,8 +1,12 @@
 
+import 'dart:convert';
+
+import 'package:familytest/network/requests.dart';
+import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 class videoWidget extends StatefulWidget {
   var value;
@@ -14,41 +18,28 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
   String ?videoUrl;
   VideoPlayerController ?_videoPlayerController;
   TextEditingController ?_textEditingController;
+  ScrollController _scrollController = ScrollController();
   FocusNode _focusNode  =FocusNode();
   int focusIndex =0;
   int playState= 0;
   bool inputbool = false;
   bool emjstatue = true;
+  Future ?videoLoading;
   var argumentValue;
-  List<String>? _messagelist = [
-    "哇，好牛逼","牛啊 牛啊 牛啊","帅爆了",
-    "哇，好牛逼","牛啊 牛啊 牛啊","帅爆了",
-    "哇，好牛逼","牛啊 牛啊 牛啊","帅爆了",
-    "哇，好牛逼","牛啊 牛啊 牛啊","帅爆了",
-    "哇，好牛逼","牛啊 牛啊 牛啊","帅爆了",
-  ];
+  var videoid;
+  List? _messageList = [];
   @override
   void initState() {
-
+    _focusNode.unfocus();
     WidgetsBinding.instance!.addObserver(this);
     // TODO: implement initState
     argumentValue = widget.value['value'];
-    videoUrl =argumentValue.videoUrl;
+    videoUrl = argumentValue.videoUrl;
+    videoid = argumentValue.video_id;
     _textEditingController =TextEditingController();
-    _focusNode.addListener((){
-      if (_focusNode.hasFocus) {
-        print('得到焦点');
-
-      }else{
-        print('失去焦点');
-      }
-    });
-    _videoPlayerController = VideoPlayerController.network(videoUrl!)
-    ..initialize().then((value) => {
-          setState(() {
-            print("player初始化完成");
-             })
-    });
+    _videoPlayerController = VideoPlayerController.network(videoUrl!);
+    videoLoading = _videoPlayerController!.initialize();
+    getVideoReviews();
     super.initState();
   }
   @override
@@ -56,6 +47,146 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
     // TODO: implement dispose
     _videoPlayerController!.dispose();
     super.dispose();
+  }
+
+  getVideoReviews()async{
+//    获取当前视频的评论
+    List _res = await Request.getNetwork('vifl/',params: {
+      'Review_id':videoid
+    },token: context.read<GlobalState>().logintoken);
+    _messageList = _res;
+    setState(() {
+    });
+    return _messageList;
+  }
+  sendVideoReview()async{
+//    对当前视频进行评论
+  var watchInfo = context.read<GlobalState>();
+    var res = await Request.setNetwork('vifl/',{
+      "Review_id":videoid,
+      "Review_name":watchInfo.username,
+      "Review_User":watchInfo.userid,
+      "Review_photo":watchInfo.avator,
+      "Review_Content":_textEditingController!.text
+    },token: watchInfo.logintoken);
+       print("是否成功：$res");
+       if(res["msg"]=="评论成功" &&res["code"]==200){
+         PopupUntil.showToast(res["msg"]);
+         getVideoReviews();
+         setState(() {
+           _textEditingController!.text = "";
+           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+         });
+       }else{
+         PopupUntil.showToast(res["msg"]);
+       }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orangeAccent,
+        title: Text(argumentValue.videoTitle),
+        actions: [
+          IconButton(icon: Icon(Icons.play_arrow), onPressed: (){
+            _videoPlayerController!.play();
+          }),
+          IconButton(icon: Icon(Icons.height), onPressed: (){})
+        ],
+      ),
+      body:GestureDetector(
+        onTap: (){
+          _focusNode.unfocus();
+        },
+        child: Flex(
+          direction: Axis.vertical,
+          children: [
+            Expanded(flex: 5,child:videoView()),
+            Expanded(flex: 4,child: videoReviews(),),
+            Expanded(flex: 1,child:Row(
+              children: [
+                Expanded(
+                  flex: 8,
+                  child: Card(
+                    child: Center(
+                      child: TextField(
+                        controller: _textEditingController,
+                        focusNode: _focusNode,
+                        decoration: InputDecoration(
+                            prefixIcon:Icon(Icons.search),
+                            border: InputBorder.none
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(flex: 2,child: Padding(padding: EdgeInsets.all(3),child: SizedBox(width: double.infinity,height: double.infinity,child: MaterialButton(color: Colors.blue,child: Text("发送"),onPressed: (){
+                  sendVideoReview();
+                },))))
+              ],
+            ))
+          ],
+        ),
+      ),
+    );
+  }
+
+
+Widget videoReviews(){
+//    评论组件
+    return  ListView.builder(
+      controller: _scrollController,
+      itemBuilder: (context,index){
+        return Container(
+          width: double.infinity,
+          height: 80,
+          child:
+          Card(
+            child: Row(
+              children: [
+                Expanded(flex: 2,child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(radius: 25,backgroundImage: NetworkImage("${_messageList![index]["Review_photo"]}"),),
+                    Text("${_messageList![index]["Review_name"]}"),
+                  ],
+                )),
+                Expanded(flex: 8,child:  Container(
+                  child: Column(
+                    children: [
+                      Expanded(flex: 7,child: Container(
+                          alignment: Alignment.centerLeft,
+                          width: double.infinity,height: double.infinity,child:Text("${_messageList![index]["Review_Content"]}"))),
+                      Expanded(flex: 3,child: Container(
+                          alignment: Alignment.centerRight,
+                          width: double.infinity,height: double.infinity,
+                          child: Text("${_messageList![index]["Review_time"]}"))),
+                    ],
+                  ),
+                )),
+              ],
+            ),
+          ),
+        );
+      },itemCount: _messageList!.length,);
+}
+
+  Widget videoView(){
+    //  视频组件
+    return FutureBuilder(
+      future: videoLoading!,
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        if(snapshot.connectionState  == ConnectionState.waiting){
+          return Center(child: CircularProgressIndicator());
+        }if(snapshot.hasError){
+          return Text("数据有误,请稍后再试");
+        }else{
+          return Padding(padding: EdgeInsets.all(3),child: AspectRatio(aspectRatio: _videoPlayerController!.value.aspectRatio,child: VideoPlayer(_videoPlayerController!)));
+        }
+
+      },);
   }
 
   @override
@@ -67,117 +198,8 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
     super.didChangeMetrics();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orangeAccent,
-        title: Text(argumentValue.videoTitle),),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _videoPlayerController!.value.isInitialized?AspectRatio(
-              aspectRatio:focusIndex==0?_videoPlayerController!.value.aspectRatio:3.5/1,
-              child: Stack(
-                children: [
-                  VideoPlayer(_videoPlayerController!),
-                  Positioned(
-                      bottom: 10,
-                      left: 10,
-                      child: Row(children: [
-                        InkWell(child: FaIcon(playState==0?FontAwesomeIcons.play:FontAwesomeIcons.stop,color: Colors.orangeAccent,),onTap: (){
-                          setState(() {
-                            if(playState==0){
-                              playState = 1;
-                              _videoPlayerController!.play();
-                            }else{
-                              playState=0;
-                              _videoPlayerController!.pause();
-                            }
-                          });
-                        },),
-                      ],))
-                ],
-              ),):
-            Center(child:Text("数据加载中")),
-            Expanded(child: ListView.separated(itemBuilder: (context,index){
-              return Text("${_messagelist![index]}");
-            }, separatorBuilder: (context,index){
-              return Divider();
-            }, itemCount: _messagelist!.length)),
-            Container(color: Colors.orange,
-              child: Row(
-                children: [
-                  Expanded(
-                      flex: 7,child: Container(
-                      child: TextField(
-                        onChanged: (value){
-                          if(value.isEmpty){
-                            setState(() {
-                              inputbool = false;
-                            });
-                          }else{
-                            setState(() {
-                              inputbool = true;
-                              emjstatue =true;
-                            });
-                          }
-                        },
-                        controller: _textEditingController,
-                        minLines: 1,
-                        maxLines: 2,decoration: InputDecoration(
-                        isCollapsed: true,
-                        hintText: "请输入您要发表的意见",
-                        hintMaxLines: 20,
-                        border: InputBorder.none,
-                      ),)
-                  )),
-                  Expanded(
-                      flex:3,child:Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-                      Icon(Icons.add_circle),
-                      inputbool?
-                      Container(
-                        width: 50,
-                        child: Material(
-                            borderRadius: BorderRadius.circular(5),
-
-                            child:InkWell(
-                              onTap: (){
-                                if(_textEditingController!.text.isEmpty){
-                                  PopupUntil.showToast("你输入的内容为空");
-                                  return;
-                                }
-                                _messagelist!.add(_textEditingController!.text);
-                                _textEditingController!.clear();
-                                setState(() {
-                                  inputbool =false;
-                                  emjstatue =true;
-                                });
-                              },
-                              child: Container(
-                                child: Center(child: Text("发送")),
-                              ),
-                            )
-                        ),
-                      ): GestureDetector(onTap: (){
-                        print("进去");
-                        setState(() {
-                          emjstatue =!emjstatue;
-                        });
-                      },child: FaIcon(FontAwesomeIcons.smileWink))
-                    ],),
-                  ))
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
 }
+
+
+
 

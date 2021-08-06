@@ -31,13 +31,15 @@ class VideoInfo{
   String ?videoUrl;
   String ?videoTitle;
   String ?videoContext;
+  String ?video_id;
 
   VideoInfo(value){
     this.videoTitle = value['video_Title'];
-    this.videoContext = value['video_context'];
+    this.videoContext = value['video_Content'];
     this.videoUrl = value['video_url'];
-    this.videoCover = value['video_cover'];
+    this.videoCover = value['video_Image'];
     this.videoTime = value['video_Time'];
-    this.videoUpUser = value['video_upuserid'];
+    this.videoUpUser = value['video_User'];
+    this.video_id = value['video_id'];
   }
 }

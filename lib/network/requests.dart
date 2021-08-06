@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:familytest/until/CommonUntil.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class Request{
   static Dio network = new Dio(BaseOptions(

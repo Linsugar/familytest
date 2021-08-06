@@ -18,6 +18,8 @@ class _UpDynamicState extends State<UpDynamic> {
   GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   TextEditingController _titlecontroller =TextEditingController();
   TextEditingController _contextcontroller =TextEditingController();
+  FocusNode _titleFocus = FocusNode();
+  FocusNode _contextFocus = FocusNode();
   List imageDynamic = [];
   List <String> upImage=[];
   var stateus=0;
@@ -61,7 +63,7 @@ void upDynamic()async{
 
   @override
   Widget build(BuildContext context) {
-  String token = context.watch<GlobalState>().qiNiuToken!;
+  String ?token = context.watch<GlobalState>().qiNiuToken!;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -70,93 +72,101 @@ void upDynamic()async{
           MaterialButton(onPressed: (){
             upDynamic();
       },child: Text("发表",style: TextStyle(color: Colors.black),),)],),
-      body: Container(
-        padding: EdgeInsets.only(left: 10,right: 10,top: 10),
-        child: Column(
-          children: [
-            Expanded(flex: 5,child: Form(
-              key: _globalKey,
-              autovalidateMode: AutovalidateMode.always,
-              child:Column(
-              children: [
-                Expanded(flex: 2,child: Container(
-                  padding: EdgeInsets.only(left: 5,right: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.circular(5)
-                  ),
-                  child: TextFormField(
-                    controller: _titlecontroller,
-                    decoration: InputDecoration(hintText: "添加标题",border: InputBorder.none),maxLines: 1,
-                  ),
-                )),
-
-                Expanded(flex: 6,child: Container(
-                  margin: EdgeInsets.only(top: 10),
-                  padding: EdgeInsets.only(left: 5,right: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.black12,
-                      borderRadius: BorderRadius.circular(5)
-                  ),
-                  child: TextFormField(
-                      controller: _contextcontroller,
-                      maxLines: 15,decoration: InputDecoration(hintText: "请输入内容",border: InputBorder.none)),
-                )),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("*填写病情可以帮您更好的描述自身情况",style: TextStyle(color: Colors.orange,),),
-                    ElevatedButton(onPressed: (){},child: Text("导入病情信息"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)),),
-                  ],
-                ),
-                Expanded(flex: 4,child: Container(
-                  margin: EdgeInsets.only(top: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+      body: GestureDetector(
+        onTap: (){
+          print("1111");
+          _titleFocus.unfocus();
+          _contextFocus.unfocus();
+        },
+        child: Container(
+          padding: EdgeInsets.only(left: 10,right: 10,top: 10),
+          child: Column(
+            children: [
+              Expanded(flex: 5,child: Container(
+                color: Colors.white10,
+                width: double.infinity,
+                height: double.infinity,
+                child: Form(
+                  key: _globalKey,
+                  autovalidateMode: AutovalidateMode.always,
+                  child:Column(
                     children: [
-                      for(var i=0;i<imageDynamic.length;i++)
-                        Container(
-                          width: MediaQuery.of(context).size.width/5,
-                          height: MediaQuery.of(context).size.width/3,
-                          margin: EdgeInsets.all(3),decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            image:DecorationImage(image: FileImage(File(imageDynamic[i])),fit: BoxFit.cover)
-                        ),),
-                      imageDynamic.length==4?Text(""):MaterialButton(
-                        onPressed: ()async{
-                          var result = await Creamer.GetGrally();
-                          var ImagePath = await qiNiuUpImage(result,token);
-                          setState(() {
-                            if(result !=null){
-                              imageDynamic.add(result);
-                              upImage.add(ImagePath);
-                              stateus=1;
-                            }
-                          });
-                        },
-                        child:Icon(Icons.add),
-                      )
+                      Expanded(flex: 2,child: Container(
+                        padding: EdgeInsets.only(left: 5,right: 5),
+                        decoration: BoxDecoration(
+                            color: Colors.black12,
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: TextFormField(
+                          controller: _titlecontroller,
+                          focusNode: _titleFocus,
+                          decoration: InputDecoration(hintText: "添加标题",border: InputBorder.none),maxLines: 1,
+                        ),
+                      )),
+
+                      Expanded(flex: 6,child: Container(
+                        margin: EdgeInsets.only(top: 10),
+                        padding: EdgeInsets.only(left: 5,right: 5),
+                        decoration: BoxDecoration(
+                            color: Colors.black12,
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: TextFormField(
+                            controller: _contextcontroller,
+                            focusNode: _contextFocus,
+                            maxLines: 15,decoration: InputDecoration(hintText: "请输入内容",border: InputBorder.none)),
+                      )),
+                      Text("*填写内容可以帮助你更快的舒缓心情",style: TextStyle(color: Colors.orange,),),
+                      Expanded(flex: 4,child: Container(
+                        margin: EdgeInsets.only(top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            for(var i=0;i<imageDynamic.length;i++)
+                              Container(
+                                width: MediaQuery.of(context).size.width/4.5,
+                                height: MediaQuery.of(context).size.width/3,
+                                margin: EdgeInsets.all(3),decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  image:DecorationImage(image: FileImage(File(imageDynamic[i])),fit: BoxFit.cover)
+                              ),),
+                            imageDynamic.length==4?Text(""):MaterialButton(
+                              onPressed: ()async{
+                                var result = await Creamer.GetGrally();
+                                var ImagePath = await qiNiuUpImage(result,token);
+                                setState(() {
+                                  if(result !=null){
+                                    imageDynamic.add(result);
+                                    upImage.add(ImagePath);
+                                    stateus=1;
+                                  }
+                                });
+                              },
+                              child:Icon(Icons.add),
+                            )
+                          ],
+                        ),
+                      )),
                     ],
-                  ),
-                )),
-              ],
-            ),)),
-            Expanded(flex: 3,child: Container(color: Colors.white,child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  Text("选择帖子类别"),
-                  ElevatedButton(onPressed: (){},child: Text("选择"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)),),
-                ],),
-              Row(
+                  ),),
+              )),
+              Expanded(flex: 3,child: Container(color: Colors.white,child: Column(
                 children: [
-                  ElevatedButton(onPressed: (){},child: Text("高血压"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("选择帖子类别"),
+                      ElevatedButton(onPressed: (){},child: Text("选择"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)),),
+                    ],),
+                  Row(
+                    children: [
+                      ElevatedButton(onPressed: (){},child: Text("高血压"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)),),
+                    ],
+                  )
                 ],
-              )
-              ],
-            ),)),
-          ],
+              ),)),
+            ],
+          ),
         ),
       ),
     );

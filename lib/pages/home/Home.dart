@@ -32,6 +32,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     _focusNode.unfocus();
     _textEditingController = TextEditingController();
     _getWxContext();
+    _getQiuNiuToken();
     tabcontroller  =TabController(length: 4, vsync: this)..addListener(() {
       if(tabcontroller!.animation!.value ==tabcontroller!.index){
       }else{
@@ -59,7 +60,14 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
       await ShowAlerDialog(context);
     }
   }
+//获取视频热点
 
+  _getQiuNiuToken()async{
+    // 获取七牛云token
+    dynamic result = await Request.setNetwork('qiniu/',null,token: context.read<GlobalState>().logintoken);
+    print("获取七牛云token:$result");
+    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
+  }
   @override
   void dispose() {
     // TODO: implement dispose
@@ -182,7 +190,7 @@ class _HomePageState extends State<HomePage> {
           height: 100,
           width: double.infinity,
           child: Column(children: [
-            Expanded(flex: 15,child: homeCarousel(context)),
+            Expanded(flex: 15,child: VideoCarousel(context)),
             Expanded(
               flex: 1,
               child: Row(
@@ -239,16 +247,17 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-//首页轮播组件
-Widget homeCarousel(context){
+//首页视频轮播组件
+Widget VideoCarousel(context){
   List listVideo = Provider.of<homeState>(context).videoList;
+  print("最好结果是：$listVideo");
   return  CarouselSlider(
     options: CarouselOptions(
       onPageChanged: (int index, CarouselPageChangedReason reason){
         print("当前下标：$index");
         Provider.of<homeState>(context,listen: false).changindex(index);
       },
-      aspectRatio: 3.7,
+      aspectRatio: 4.7,
       viewportFraction: 1.0,
       enlargeCenterPage: true,
       scrollDirection: Axis.horizontal,
