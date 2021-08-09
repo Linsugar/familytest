@@ -11,14 +11,16 @@ class userinfomodel{
 
 class wxinfo{
   String ?wxtitle;
-  String ?wxtime;
+  String ?wxauthor;
   String ?wxurl;
   String ?wxphoto;
+  String ?wxdigest;
   wxinfo(value){
     this.wxtitle = value['title'];
-    this.wxtime = value['author'];
+    this.wxauthor = value['author'];
     this.wxurl = value['url'];
     this.wxphoto = value['thumb_url'];
+    this.wxdigest = value['digest'];
   }
 
 }

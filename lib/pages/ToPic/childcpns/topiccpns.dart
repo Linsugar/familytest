@@ -2,43 +2,31 @@
 
 
 import 'dart:convert';
-import 'package:familytest/pages/family/FamilyData.dart';
+import 'package:familytest/pages/ToPic/ToPicHome.dart';
 import 'package:familytest/pages/mine/model/family.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-class FamilyCpn extends StatefulWidget {
+class ToPiCpn extends StatefulWidget {
   @override
-  _FamilyCpn createState() => _FamilyCpn();
+  _TopicCpn createState() => _TopicCpn();
 }
 
-class _FamilyCpn extends State<FamilyCpn> {
+class _TopicCpn extends State<ToPiCpn> {
 
   @override
   void initState() {
-//    _getJson();
     // TODO: implement initState
     super.initState();
   }
 
-  _getJson()async{
-    List<family> familist = [];
-    var rs = await rootBundle.loadString('data/family.json');
-    var rslut = jsonDecode(rs);
-    rslut.forEach((value){
-      print("rs$value");
-      familist.add(family(value));
-    });
-    print("得到最终结果：$familist");
-    return familist;
-  }
+
 
   _Manger()async{
     List Mang = [];
     return Mang;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +54,7 @@ class _FamilyCpn extends State<FamilyCpn> {
                         }),
                         MaterialButton(child: Text("加入团队"),onPressed: (){
 //
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Family()));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Topic()));
                         }),
                       ],
                     )

@@ -1,11 +1,11 @@
 import 'dart:convert';
+import 'package:familytest/pages/ToPic/ToPicHome.dart';
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/mine/childcpns/taskcpn.dart';
 import 'package:familytest/pages/mine/myui.dart';
 import 'package:familytest/provider/TaskState.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/pages/chat/Chat.dart';
-import 'package:familytest/pages/family/FamilyData.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/routes/Rout.dart';
@@ -62,8 +62,17 @@ class MyAppState extends State<MyApp>{
     getPreferecse();
     _getuserinfo();
     _getVideoContext();
+    _getQiuNiuToken();
     // TODO: implement initState
     super.initState();
+  }
+
+
+  _getQiuNiuToken()async{
+    // 获取七牛云token
+    dynamic result = await Request.setNetwork('qiniu/',null,token: context.read<GlobalState>().logintoken);
+    print("获取七牛云token:$result");
+    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
   }
 
   _getVideoContext()async{
@@ -141,7 +150,7 @@ class MainHome extends StatefulWidget {
 
 class _MainHomeState extends State<MainHome> {
   static int _index = 0;
-  var _listWiget = [Home(),Family(),Chat(),MyUi(),UpDiseaseCase()];
+  var _listWiget = [Home(),Topic(),Chat(),MyUi(),UpDiseaseCase()];
 
   @override
   void initState() {

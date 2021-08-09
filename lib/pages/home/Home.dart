@@ -32,7 +32,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     _focusNode.unfocus();
     _textEditingController = TextEditingController();
     _getWxContext();
-    _getQiuNiuToken();
     tabcontroller  =TabController(length: 4, vsync: this)..addListener(() {
       if(tabcontroller!.animation!.value ==tabcontroller!.index){
       }else{
@@ -62,12 +61,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   }
 //获取视频热点
 
-  _getQiuNiuToken()async{
-    // 获取七牛云token
-    dynamic result = await Request.setNetwork('qiniu/',null,token: context.read<GlobalState>().logintoken);
-    print("获取七牛云token:$result");
-    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
-  }
+
   @override
   void dispose() {
     // TODO: implement dispose

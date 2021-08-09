@@ -179,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage>{
       var loginResult =  await Request.setNetwork('user/',userdata);
       Provider.of<GlobalState>(context,listen: false).changeloads(false);
       try{
-        if(loginResult['token'] !=null){
+        if(loginResult['token'] !=null &&  loginResult['msg'] == "成功"){
           context.read<GlobalState>().changlogintoken(loginResult['token']);
           context.read<GlobalState>().changuserid(loginResult['user_id']);
           context.read<GlobalState>().changeavator(loginResult['avator_image']);
@@ -187,17 +187,11 @@ class _MyHomePageState extends State<MyHomePage>{
           context.read<GlobalState>().changeusername(loginResult['user_name']);
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
               MainHome()), (route) => false);
-        }
-        if(loginResult['msg']=='密码或手机号有误'){
-          Provider.of<GlobalState>(context,listen: false).changeloads(false);
-          PopupUntil.showToast(loginResult['msg']);
-        }
-        if(loginResult['msg']=='不存在'){
-          Provider.of<GlobalState>(context,listen: false).changeloads(false);
+        }else{
           PopupUntil.showToast(loginResult['msg']);
         }
       }catch(e){
-
+        print("错误：$e");
       }
       return loginResult;
     }

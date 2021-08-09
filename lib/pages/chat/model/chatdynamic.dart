@@ -8,8 +8,8 @@ class chatdynamic{
   List ?imagelist = [];
   String ?time;
   int? dyid;
+  String ?Dynamic_Id;
   chatdynamic(value){
-    print("id多少：${value['id']}");
     this.username = value['Up_name'];
     this.dyid = value['id'];
     this.avator = value['Up_avator'];
@@ -19,6 +19,7 @@ class chatdynamic{
     var jsonimage = jsonDecode(k);
     this.imagelist = jsonimage;
     this.time = value['Up_Time'];
+    this.Dynamic_Id = value['Dynamic_Id'];
   }
 
 }

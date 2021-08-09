@@ -3,6 +3,7 @@ import 'package:familytest/cmmmpns/group.dart';
 import 'package:familytest/cmmmpns/servesetting.dart';
 import 'package:familytest/cmmmpns/seviceorder.dart';
 import 'package:familytest/main.dart';
+import 'package:familytest/pages/ToPic/childcpns/topiccpns.dart';
 import 'package:familytest/pages/chat/Chatchild.dart';
 import 'package:familytest/pages/chat/cpn/reviewcpn.dart';
 import 'package:familytest/pages/home/Home.dart';
@@ -15,7 +16,6 @@ import 'package:familytest/pages/login/register.dart';
 import 'package:familytest/pages/mine/childcpns/mydynamic.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicUp.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicpn.dart';
-import 'package:familytest/pages/mine/childcpns/familycpns.dart';
 import 'package:familytest/pages/mine/childcpns/feedback.dart';
 import 'package:familytest/pages/mine/childcpns/intergcpn.dart';
 import 'package:familytest/pages/mine/childcpns/mysetting.dart';
@@ -32,7 +32,7 @@ class RoutePage{
     '/Home':(context,{argument})=>Home(),
     '/feedbook':(context,{argument})=>FeedBook(),
     '/interg':(context,{argument})=>interg(),
-    '/familcpn':(context,{argument})=>FamilyCpn(),
+    '/topiccpn':(context,{argument})=>ToPiCpn(),
     '/Regitser':(context,{argument})=>Regitser(),
     '/updynamic':(context,{argument})=>UpDynamic(),
     '/videoWidget':(context,{argument})=>videoWidget(argument),

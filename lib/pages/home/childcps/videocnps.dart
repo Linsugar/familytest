@@ -104,7 +104,12 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
         child: Flex(
           direction: Axis.vertical,
           children: [
-            Expanded(flex: 5,child:videoView()),
+            Expanded(flex: 5,child: Stack(
+              alignment: Alignment.center,
+              children: [
+              Container(color: Colors.black45,),
+              videoView()
+            ],)),
             Expanded(flex: 4,child: videoReviews(),),
             Expanded(flex: 1,child:Row(
               children: [

@@ -2,8 +2,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:familytest/main.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/pages/chat/Chat.dart';
+import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/CreamUntil.dart';
@@ -40,21 +42,15 @@ void upDynamic()async{
     'Up_avator':context.read<GlobalState>().avator,
     'image':jsonEncode(upImage)
   });
-//  for(var i=0;i<imageDynamic.length;i++){
-//    data.files.add(
-//        MapEntry('image',
-//            await MultipartFile.fromFile(imageDynamic[i])
-//    )
-//  );
-//  }
   var result = await Request.setNetwork('DyImage/',data,token: context.read<GlobalState>().logintoken);
    print("返回的结果：$result");
      if(upImage.length==0){
        PopupUntil.showToast("请上传图片");
        return;
      }
-    if(result["msg"] =="成功" && result["statues"] =="成功"){
-      PopupUntil.showToast(result["msg"]);
+    if(result["msg"] =="成功" && result["statues"] ==201){
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
+          MainHome()), (route) => false);
     }else{
       PopupUntil.showToast(result["msg"]);
       return;
@@ -123,7 +119,7 @@ void upDynamic()async{
                           children: [
                             for(var i=0;i<imageDynamic.length;i++)
                               Container(
-                                width: MediaQuery.of(context).size.width/4.5,
+                                width: MediaQuery.of(context).size.width/4.9,
                                 height: MediaQuery.of(context).size.width/3,
                                 margin: EdgeInsets.all(3),decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
