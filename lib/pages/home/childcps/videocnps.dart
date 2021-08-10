@@ -61,12 +61,13 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
   }
   sendVideoReview()async{
 //    对当前视频进行评论
+ var userInfo = context.read<GlobalState>().userInfo;
   var watchInfo = context.read<GlobalState>();
     var res = await Request.setNetwork('vifl/',{
       "Review_id":videoid,
-      "Review_name":watchInfo.username,
-      "Review_User":watchInfo.userid,
-      "Review_photo":watchInfo.avator,
+      "Review_name":userInfo['user_name'],
+      "Review_User":userInfo['user_id'],
+      "Review_photo":userInfo['avator_image'],
       "Review_Content":_textEditingController!.text
     },token: watchInfo.logintoken);
        print("是否成功：$res");

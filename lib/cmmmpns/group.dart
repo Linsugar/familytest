@@ -49,8 +49,8 @@ class _CreateGroupState extends State<CreateGroup> {
   _createTeam()async{
     var data = FormData.fromMap({
       'Team_name':_TeamNamecontroller.text,
-      'Team_init':context.read<GlobalState>().username,
-      'Team_initid':context.read<GlobalState>().userid,
+      'Team_init':context.read<GlobalState>().userInfo,
+      'Team_initid':context.read<GlobalState>().userInfo,
       'Team_Type':"娱乐",
       'Team_Cover':[],
       'Team_Introduction':_TeamIntroductioncontroller.text,

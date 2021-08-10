@@ -18,7 +18,7 @@ class MySettingState extends State<MySetting>{
   }
 
   getuserdata()async{
-   var result = await Request.getNetwork('user/',params: {'user_id':context.watch<GlobalState>().userid});
+   var result = await Request.getNetwork('user/',params: {'user_id':context.read<GlobalState>().userInfo['user_id']});
    print("result:${result}");
    return result;
   }

@@ -15,8 +15,6 @@ class interg extends StatefulWidget {
 
 class _intergState extends State<interg> {
   ScrollController _scrollController = ScrollController();
-
-
   @override
   void initState() {
     _scrollController.addListener(() {
@@ -29,6 +27,7 @@ class _intergState extends State<interg> {
 
   @override
   Widget build(BuildContext context) {
+    var userInfo = context.read<GlobalState>().userInfo;
     return Scaffold(
       appBar: AppBar(title: Text("我的积分",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),),
       body:Container(
@@ -55,7 +54,7 @@ class _intergState extends State<interg> {
                       ],
                     ),
                     CircleAvatar(
-                      backgroundImage: NetworkImage(context.watch<GlobalState>().avator!),)
+                      backgroundImage: NetworkImage(userInfo['avator_image']),)
 //
                   ],
                 ),

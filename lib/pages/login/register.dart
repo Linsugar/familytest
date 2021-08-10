@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'package:dio/dio.dart';
@@ -5,6 +6,7 @@ import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/CreamUntil.dart';
+import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:familytest/pages/login/login.dart';
@@ -29,17 +31,22 @@ class RegisterState extends State<Regitser> {
   TextEditingController _userController = TextEditingController();
   TextEditingController _pwdController = TextEditingController();
   String ?avator;
-  String _file = 'assets/67-93-flux-capacitor.riv';
   int ?selectSex = 0;
   @override
   void initState() {
     // TODO: implement initState
+    _getQiuNiuToken();
     super.initState();
   }
 
+  _getQiuNiuToken()async{
+    // 获取七牛云token
+    dynamic result = await Request.setNetwork('qiniu/',null,token: context.read<GlobalState>().logintoken);
+    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
+  }
   @override
   Widget build(BuildContext context) {
-    String token = context.watch<GlobalState>().qiNiuToken!;
+    String token = context.watch<GlobalState>().qiNiuToken;
     // TODO: implement build
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -106,7 +113,7 @@ class RegisterState extends State<Regitser> {
                       maxLines: 1,
                       decoration: InputDecoration(
                           icon: FaIcon(
-                            FontAwesomeIcons.mobileAlt),
+                              FontAwesomeIcons.mobileAlt),
                           hintText: "请输入手机号码",
                           labelText: "手机号"
                       ),),
@@ -125,7 +132,7 @@ class RegisterState extends State<Regitser> {
                       maxLines: 1,
                       decoration: InputDecoration(
                           icon: FaIcon(
-                            FontAwesomeIcons.userTie),
+                              FontAwesomeIcons.userTie),
                           hintText: "请输入用户名",
                           labelText: "用户名"
                       ),),
@@ -149,7 +156,7 @@ class RegisterState extends State<Regitser> {
                       maxLines: 1,
                       decoration: InputDecoration(
                           icon: FaIcon(
-                            FontAwesomeIcons.key),
+                              FontAwesomeIcons.key),
                           hintText: "请输入密码",
                           labelText: "密码"
                       ),),
@@ -158,11 +165,11 @@ class RegisterState extends State<Regitser> {
               ),)),
               Row(children: [
                 Text("请选择性别："),
-               Row(children: [Text("男"),Radio(value: 0, groupValue:selectSex, onChanged: (int ?value){
-                 setState(() {
-                   selectSex =value;
-                 });
-                print("选择$value");})],),
+                Row(children: [Text("男"),Radio(value: 0, groupValue:selectSex, onChanged: (int ?value){
+                  setState(() {
+                    selectSex =value;
+                  });
+                  print("选择$value");})],),
                 Row(children: [Text("女"),Radio(value: 1, groupValue: selectSex, onChanged: (int ?value){
                   setState(() {
                     selectSex =value;
@@ -178,8 +185,8 @@ class RegisterState extends State<Regitser> {
                         decoration: BoxDecoration(
                             color: Colors.blueAccent,
                             gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.topRight,
+                                begin: Alignment.topLeft,
+                                end: Alignment.topRight,
                                 colors: [ Colors.purpleAccent,Colors.deepPurple,]
                             ),
                             borderRadius: BorderRadius.circular(10)
@@ -196,9 +203,9 @@ class RegisterState extends State<Regitser> {
                       Container(
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Colors.blue[200],
-                          borderRadius: BorderRadius.circular(10)
-                      ), child: MaterialButton(
+                            color: Colors.blue[200],
+                            borderRadius: BorderRadius.circular(10)
+                        ), child: MaterialButton(
                         minWidth: double.infinity,
                         onPressed: () {
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyHomePage()));
@@ -227,18 +234,18 @@ class RegisterState extends State<Regitser> {
           'platform': context
               .read<GlobalState>()
               .platform,
-          'avator_image': avator!
+          'avator_image': avator!,
+          'invite_number': 666666,
         });
         var resultData = await Request.setNetwork('user/', formdata);
         String ?token = resultData['token'];
+        print("获取到的结果：$resultData");
         if (token!.isNotEmpty) {
+          print("获取到的结果1223：$resultData");
           PopupUntil.showToast(resultData['msg']);
+          Shared.setData("token",jsonEncode(resultData));
           context.read<GlobalState>().changlogintoken(resultData['token']);
-          context.read<GlobalState>().changuserid(resultData['user_id']);
-          context.read<GlobalState>().changeavator(resultData['avator_image']);
           context.read<GlobalState>().changeroogtoken(resultData['roogtoken']);
-          context.read<GlobalState>().changeusername(resultData['username']);
-          Provider.of<GlobalState>(context, listen: false).changeloads(false);
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
               MainHome()), (route) => false);
         }else{

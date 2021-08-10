@@ -32,14 +32,15 @@ class _UpDynamicState extends State<UpDynamic> {
 
 //  发布动态
 void upDynamic()async{
+  var userInfo = context.read<GlobalState>().userInfo;
   var data  = FormData.fromMap({
-    'user_id':context.read<GlobalState>().userid,
+    'user_id':userInfo['user_id'],
     'new_filename':'${DateTime.now().microsecondsSinceEpoch}'+'.jpg',
     'Up_Title':_titlecontroller.text,
     'Up_Context':_contextcontroller.text,
     'Up_addres':context.read<GlobalState>().city,
-    'Up_name':context.read<GlobalState>().username,
-    'Up_avator':context.read<GlobalState>().avator,
+    'Up_name':userInfo['user_name'],
+    'Up_avator':userInfo['avator_image'],
     'image':jsonEncode(upImage)
   });
   var result = await Request.setNetwork('DyImage/',data,token: context.read<GlobalState>().logintoken);
@@ -59,7 +60,7 @@ void upDynamic()async{
 
   @override
   Widget build(BuildContext context) {
-  String ?token = context.watch<GlobalState>().qiNiuToken!;
+  String ?token = context.watch<GlobalState>().qiNiuToken;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(

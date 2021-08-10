@@ -32,6 +32,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     _focusNode.unfocus();
     _textEditingController = TextEditingController();
     _getWxContext();
+    _getVideoContext();
+    _getQiuNiuToken();
     tabcontroller  =TabController(length: 4, vsync: this)..addListener(() {
       if(tabcontroller!.animation!.value ==tabcontroller!.index){
       }else{
@@ -50,7 +52,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   _getWxContext()async{
     var wx = context.read<GlobalState>();
     if(wx.wxlist.isEmpty){
-      dynamic result = await Request.getNetwork("wxarticle/",token: context.read<GlobalState>().logintoken);
+      dynamic result = await Request.getNetwork("wxarticle/",token: wx.logintoken);
       var wxContent = jsonDecode(result);
       dynamic wxItem = wxContent['item'];
       wxItem.forEach((value){
@@ -59,9 +61,23 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
       await ShowAlerDialog(context);
     }
   }
+
 //获取视频热点
+  _getVideoContext()async{
+    List<VideoInfo> videoList= [];
+    List _res = await Request.getNetwork('videolist/');
+    print("获取到视频:$_res");
+    _res.forEach((element) {
+      videoList.add(VideoInfo(element));
+    });
+    Provider.of<homeState>(context,listen: false).changeVideo(videoList);
+  }
 
-
+  _getQiuNiuToken()async{
+    // 获取七牛云token
+    dynamic result = await Request.setNetwork('qiniu/',null,token: context.read<GlobalState>().logintoken);
+    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
+  }
   @override
   void dispose() {
     // TODO: implement dispose
@@ -100,17 +116,18 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
-  var wx;
   @override
   void initState() {
     Roogyun.roogclient(context.read<GlobalState>().roogtoken);
-
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
-    wx = context.watch<GlobalState>().wxlist;
+    var wx = context.watch<GlobalState>().wxlist;
+    var userInfo = context.watch<GlobalState>().userInfo;
+    print("解析结果：${userInfo}");
+    print("解析结果类型：${userInfo.runtimeType}");
     return Column(
       children: [
         Container(
@@ -122,10 +139,10 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(children: [
-                  CircleAvatar(backgroundImage: NetworkImage(context.watch<GlobalState>().avator!),),
+                  CircleAvatar(backgroundImage: NetworkImage(userInfo["avator_image"]),),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text("Hi,${context.watch<GlobalState>().username}",style: TextStyle(fontWeight: FontWeight.w800),),Text("Hi,欢迎加入健康大家庭")],),
+                    children: [Text("Hi,${userInfo["user_name"]}",style: TextStyle(fontWeight: FontWeight.w800),),Text("Hi,欢迎加入健康大家庭")],),
                 ],),
                 ElevatedButton.icon(
                     style: ButtonStyle(backgroundColor:MaterialStateProperty.all(Colors.orange),

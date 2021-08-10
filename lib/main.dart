@@ -9,7 +9,6 @@ import 'package:familytest/pages/chat/Chat.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/routes/Rout.dart';
-import 'package:familytest/until/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -18,9 +17,8 @@ import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 import 'dart:io';
 import 'package:familytest/roog/roogYun.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'cmmmpns/updisease.dart';
-import 'network/requests.dart';
-import 'pages/home/model/model.dart';
 
 void main() =>runApp(
 
@@ -33,7 +31,7 @@ void main() =>runApp(
       child: MyApp(),));
 
 
-class MyApp  extends StatefulWidget{
+class MyApp extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
     return MyAppState();
@@ -42,48 +40,36 @@ class MyApp  extends StatefulWidget{
 
 class MyAppState extends State<MyApp>{
   DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
-  bool token=false;
+  bool token = false;
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  var res;
   @override
   void initState(){
+    _prefs.then((value) => {
+      res = value.getString("token"),
+      if(res!=null){
+      Provider.of<GlobalState>(context,listen: false).changeUserInfo(jsonDecode(res)),
+      Provider.of<GlobalState>(context,listen: false).changlogintoken(jsonDecode(res)["token"]),
+      Provider.of<GlobalState>(context,listen: false).changeroogtoken(jsonDecode(res)["roogtoken"]),
+      token = true
+      }
+    });
 //   强制竖屏
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown
     ]);
-
     if (Platform.isAndroid) {
       SystemUiOverlayStyle systemUiOverlayStyle =
       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
     Roogyun.rooginit();
-//   Wx.initwx();
     getDevice();
-    getPreferecse();
-    _getuserinfo();
-    _getVideoContext();
-    _getQiuNiuToken();
     // TODO: implement initState
     super.initState();
   }
 
-
-  _getQiuNiuToken()async{
-    // 获取七牛云token
-    dynamic result = await Request.setNetwork('qiniu/',null,token: context.read<GlobalState>().logintoken);
-    print("获取七牛云token:$result");
-    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
-  }
-
-  _getVideoContext()async{
-    List<VideoInfo> videoList= [];
-    List _res = await Request.getNetwork('videolist/');
-    print("获取到视频:$_res");
-    _res.forEach((element) {
-      videoList.add(VideoInfo(element));
-    });
-    Provider.of<homeState>(context,listen: false).changeVideo(videoList);
-  }
 //获取设备信息
   void getDevice()async{
     print("开始获取设备");
@@ -96,39 +82,6 @@ class MyAppState extends State<MyApp>{
       print("ios未操作");
     }
   }
-//获取缓存内容
-  getPreferecse()async{
-    var _token =  await Shared.getdata('token');
-    print("获取token值${_token}");
-    if(_token !=null){
-      var _avator =  await Shared.getdata('avator_image');
-      Provider.of<GlobalState>(context,listen: false).changeavator(_avator);
-      var _logintoken =  await Shared.getdata('token');
-      Provider.of<GlobalState>(context,listen: false).changlogintoken(_logintoken);
-      var _user_id=  await Shared.getdata('user_id');
-      Provider.of<GlobalState>(context,listen: false).changuserid(_user_id);
-      var _roogtoken=  await Shared.getdata('roogtoken');
-      Provider.of<GlobalState>(context,listen: false).changeroogtoken(_roogtoken);
-      var _user_name=  await Shared.getdata('user_name');
-      Provider.of<GlobalState>(context,listen: false).changeusername(_user_name);
-      setState(() {
-        token =true;
-      });
-    }
-  }
-
-  _getuserinfo()async{
-    Provider.of<GlobalState>(context,listen: false).overuser!.clear();
-    var result = await Request.getNetwork('userinfo/',params: {
-      'user_id':context.read<GlobalState>().userid
-    });
-    print("得到的结果：${result}");
-    if(result.length!=null){
-      for(var i=0;i<result.length;i++){
-        Provider.of<GlobalState>(context,listen: false).changealluser(userinfomodel(result[i]));
-      }
-    }
-  }
 
 
   @override
@@ -137,7 +90,7 @@ class MyAppState extends State<MyApp>{
         title: "家族",
         debugShowCheckedModeBanner: false,
         onGenerateRoute: RoutePage.onGenerateRoute,
-        home: token==true?MainHome():MyHomePage(),
+        home: token== true?MainHome():MyHomePage(),
       builder: EasyLoading.init(),
     );
   }

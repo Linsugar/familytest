@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 _taskHistory(int ?statue,context)async{
   var result = await Request.getNetwork('/taskonly/',params: {
     'taststatue':statue,
-    'taskid':Provider.of<GlobalState>(context,listen: false).userid
+    'taskid':context.read<GlobalState>().userInfo['userid']
   });
   Provider.of<taskState>(context,listen: false).clearTask();
   Provider.of<taskState>(context,listen: false).changeTask(result);
@@ -107,7 +107,7 @@ class _FuturwigetState extends State<Futurwiget> {
 
   _reciveTask(var _task,int _taststatue)async{
     await Request.setNetwork('/taskonly/', {
-      'taskid':context.read<GlobalState>().userid,
+      'taskid':context.read<GlobalState>().userInfo['user_id'],
       'task':_task,
       'taststatue':_taststatue
     });

@@ -14,18 +14,18 @@ class FeedBook extends StatefulWidget {
 class _FeedBookState extends State<FeedBook> {
 
   TextEditingController _editingController = TextEditingController();
-  var user_id;
+  var userId;
   @override
   void initState() {
     // TODO: implement initState
-    user_id =context.read<GlobalState>().userid;
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
+    userId = context.watch<GlobalState>().userInfo;
     return Scaffold(
       appBar: AppBar(title: Text("反馈"),actions:[GestureDetector(onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>feedhistory(user_id)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>feedhistory(userId['userid'])));
       },child: Container(margin: EdgeInsets.only(right: 10),child: Center(child: Text("反馈记录"))))],),
       body: Container(
         constraints: BoxConstraints.expand(),
@@ -44,10 +44,10 @@ class _FeedBookState extends State<FeedBook> {
                 PopupUntil.showToast('你是逗比嘛？啥子都不写？反馈个什么？小心封你号!!!');
               }else{
                 var fromdata = FormData.fromMap({
-                  'feed_id':context.read<GlobalState>().userid,
+                  'feed_id':userId['userid'],
                   'feedback_context':_editingController.text,
                 });
-                print("id:${context.read<GlobalState>().userid}");
+                print("id:${userId['user_id']}");
                 var result = await Request.setNetwork('feedback/',fromdata,token: context.read<GlobalState>().logintoken);
                 print("结果:${result}");
                 PopupUntil.showToast('反馈成功，我们工作人员将会跟进，谢谢你的配合');

@@ -25,7 +25,7 @@ class _MyDynamicState extends State<MyDynamic> {
     List<dynamicdata> dy =[];
     dy.clear();
    var result = await Request.getNetwork('DyImage/',params: {
-      'user_id':context.read<GlobalState>().userid
+      'user_id':context.read<GlobalState>().userInfo['user_id']
     },token:context.read<GlobalState>().logintoken );
    print("获取自身的动态");
    result.forEach((value){

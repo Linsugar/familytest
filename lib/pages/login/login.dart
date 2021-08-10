@@ -1,13 +1,15 @@
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rive/rive.dart';
 import 'package:provider/provider.dart';
 import 'package:familytest/pages/login/register.dart';
 import '../../main.dart';
@@ -26,15 +28,10 @@ class _MyHomePageState extends State<MyHomePage>{
   FocusNode User_focusNode =FocusNode();
   FocusNode Pwd_focusNode =FocusNode();
   var _userdata;
-  Artboard ?_riveArtboard;
-  RiveAnimationController ?_controller;
-  String _file = 'assets/139-250-walkcycle-try-02.riv';
-  String _imagrurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201901%2F17%2F20190117092809_ffwKZ.thumb.700_0.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828490&t=47c56d1e82192312b85a0075b591034e';
-
 
   @override
   void initState(){
-//    _createRive(_controller);
+
     User_focusNode.unfocus();
     Pwd_focusNode.unfocus();
     super.initState();
@@ -91,75 +88,7 @@ class _MyHomePageState extends State<MyHomePage>{
                                 borderRadius: BorderRadius.only(topLeft:Radius.circular(10),topRight: Radius.circular(10)),
                               ),
                               height: MediaQuery.of(context).size.height/2+10,
-                              child:  Form(
-                                autovalidateMode: AutovalidateMode.always,
-                                key: _fromglobalKey,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    TextFormField(
-                                      focusNode: User_focusNode,
-                                      controller: _Usercontroller,
-                                      keyboardType: TextInputType.phone,
-                                      maxLength: 13,
-                                      validator: (user){
-                                        if(user!.isEmpty || user.length<5){
-                                          return "用户名有误";
-                                        }return null;
-                                      },
-                                      decoration: InputDecoration(
-                                          hintText: "请输入手机号码",
-                                          icon: FaIcon(FontAwesomeIcons.mobileAlt,color: Colors.blue,)),),
-                                    TextFormField(
-                                      focusNode: Pwd_focusNode,
-                                      onFieldSubmitted: (value){
-                                        relogin(_userdata);
-                                      },
-                                      validator: (pwd){
-                                        if(pwd!.isEmpty || pwd.length<5){
-                                          return "密码有误";
-                                        }return null;
-                                      },
-                                      textInputAction: TextInputAction.done,
-                                      obscureText: true,
-                                      keyboardType:TextInputType.number ,
-                                      controller: _Pwdcontroller,
-                                      decoration: InputDecoration(
-                                          hintText: "请输入密码",
-                                          icon:FaIcon(FontAwesomeIcons.key,color: Colors.blue,),),
-                                      maxLength: 15,
-
-                                    ),
-                                    Flex(direction: Axis.horizontal,children: [
-                                      Expanded(flex: 6,child: Container(height:50,
-                                        child: ElevatedButton.icon(onPressed: (){
-                                          if( _fromglobalKey!.currentState!.validate()){
-                                          _userdata = FormData.fromMap({
-                                          'user_mobile':_Usercontroller?.text,
-                                          'password':_Pwdcontroller?.text
-                                          });}
-                                          relogin(_userdata);
-                                         }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
-                                      )),
-                                      SizedBox(width: 10,),
-                                      Expanded(flex: 4, child: Container(
-                                          height: 50,
-                                        child:ElevatedButton.icon(
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all(Colors.redAccent),
-                                            shape:MaterialStateProperty.all(BeveledRectangleBorder(borderRadius: BorderRadius.circular(20))) )
-                                        ,onPressed: (){
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
-                                        }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("注册"))),
-                                      ),
-                                    ],),
-                                    MaterialButton(onPressed: (){
-//                              Wx.wxlogin();
-                                      PopupUntil.showToast("功能暂未开放");
-                                    },child: Text("微信登录"),)
-                                  ],
-                                ),
-                              ),
+                              child: fromSubmit(),
                             ))
                       ],
                     ),
@@ -172,19 +101,89 @@ class _MyHomePageState extends State<MyHomePage>{
         ),
       )
     );
+
   }
 
+  Widget fromSubmit(){
+    return Form(
+      autovalidateMode: AutovalidateMode.always,
+      key: _fromglobalKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          TextFormField(
+            focusNode: User_focusNode,
+            controller: _Usercontroller,
+            keyboardType: TextInputType.phone,
+            maxLength: 13,
+            validator: (user){
+              if(user!.isEmpty || user.length<5){
+                return "用户名有误";
+              }return null;
+            },
+            decoration: InputDecoration(
+                hintText: "请输入手机号码",
+                icon: FaIcon(FontAwesomeIcons.mobileAlt,color: Colors.blue,)),),
+          TextFormField(
+            focusNode: Pwd_focusNode,
+            onFieldSubmitted: (value){
+              relogin(_userdata);
+            },
+            validator: (pwd){
+              if(pwd!.isEmpty || pwd.length<5){
+                return "密码有误";
+              }return null;
+            },
+            textInputAction: TextInputAction.done,
+            obscureText: true,
+            keyboardType:TextInputType.number ,
+            controller: _Pwdcontroller,
+            decoration: InputDecoration(
+              hintText: "请输入密码",
+              icon:FaIcon(FontAwesomeIcons.key,color: Colors.blue,),),
+            maxLength: 15,
+
+          ),
+          Flex(direction: Axis.horizontal,children: [
+            Expanded(flex: 6,child: Container(height:50,
+              child: ElevatedButton.icon(onPressed: (){
+                if( _fromglobalKey!.currentState!.validate()){
+                  _userdata = FormData.fromMap({
+                    'user_mobile':_Usercontroller?.text,
+                    'password':_Pwdcontroller?.text
+                  });}
+                relogin(_userdata);
+              }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("登录")),
+            )),
+            SizedBox(width: 10,),
+            Expanded(flex: 4, child: Container(
+                height: 50,
+                child:ElevatedButton.icon(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+                        shape:MaterialStateProperty.all(BeveledRectangleBorder(borderRadius: BorderRadius.circular(20))) )
+                    ,onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Regitser()));
+                }, icon: FaIcon(FontAwesomeIcons.signInAlt), label: Text("注册"))),
+            ),
+          ],),
+          MaterialButton(onPressed: (){
+//                              Wx.wxlogin();
+            PopupUntil.showToast("功能暂未开放");
+          },child: Text("微信登录"),)
+        ],
+      ),
+    );
+  }
 
   Future relogin(userdata) async {
       var loginResult =  await Request.setNetwork('user/',userdata);
       Provider.of<GlobalState>(context,listen: false).changeloads(false);
       try{
         if(loginResult['token'] !=null &&  loginResult['msg'] == "成功"){
+          Shared.setData("token",jsonEncode(loginResult));
           context.read<GlobalState>().changlogintoken(loginResult['token']);
-          context.read<GlobalState>().changuserid(loginResult['user_id']);
-          context.read<GlobalState>().changeavator(loginResult['avator_image']);
           context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
-          context.read<GlobalState>().changeusername(loginResult['user_name']);
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
               MainHome()), (route) => false);
         }else{
@@ -199,20 +198,6 @@ class _MyHomePageState extends State<MyHomePage>{
 
 
 
-//  void _createRive(contlr)async{
-//    rootBundle.load(_file).then(
-////      1.加载riv文件，
-//          (data) async {
-//        print("data:$data");
-////            创建一个存储rive二进制的文件
-//        final file =RiveFile.import(data);
-//        print("$file文件");
-//        final artboard = file.mainArtboard;
-////          添加一个控制器，随时进行控制动画
-//        artboard.addController(contlr = SimpleAnimation('Walkcycle'));
-//        setState(() => _riveArtboard = artboard);
-//      },
-//    );
-//  }
+
 
 

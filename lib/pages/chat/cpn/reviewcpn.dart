@@ -46,11 +46,12 @@ class _ReviewCpnState extends State<ReviewCpn> {
 
   _postreview()async{
 //    发布评论
+    var userInfo = context.read<GlobalState>().userInfo;
     var _result = await Request.setNetwork('review/',{
-      'review_userid':context.read<GlobalState>().userid,
-      'recview_avator':context.read<GlobalState>().avator,
+      'review_userid':userInfo['user_id'],
+      'recview_avator':userInfo['avator_image'],
       'review_content':_textEditingController.text,
-      'review_name':context.read<GlobalState>().username,
+      'review_name':userInfo['user_name'],
       'review_bool':1,
       'review_dynamicid':argdata.Dynamic_Id,
     },token: context.read<GlobalState>().logintoken);

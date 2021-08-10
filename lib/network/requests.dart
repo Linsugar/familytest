@@ -17,7 +17,7 @@ class Request{
       return handler.next(options);
     },
     onResponse:(response,handler) {
-//      print("进入拦截onResponse${response.data}");
+      print("进入拦截onResponse${response.data}");
       LoadingShow.disLoading();
       return handler.next(response); // continue
     },

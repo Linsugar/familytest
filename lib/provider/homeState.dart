@@ -4,7 +4,7 @@ String ?hometitle ="哈喽";
 List homelist = [];
 List reviewlist = [];
 int carIndex = 0;
-var videoList;
+List videoList = [];
 
 
 changeVideo(value){

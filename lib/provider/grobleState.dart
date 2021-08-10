@@ -4,18 +4,21 @@ class GlobalState with ChangeNotifier{
   String city ='成都';
   String ?deviceid;
   String ?platform;
-  var userid = '61122087048';
   String ?logintoken='';
-  String ?avator;
   String ?roogtoken;
   List ?historylist= [];
-  String ?username;
   List ?overuser = [];
   List ?emij = [];
   bool loadstatue =false;
   List wxlist = [];
   List upImageList = [];
-  String ?qiNiuToken;
+  String qiNiuToken ="";
+  var userInfo;
+
+  changeUserInfo(value){
+    userInfo = value;
+    notifyListeners();
+  }
 
   changeQiNiu(value){
     qiNiuToken =value;
@@ -50,11 +53,6 @@ class GlobalState with ChangeNotifier{
   }
 
 
-  changeusername(value){
-    username = value;
-    notifyListeners();
-  }
-
   changhistory(value){
     historylist!.add(value);
     notifyListeners();
@@ -64,21 +62,11 @@ class GlobalState with ChangeNotifier{
     notifyListeners();
   }
 
-  changeavator(value){
-    avator =value;
-    notifyListeners();
-  }
-
   changeroogtoken(value){
     roogtoken =value;
     notifyListeners();
   }
 
-
-  changuserid(value){
-    userid ='$value';
-    notifyListeners();
-  }
   changlogintoken(value){
     logintoken ='ak7 '+value+ ' auth';
     notifyListeners();

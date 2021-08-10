@@ -1,6 +1,7 @@
 
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -25,6 +26,7 @@ class MyUiState extends State<MyUi>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    var userInfo = context.watch<GlobalState>().userInfo;
     return Scaffold(
         body: Container(
           child: Flex(
@@ -48,7 +50,7 @@ class MyUiState extends State<MyUi>{
                           decoration: BoxDecoration(
                               color: Colors.blue,
                               image: DecorationImage(
-                                  image: NetworkImage(context.watch<GlobalState>().avator!),
+                                  image: NetworkImage(userInfo["avator_image"]),
                                   fit: BoxFit.cover
                               ),
                               borderRadius: BorderRadius.circular(50)
@@ -71,7 +73,7 @@ class MyUiState extends State<MyUi>{
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("${context.watch<GlobalState>().username}",style: TextStyle(
+                            Text("${userInfo["user_name"]}",style: TextStyle(
                                 fontSize: 20,
                                 fontWeight:FontWeight.w800 ),),
                             Text("身高-cm;体重-kg"),
@@ -79,7 +81,7 @@ class MyUiState extends State<MyUi>{
                         ),
                         InkWell(
                           onTap: (){
-                            Navigator.pushNamed(context, '/mysetting');
+                            Navigator.pushNamed(context,'/mysetting');
                           },
                           child: Container(width: 50,height: 50,decoration: BoxDecoration(
                               color: Colors.orange[700],
@@ -142,7 +144,7 @@ class MyUiState extends State<MyUi>{
                                 trailing: FaIcon(FontAwesomeIcons.angleRight),),
                               Divider(indent: 20,endIndent: 20,),
                               ListTile(leading: FaIcon(FontAwesomeIcons.clipboardList),title: Text("发起话题"),trailing: FaIcon(FontAwesomeIcons.angleRight),onTap: (){
-                                Navigator.pushNamed(context, '/familcpn');
+                                PopupUntil.showToast("该功能暂时无法使用");
                               },),
                             ],
                           ),
