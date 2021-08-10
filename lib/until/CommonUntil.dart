@@ -48,5 +48,22 @@ qiNiuUpImage(String path,String token)async{
 }
 
 
+timeCheck(afterTime){
+  if(afterTime == null){
+    return;
+  }
+ var currentTime = DateTime.now().millisecondsSinceEpoch;
+ if(afterTime>currentTime){
+   return true;
+ }else{
+   return false;
+ }
+}
+saveTime(){
+  var afterTime = DateTime.now().millisecondsSinceEpoch+24*60*60;
+  return afterTime;
+}
+
+
 
 

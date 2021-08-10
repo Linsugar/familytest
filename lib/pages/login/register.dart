@@ -242,7 +242,8 @@ class RegisterState extends State<Regitser> {
         print("获取到的结果：$resultData");
         if (token!.isNotEmpty) {
           PopupUntil.showToast(resultData['msg']);
-          Shared.setData("token",jsonEncode(resultData));
+          Shared.setStringData("token",jsonEncode(resultData));
+          Shared.setIntData('aftertime',saveTime());
           context.read<GlobalState>().changlogintoken(resultData['token']);
           context.read<GlobalState>().changeroogtoken(resultData['roogtoken']);
           context.read<GlobalState>().changeUserInfo(resultData);

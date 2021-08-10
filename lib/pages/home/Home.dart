@@ -32,6 +32,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     _getWxContext();
     _getVideoContext();
     _getQiuNiuToken();
+    _getUserInfo();
     tabcontroller  =TabController(length: 4, vsync: this)..addListener(() {
       if(tabcontroller!.animation!.value ==tabcontroller!.index){
       }else{
@@ -75,6 +76,20 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     // 获取七牛云token
     dynamic result = await Request.setNetwork('qiniu/',null,token: context.read<GlobalState>().logintoken);
     Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
+  }
+
+
+//  获取所有的用户
+  _getUserInfo()async{
+    Provider.of<GlobalState>(context,listen: false).overuser!.clear();
+    var result = await Request.getNetwork('userinfo/',params: {
+      'user_id':Provider.of<GlobalState>(context,listen: false).userInfo['user_id']
+    });
+    if(result.length!=null){
+      for(var i=0;i<result.length;i++){
+        await Provider.of<GlobalState>(context,listen: false).changealluser(userinfomodel(result[i]));
+      }
+    }
   }
   @override
   void dispose() {

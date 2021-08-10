@@ -9,6 +9,7 @@ import 'package:familytest/pages/chat/Chat.dart';
 import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/routes/Rout.dart';
+import 'package:familytest/until/CommonUntil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -46,15 +47,22 @@ class MyAppState extends State<MyApp>{
   bool token = false;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   var res;
+  var boolTime;
   @override
   void initState(){
     _prefs.then((value) => {
       res = value.getString("token"),
-      if(res!=null){
-      Provider.of<GlobalState>(context,listen: false).changeUserInfo(jsonDecode(res)),
-      Provider.of<GlobalState>(context,listen: false).changlogintoken(jsonDecode(res)["token"]),
-      Provider.of<GlobalState>(context,listen: false).changeroogtoken(jsonDecode(res)["roogtoken"]),
-      token = true
+      boolTime = timeCheck(value.getInt('aftertime')) ,
+      print(boolTime),
+      if(boolTime){
+        if(res!=null){
+          Provider.of<GlobalState>(context,listen: false).changeUserInfo(jsonDecode(res)),
+          Provider.of<GlobalState>(context,listen: false).changlogintoken(jsonDecode(res)["token"]),
+          Provider.of<GlobalState>(context,listen: false).changeroogtoken(jsonDecode(res)["roogtoken"]),
+          token = true
+        }
+      }else{
+        value.clear()
       }
     });
 //   强制竖屏

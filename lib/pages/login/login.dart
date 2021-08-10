@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
@@ -181,7 +182,8 @@ class _MyHomePageState extends State<MyHomePage>{
       Provider.of<GlobalState>(context,listen: false).changeloads(false);
       try{
         if(loginResult['token'] !=null &&  loginResult['msg'] == "成功"){
-          Shared.setData("token",jsonEncode(loginResult));
+          Shared.setStringData("token",jsonEncode(loginResult));
+          Shared.setIntData('aftertime',saveTime());
           context.read<GlobalState>().changlogintoken(loginResult['token']);
           context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
           context.read<GlobalState>().changeUserInfo(loginResult);

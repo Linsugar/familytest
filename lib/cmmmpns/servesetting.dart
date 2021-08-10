@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/CreamUntil.dart';
+import 'package:familytest/until/shared.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -28,11 +29,6 @@ class _ServiceSettingState extends State<ServiceSetting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-        },
-        child: Text("进度条"),
-      ),
       backgroundColor: Colors.white70,
       appBar: AppBar(title: Text("设置",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),),
       body: Column(
@@ -40,13 +36,9 @@ class _ServiceSettingState extends State<ServiceSetting> {
           Container(
             margin: EdgeInsets.only(top: 10),
             color: Colors.white,
-            child: ListTile(onTap: ()async{
-              var res = await Creamer.GetGrally();
-              storage.putFile(File(res), token)
-                  .then((value) => print("上传结果：${value.key}"))
-              .catchError((onError)=>{
-                print("上传错误：$onError")
-              });
+            child: ListTile(
+            onTap: (){
+              PopupUntil.showToast("功能尚在开发中");
             },leading: Text("账号绑定设置"),trailing: FaIcon(FontAwesomeIcons.angleRight),),
           ),
          Container(
@@ -70,7 +62,8 @@ class _ServiceSettingState extends State<ServiceSetting> {
                     color: Colors.orange
                 )))
             ) ,
-            child: Text("退出登录"),onPressed: (){
+            child: Text("退出登录"),onPressed: ()async{
+            await Shared.clearPreferences();
             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>MyHomePage()), (route) => false);
           },),
         ],
