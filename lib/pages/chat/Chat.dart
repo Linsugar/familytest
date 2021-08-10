@@ -1,5 +1,6 @@
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/pages/chat/model/chatdynamic.dart';
+import 'package:familytest/pages/home/model/model.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/showtoast.dart';
@@ -25,6 +26,7 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
   @override
   void initState() {
     _focusNode.unfocus();
+    _getUserInfo();
     Roogyun.rooglistn(context);
     _tabController = TabController(length: 2, vsync: this);
     _tabController!.addListener(() {
@@ -36,6 +38,19 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
 
     });
     super.initState();
+  }
+
+  _getUserInfo()async{
+    Provider.of<GlobalState>(context,listen: false).overuser!.clear();
+    var result = await Request.getNetwork('userinfo/',params: {
+      'user_id':Provider.of<GlobalState>(context,listen: false).userInfo['user_id']
+    });
+    print("得到的结果：${result}");
+    if(result.length!=null){
+      for(var i=0;i<result.length;i++){
+        Provider.of<GlobalState>(context,listen: false).changealluser(userinfomodel(result[i]));
+      }
+    }
   }
 
 

@@ -1,6 +1,4 @@
-
 import 'dart:convert';
-
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/provider/homeState.dart';
@@ -51,6 +49,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   //  获取微信文章
   _getWxContext()async{
     var wx = context.read<GlobalState>();
+    print("tlogin:${wx.logintoken}");
     if(wx.wxlist.isEmpty){
       dynamic result = await Request.getNetwork("wxarticle/",token: wx.logintoken);
       var wxContent = jsonDecode(result);
@@ -66,7 +65,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   _getVideoContext()async{
     List<VideoInfo> videoList= [];
     List _res = await Request.getNetwork('videolist/');
-    print("获取到视频:$_res");
     _res.forEach((element) {
       videoList.add(VideoInfo(element));
     });
@@ -127,7 +125,6 @@ class _HomePageState extends State<HomePage> {
     var wx = context.watch<GlobalState>().wxlist;
     var userInfo = context.watch<GlobalState>().userInfo;
     print("解析结果：${userInfo}");
-    print("解析结果类型：${userInfo.runtimeType}");
     return Column(
       children: [
         Container(
@@ -261,11 +258,9 @@ class _HomePageState extends State<HomePage> {
 //首页视频轮播组件
 Widget VideoCarousel(context){
   List listVideo = Provider.of<homeState>(context).videoList;
-  print("最好结果是：$listVideo");
   return  CarouselSlider(
     options: CarouselOptions(
       onPageChanged: (int index, CarouselPageChangedReason reason){
-        print("当前下标：$index");
         Provider.of<homeState>(context,listen: false).changindex(index);
       },
       aspectRatio: 4.7,

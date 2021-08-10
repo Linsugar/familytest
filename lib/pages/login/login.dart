@@ -184,6 +184,7 @@ class _MyHomePageState extends State<MyHomePage>{
           Shared.setData("token",jsonEncode(loginResult));
           context.read<GlobalState>().changlogintoken(loginResult['token']);
           context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
+          context.read<GlobalState>().changeUserInfo(loginResult);
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
               MainHome()), (route) => false);
         }else{

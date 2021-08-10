@@ -19,6 +19,9 @@ import 'dart:io';
 import 'package:familytest/roog/roogYun.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'cmmmpns/updisease.dart';
+import 'network/requests.dart';
+import 'pages/home/model/model.dart';
+import 'package:provider/provider.dart';
 
 void main() =>runApp(
 
@@ -82,6 +85,7 @@ class MyAppState extends State<MyApp>{
       print("ios未操作");
     }
   }
+
 
 
   @override

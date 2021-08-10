@@ -241,11 +241,11 @@ class RegisterState extends State<Regitser> {
         String ?token = resultData['token'];
         print("获取到的结果：$resultData");
         if (token!.isNotEmpty) {
-          print("获取到的结果1223：$resultData");
           PopupUntil.showToast(resultData['msg']);
           Shared.setData("token",jsonEncode(resultData));
           context.read<GlobalState>().changlogintoken(resultData['token']);
           context.read<GlobalState>().changeroogtoken(resultData['roogtoken']);
+          context.read<GlobalState>().changeUserInfo(resultData);
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
               MainHome()), (route) => false);
         }else{
