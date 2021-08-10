@@ -80,14 +80,13 @@ class ChatChildState extends State<ChatChild>{
       appBar: AppBar(title: Text(userInfo.name),actions: [CircleAvatar(backgroundImage: NetworkImage(userInfo.avator_image)),SizedBox(width: 10,)],),
       body:WillPopScope(
         onWillPop: ()async{
-          print("拦截");
           Provider.of<GlobalState>(context,listen: false).clearhistory();
           return true;
         },
         child: Column(
           children: [
             Flexible(child:
-            Container(
+              Container(
               width: double.infinity,
               height: double.infinity,
               child: ListView.separated(
@@ -131,7 +130,7 @@ class ChatChildState extends State<ChatChild>{
                           minLines: 1,
                           maxLines: 2,decoration: InputDecoration(
                           isCollapsed: true,
-                          hintText: "请输入回答",
+                          hintText: "请输入内容",
                           hintMaxLines: 20,
                           border: InputBorder.none,
                         ),)
@@ -150,17 +149,18 @@ class ChatChildState extends State<ChatChild>{
                               color: Colors.blue,
                               child:InkWell(
                                 onTap: (){
-                                  if(_textController.text.isEmpty){
-                                    Fluttertoast.showToast(msg: "你输入的内容为空");
-                                    return;
-                                  }
-                                  print("当前输入内容：${_textController.text},当前userid:${userInfo.userid}");
-                                  Roogyun.sedMessage(_textController.text,userInfo.userid,context);
-                                  _textController.clear();
-                                  setState(() {
-                                    inputBool =false;
-                                    emjStatue =true;
-                                  });
+                                  Fluttertoast.showToast(msg: "该功能暂时不开放");
+//                                  if(_textController.text.isEmpty){
+//                                    Fluttertoast.showToast(msg: "你输入的内容为空");
+//                                    return;
+//                                  }
+//                                  print("当前输入内容：${_textController.text},当前userid:${userInfo.userid}");
+//                                  Roogyun.sedMessage(_textController.text,userInfo.userid,context);
+//                                  _textController.clear();
+//                                  setState(() {
+//                                    inputBool =false;
+//                                    emjStatue =true;
+//                                  });
                                 },
                                 child: Container(
                                   child: Center(child: Text("发送")),
@@ -168,7 +168,7 @@ class ChatChildState extends State<ChatChild>{
                               )
                           ),
                         ): GestureDetector(onTap: (){
-                          print("进去");
+
                           setState(() {
                             emjStatue =!emjStatue;
                           });
@@ -221,20 +221,6 @@ Widget talkRight(state,data){
   return ListTile(
     subtitle: Text("${data.content.content}",textAlign: TextAlign.right,style: TextStyle(),),
     trailing: CircleAvatar(backgroundImage: NetworkImage(state.avator!),),
-  );
-}
-
-
-Widget test(){
-  return Column(
-    children: [
-      Expanded(child: ListView(
-        children: [
-          Container(height: 10,child: Text("我是文本"),),
-    
-        ],
-      ))
-    ],
   );
 }
 

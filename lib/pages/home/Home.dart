@@ -139,7 +139,6 @@ class _HomePageState extends State<HomePage> {
     var _size = MediaQuery.of(context).size;
     var wx = context.watch<GlobalState>().wxlist;
     var userInfo = context.watch<GlobalState>().userInfo;
-    print("解析结果：${userInfo}");
     return Column(
       children: [
         Container(

@@ -53,6 +53,7 @@ timeCheck(afterTime){
     return;
   }
  var currentTime = DateTime.now().millisecondsSinceEpoch;
+  print("当前时间错：$currentTime");
  if(afterTime>currentTime){
    return true;
  }else{
@@ -60,7 +61,8 @@ timeCheck(afterTime){
  }
 }
 saveTime(){
-  var afterTime = DateTime.now().millisecondsSinceEpoch+24*60*60;
+  var afterTime = DateTime.now().add(Duration(days: 1)).millisecondsSinceEpoch;
+  print("缓存时间戳:$afterTime");
   return afterTime;
 }
 
