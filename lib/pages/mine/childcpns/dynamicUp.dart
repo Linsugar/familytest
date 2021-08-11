@@ -24,7 +24,11 @@ class _UpDynamicState extends State<UpDynamic> {
   FocusNode _contextFocus = FocusNode();
   List imageDynamic = [];
   List upImage=[];
-  var stateus=0;
+  List titleSpan = [
+    "爱情","娱乐","电竞","美女"
+  ];
+  String currentTitle = "爱情";
+  var stateus =0;
 
 
 
@@ -55,7 +59,12 @@ void upDynamic()async{
       return;
     }
 }
-
+@override
+  void didUpdateWidget(covariant UpDynamic oldWidget) {
+    // TODO: implement didUpdateWidget
+  _contextFocus.unfocus();
+    super.didUpdateWidget(oldWidget);
+  }
   @override
   Widget build(BuildContext context) {
   String ?token = context.watch<GlobalState>().qiNiuToken;
@@ -150,11 +159,15 @@ void upDynamic()async{
               )),
               Expanded(flex: 3,child: Container(color: Colors.white,child: Column(
                 children: [
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("选择帖子类别"),
-                      ElevatedButton(onPressed: (){},child: Text("选择"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)),),
+                      Text("${currentTitle}",style: TextStyle(color: Colors.deepOrange,letterSpacing: 2.0,fontWeight: FontWeight.w800),),
+                      ElevatedButton(onPressed: (){
+                        showModel();
+                      },child: Text("选择"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)),),
                     ],),
                   Row(
                     children: [
@@ -168,6 +181,23 @@ void upDynamic()async{
         ),
       ),
     );
+  }
+  void showModel(){
+    showModalBottomSheet(context: context, builder: (context){
+      return Container(
+        height: 150,
+        child: ListView.separated(itemBuilder: (context,index){
+          return ListTile(leading: Icon(Icons.account_circle),title: Text("${titleSpan[index]}"),onTap: (){
+            Navigator.pop(context);
+            setState(() {
+              currentTitle = titleSpan[index];
+            });
+          },);
+        }, separatorBuilder: (context,index){
+          return Divider();
+        }, itemCount: titleSpan.length)
+      );
+    });
   }
 }
 
