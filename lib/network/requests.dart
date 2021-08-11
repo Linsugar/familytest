@@ -29,7 +29,7 @@ class Request{
   static getNetwork(url,{Map<String, dynamic> ?params,token})async{
     var options = Options(
       headers: {
-        "Authorization":token==null?'':token
+        "Authorization":token==null?'':'ak7 '+token+" auth"
       }
     );
     try{
@@ -42,7 +42,7 @@ class Request{
   static setNetwork(String url,data,{String ?token})async{
     var options = Options(
         headers: {
-          "Authorization":token==null?'':token
+          "Authorization":token==null?'':'ak7 '+token+" auth"
         }
     );
     try{

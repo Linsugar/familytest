@@ -4,8 +4,6 @@ class GlobalState with ChangeNotifier{
   String city ='成都';
   String ?deviceid;
   String ?platform;
-  String ?logintoken='';
-  String ?roogtoken;
   List ?historylist= [];
   List ?overuser = [];
   List ?emij = [];
@@ -62,15 +60,7 @@ class GlobalState with ChangeNotifier{
     notifyListeners();
   }
 
-  changeroogtoken(value){
-    roogtoken =value;
-    notifyListeners();
-  }
 
-  changlogintoken(value){
-    logintoken ='ak7 '+value+ ' auth';
-    notifyListeners();
-  }
 
 
   changdeviceid(value){

@@ -31,13 +31,14 @@ class _ReviewCpnState extends State<ReviewCpn> {
   }
 
   _getreview()async{
+    var userInfo = context.read<GlobalState>().userInfo;
 //    获取所有评论
     Provider.of<homeState>(context,listen: false).reviewlist.clear();
     var _result = await Request.getNetwork('review/',
         params: {
           "review_dynamic":argdata.Dynamic_Id
         },
-        token: context.read<GlobalState>().logintoken);
+        token: userInfo['token']);
     _result.forEach((value){
       Provider.of<homeState>(context,listen: false).changereview(value);
     });
@@ -54,7 +55,7 @@ class _ReviewCpnState extends State<ReviewCpn> {
       'review_name':userInfo['user_name'],
       'review_bool':1,
       'review_dynamicid':argdata.Dynamic_Id,
-    },token: context.read<GlobalState>().logintoken);
+    },token: userInfo['token']);
     if(_result['msg'] == "成功" && _result['code']==200){
       PopupUntil.showToast(_result['msg']);
       _focusNode.unfocus();

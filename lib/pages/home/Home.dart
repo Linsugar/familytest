@@ -25,13 +25,14 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   FocusNode _focusNode =FocusNode();
   TextEditingController? _textEditingController;
   ScrollController _scrollController = ScrollController();
+  var userinfo;
   @override
   void initState() {
     _focusNode.unfocus();
     _textEditingController = TextEditingController();
+    userinfo = Provider.of<GlobalState>(context,listen: false).userInfo;
     _getWxContext();
     _getVideoContext();
-    _getQiuNiuToken();
     _getUserInfo();
     tabcontroller  =TabController(length: 4, vsync: this)..addListener(() {
       if(tabcontroller!.animation!.value ==tabcontroller!.index){
@@ -41,7 +42,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
         });
       }
     });
-    Roogyun.roogclient(context.read<GlobalState>().roogtoken);
+    Roogyun.roogclient(userinfo['roogtoken']);
     _scrollController.addListener(() {
       _focusNode.unfocus();
     });
@@ -50,9 +51,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   //  获取微信文章
   _getWxContext()async{
     var wx = context.read<GlobalState>();
-    print("tlogin:${wx.logintoken}");
     if(wx.wxlist.isEmpty){
-      dynamic result = await Request.getNetwork("wxarticle/",token: wx.logintoken);
+      dynamic result = await Request.getNetwork("wxarticle/",token:userinfo['token']);
       var wxContent = jsonDecode(result);
       dynamic wxItem = wxContent['item'];
       wxItem.forEach((value){
@@ -72,18 +72,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     Provider.of<homeState>(context,listen: false).changeVideo(videoList);
   }
 
-  _getQiuNiuToken()async{
-    // 获取七牛云token
-    dynamic result = await Request.setNetwork('qiniu/',null,token: context.read<GlobalState>().logintoken);
-    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
-  }
-
-
 //  获取所有的用户
   _getUserInfo()async{
     Provider.of<GlobalState>(context,listen: false).overuser!.clear();
     var result = await Request.getNetwork('userinfo/',params: {
-      'user_id':Provider.of<GlobalState>(context,listen: false).userInfo['user_id']
+      'user_id':userinfo['user_id']
     });
     if(result.length!=null){
       for(var i=0;i<result.length;i++){
@@ -117,7 +110,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                   background: Image.asset('images/homebg.jpg',fit: BoxFit.cover,),
                 ),
               ),
-              SliverToBoxAdapter(child: HomePage()),
+              SliverToBoxAdapter(child: HomePage(userinfo)),
             ])
     );
   }
@@ -125,20 +118,21 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
 
 //首页
 class HomePage extends StatefulWidget {
+  var userinfo;
+  HomePage(this.userinfo);
   @override
   _HomePageState createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    Roogyun.roogclient(context.read<GlobalState>().roogtoken);
+    Roogyun.roogclient(widget.userinfo['roogtoken']);
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
     var wx = context.watch<GlobalState>().wxlist;
-    var userInfo = context.watch<GlobalState>().userInfo;
     return Column(
       children: [
         Container(
@@ -150,10 +144,10 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(children: [
-                  CircleAvatar(backgroundImage: NetworkImage(userInfo["avator_image"]),),
+                  CircleAvatar(backgroundImage: NetworkImage(widget.userinfo["avator_image"]),),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text("Hi,${userInfo["user_name"]}",style: TextStyle(fontWeight: FontWeight.w800),),Text("Hi,欢迎加入健康大家庭")],),
+                    children: [Text("Hi,${widget.userinfo["user_name"]}",style: TextStyle(fontWeight: FontWeight.w800),),Text("Hi,欢迎加入健康大家庭")],),
                 ],),
                 ElevatedButton.icon(
                     style: ButtonStyle(backgroundColor:MaterialStateProperty.all(Colors.orange),

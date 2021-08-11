@@ -35,15 +35,9 @@ class RegisterState extends State<Regitser> {
   @override
   void initState() {
     // TODO: implement initState
-    _getQiuNiuToken();
     super.initState();
   }
 
-  _getQiuNiuToken()async{
-    // 获取七牛云token
-    dynamic result = await Request.setNetwork('qiniu/',null,token: context.read<GlobalState>().logintoken);
-    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
-  }
   @override
   Widget build(BuildContext context) {
     String token = context.watch<GlobalState>().qiNiuToken;
@@ -244,8 +238,7 @@ class RegisterState extends State<Regitser> {
           PopupUntil.showToast(resultData['msg']);
           Shared.setStringData("token",jsonEncode(resultData));
           Shared.setIntData('aftertime',saveTime());
-          context.read<GlobalState>().changlogintoken(resultData['token']);
-          context.read<GlobalState>().changeroogtoken(resultData['roogtoken']);
+
           context.read<GlobalState>().changeUserInfo(resultData);
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
               MainHome()), (route) => false);

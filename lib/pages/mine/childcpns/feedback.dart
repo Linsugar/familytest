@@ -14,7 +14,7 @@ class FeedBook extends StatefulWidget {
 class _FeedBookState extends State<FeedBook> {
 
   TextEditingController _editingController = TextEditingController();
-  var userId;
+  var userinfo;
   @override
   void initState() {
     // TODO: implement initState
@@ -22,10 +22,10 @@ class _FeedBookState extends State<FeedBook> {
   }
   @override
   Widget build(BuildContext context) {
-    userId = context.watch<GlobalState>().userInfo;
+    userinfo = context.watch<GlobalState>().userInfo;
     return Scaffold(
       appBar: AppBar(title: Text("反馈"),actions:[GestureDetector(onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>feedhistory(userId['userid'])));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>feedhistory(userinfo)));
       },child: Container(margin: EdgeInsets.only(right: 10),child: Center(child: Text("反馈记录"))))],),
       body: Container(
         constraints: BoxConstraints.expand(),
@@ -44,11 +44,11 @@ class _FeedBookState extends State<FeedBook> {
                 PopupUntil.showToast('你是逗比嘛？啥子都不写？反馈个什么？小心封你号!!!');
               }else{
                 var fromdata = FormData.fromMap({
-                  'feed_id':userId['userid'],
+                  'feed_id':userinfo['user_id'],
                   'feedback_context':_editingController.text,
                 });
-                print("id:${userId['user_id']}");
-                var result = await Request.setNetwork('feedback/',fromdata,token: context.read<GlobalState>().logintoken);
+
+                var result = await Request.setNetwork('feedback/',fromdata,token: userinfo['token']);
                 print("结果:${result}");
                 PopupUntil.showToast('反馈成功，我们工作人员将会跟进，谢谢你的配合');
                 Future.delayed(Duration(seconds: 1)).then((value) => {
@@ -68,16 +68,16 @@ class _FeedBookState extends State<FeedBook> {
 //反馈记录
 
 class feedhistory extends StatelessWidget {
-  String user_id;
-  feedhistory(this.user_id);
+  var userinfo;
+  feedhistory(this.userinfo);
 
 
   @override
   Widget build(BuildContext context) {
     Future _gethistory()async{
       var result = await Request.getNetwork('feedback/',params: {
-        'feed_id':user_id
-      },token: context.read<GlobalState>().logintoken);
+        'feed_id':userinfo['user_id']
+      },token: userinfo['token']);
       print('结果：$result');
       return result;
     }

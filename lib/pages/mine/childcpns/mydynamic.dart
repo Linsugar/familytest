@@ -22,11 +22,12 @@ class _MyDynamicState extends State<MyDynamic> {
   }
 
   _getUserdynamic()async{
+    var userinfo = context.read<GlobalState>().userInfo;
     List<dynamicdata> dy =[];
     dy.clear();
    var result = await Request.getNetwork('DyImage/',params: {
-      'user_id':context.read<GlobalState>().userInfo['user_id']
-    },token:context.read<GlobalState>().logintoken );
+      'user_id':userinfo['user_id']
+    },token:userinfo['token'] );
    print("获取自身的动态");
    result.forEach((value){
        dy.add(dynamicdata(value));

@@ -188,7 +188,7 @@ class _DynamicPageState extends State<DynamicPage>{
   //  获取动态
   _getDynamic()async{
     print("进入获取动态");
-    var result = await Request.getNetwork('DyImage/',token:context.read<GlobalState>().logintoken);
+    var result = await Request.getNetwork('DyImage/',token:context.read<GlobalState>().userInfo['token']);
     dylist.clear();
     result.forEach((value){
       dylist.add(chatdynamic(value));

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:familytest/network/requests.dart';
 import 'package:familytest/pages/ToPic/ToPicHome.dart';
 import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/mine/childcpns/taskcpn.dart';
@@ -20,9 +21,6 @@ import 'dart:io';
 import 'package:familytest/roog/roogYun.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'cmmmpns/updisease.dart';
-import 'network/requests.dart';
-import 'pages/home/model/model.dart';
-import 'package:provider/provider.dart';
 
 void main() =>runApp(
 
@@ -50,15 +48,14 @@ class MyAppState extends State<MyApp>{
   var boolTime;
   @override
   void initState(){
+    _getQiuNiuToken();
     _prefs.then((value) => {
       res = value.getString("token"),
       boolTime = timeCheck(value.getInt('aftertime')) ,
       print(boolTime),
-      if(boolTime){
+      if(boolTime!=null && boolTime !=false){
         if(res!=null){
           Provider.of<GlobalState>(context,listen: false).changeUserInfo(jsonDecode(res)),
-          Provider.of<GlobalState>(context,listen: false).changlogintoken(jsonDecode(res)["token"]),
-          Provider.of<GlobalState>(context,listen: false).changeroogtoken(jsonDecode(res)["roogtoken"]),
           token = true
         }
       }else{
@@ -92,6 +89,12 @@ class MyAppState extends State<MyApp>{
     }else if(Platform.isIOS){
       print("ios未操作");
     }
+  }
+
+  _getQiuNiuToken()async{
+    // 获取七牛云token
+    dynamic result = await Request.setNetwork('qiniu/',null);
+    Provider.of<GlobalState>(context,listen: false).changeQiNiu(result);
   }
 
 

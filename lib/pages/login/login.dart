@@ -32,7 +32,6 @@ class _MyHomePageState extends State<MyHomePage>{
 
   @override
   void initState(){
-
     User_focusNode.unfocus();
     Pwd_focusNode.unfocus();
     super.initState();
@@ -184,8 +183,7 @@ class _MyHomePageState extends State<MyHomePage>{
         if(loginResult['token'] !=null &&  loginResult['msg'] == "成功"){
           Shared.setStringData("token",jsonEncode(loginResult));
           Shared.setIntData('aftertime',saveTime());
-          context.read<GlobalState>().changlogintoken(loginResult['token']);
-          context.read<GlobalState>().changeroogtoken(loginResult['roogtoken']);
+
           context.read<GlobalState>().changeUserInfo(loginResult);
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>
               MainHome()), (route) => false);

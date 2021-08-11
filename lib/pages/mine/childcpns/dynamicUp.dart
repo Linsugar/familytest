@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:familytest/main.dart';
 import 'package:familytest/network/requests.dart';
-import 'package:familytest/pages/chat/Chat.dart';
-import 'package:familytest/pages/home/Home.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/CreamUntil.dart';
@@ -43,7 +41,7 @@ void upDynamic()async{
     'Up_avator':userInfo['avator_image'],
     'image':jsonEncode(upImage)
   });
-  var result = await Request.setNetwork('DyImage/',data,token: context.read<GlobalState>().logintoken);
+  var result = await Request.setNetwork('DyImage/',data,token:userInfo['token']);
    print("返回的结果：$result");
      if(upImage.length==0){
        PopupUntil.showToast("请上传图片");

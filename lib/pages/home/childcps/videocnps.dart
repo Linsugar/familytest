@@ -1,11 +1,7 @@
-
-import 'dart:convert';
-
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/provider/grobleState.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 class videoWidget extends StatefulWidget {
@@ -53,7 +49,7 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
 //    获取当前视频的评论
     List _res = await Request.getNetwork('vifl/',params: {
       'Review_id':videoid
-    },token: context.read<GlobalState>().logintoken);
+    },token: context.read<GlobalState>().userInfo['token']);
     _messageList = _res;
     setState(() {
     });
@@ -62,14 +58,13 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
   sendVideoReview()async{
 //    对当前视频进行评论
  var userInfo = context.read<GlobalState>().userInfo;
-  var watchInfo = context.read<GlobalState>();
     var res = await Request.setNetwork('vifl/',{
       "Review_id":videoid,
       "Review_name":userInfo['user_name'],
       "Review_User":userInfo['user_id'],
       "Review_photo":userInfo['avator_image'],
       "Review_Content":_textEditingController!.text
-    },token: watchInfo.logintoken);
+    },token: userInfo['token']);
        print("是否成功：$res");
        if(res["msg"]=="评论成功" &&res["code"]==200){
          PopupUntil.showToast(res["msg"]);
