@@ -52,10 +52,11 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
     wx = context.watch<GlobalState>().wxlist;
     List dataList = context.watch<GlobalState>().dynamicList;
     // TODO: implement build
+//     Color.alphaBlend(foreground, background), Color.lerp(a, b, t),Color.getAlphaFromOpacity(opacity), Color.fromARGB(a, r, g, b)
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        backgroundColor: Colors.orange[400],
+        backgroundColor: Color.fromRGBO(253, 200, 48, 1),
         title: Text("话题",),actions: [MaterialButton(onPressed: (){},child: Icon(Icons.account_circle),)],),
       body: Container(
         width: MediaQuery.of(context).size.width,

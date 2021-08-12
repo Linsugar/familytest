@@ -124,8 +124,10 @@ class _ReviewCpnState extends State<ReviewCpn> {
                           ),),
                       )),
                       Expanded(flex: 3,child: MaterialButton(child: Text("发送"),onPressed: ()async{
-                        await _postreview();
-                        _textEditingController.clear();
+                        if(_textEditingController.text.isNotEmpty){
+                          await _postreview();
+                          _textEditingController.clear();
+                        }
                       },))
                     ],
                   )
