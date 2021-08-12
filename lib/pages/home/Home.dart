@@ -80,7 +80,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     });
     if(result.length!=null){
       for(var i=0;i<result.length;i++){
-        await Provider.of<GlobalState>(context,listen: false).changealluser(userinfomodel(result[i]));
+        await Provider.of<GlobalState>(context,listen: false).changealluser(Userinfomodel.fromMap((result[i])));
       }
     }
   }

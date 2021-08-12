@@ -187,13 +187,13 @@ class _DynamicPageState extends State<DynamicPage>{
 
   //  获取动态
   _getDynamic()async{
-    print("进入获取动态");
+    List dynamciList = [];
     var result = await Request.getNetwork('DyImage/',token:context.read<GlobalState>().userInfo['token']);
-    dylist.clear();
     result.forEach((value){
-      dylist.add(chatdynamic(value));
+      dynamciList.add(chatdynamic(value));
+      context.read<GlobalState>().changeDynamicList(dynamciList);
     });
-    return dylist;
+    return dynamciList;
   }
 
   @override
@@ -202,6 +202,7 @@ class _DynamicPageState extends State<DynamicPage>{
     _scrollController.addListener(() {
       _focusNode.unfocus();
     });
+    _getDynamic();
     super.initState();
   }
 
@@ -213,34 +214,19 @@ class _DynamicPageState extends State<DynamicPage>{
 
   @override
   Widget build(BuildContext context) {
+    List dataList = context.watch<GlobalState>().dynamicList;
     return RefreshIndicator(
       onRefresh: (){
-        print("111");
         return _getDynamic();
       },
-      child: Column(
-        children: [
-          Expanded(
-            child: FutureBuilder(
-              future:_getDynamic(),
-              builder:(BuildContext context, AsyncSnapshot snapshot){
-                if(snapshot.hasError){
-                  return Icon(Icons.error);
-                }if(snapshot.connectionState ==ConnectionState.waiting){
-                  return Center(child: CircularProgressIndicator());
-                }if(snapshot.data.isEmpty){
-                  return Center(child: Text("目前还未有动态发布"),);
-                }
-                else{
-                  return Container(child: dynamicList(snapshot));
-                }
-              },),
-          )
-        ],
-      ),
-    );;
+      child:dynamicList(dataList),
+    );
   }
-  Widget dynamicList(snapshot){
+  Widget dynamicList(List snapshot){
+    print("dongtai:$snapshot");
+    if(snapshot ==null){
+      return Center(child: Text("请等待数据加载"));
+    }
     return ListView.separated(
       physics: AlwaysScrollableScrollPhysics(),
         controller: _scrollController,
@@ -250,9 +236,9 @@ class _DynamicPageState extends State<DynamicPage>{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
-                  leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator),),
-                  title: Text("${snapshot.data[index].title}"),
-                  subtitle:  Text("发布时间:${snapshot.data[index].time}"),
+                  leading: CircleAvatar(backgroundImage: NetworkImage(snapshot[index].avator),),
+                  title: Text("${snapshot[index].title}"),
+                  subtitle:  Text("发布时间:${snapshot[index].time}"),
                 ),
                 Container(
                     margin: EdgeInsets.only(left: 5),
@@ -260,7 +246,7 @@ class _DynamicPageState extends State<DynamicPage>{
                       maxHeight: 100,
                       minHeight: 10,
                     ),
-                    child:  Text("${snapshot.data[index].con}",textAlign: TextAlign.start,maxLines: 3,overflow:TextOverflow.ellipsis)
+                    child:  Text("${snapshot[index].con}",textAlign: TextAlign.start,maxLines: 3,overflow:TextOverflow.ellipsis)
                 ),
                 SizedBox(height: 10),
                 Container(
@@ -279,7 +265,7 @@ class _DynamicPageState extends State<DynamicPage>{
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     image: DecorationImage(
-                                        image: NetworkImage(snapshot.data[index].imagelist[im]),
+                                        image: NetworkImage(snapshot[index].imagelist[im]),
                                         fit: BoxFit.cover
                                     )
                                 ),
@@ -287,7 +273,7 @@ class _DynamicPageState extends State<DynamicPage>{
                               );
                             }, separatorBuilder: (context,im){
                           return SizedBox(width: 5,height: 5,);
-                        }, itemCount: snapshot.data[index].imagelist.length),
+                        }, itemCount: snapshot[index].imagelist.length),
                       ),
                       Expanded(
                         flex: 1,
@@ -296,7 +282,7 @@ class _DynamicPageState extends State<DynamicPage>{
                           children: [
                             MaterialButton(child: Text("点赞"),onPressed: (){}),
                             MaterialButton(child: Text("评论"),onPressed: (){
-                              Navigator.pushNamed(context,'/reviewCpn',arguments:{'data':snapshot.data[index]} );
+                              Navigator.pushNamed(context,'/reviewCpn',arguments:{'data':snapshot[index]} );
                             }),
                           ],),
                       ),
@@ -308,7 +294,7 @@ class _DynamicPageState extends State<DynamicPage>{
           );
         }, separatorBuilder: (context,index){
       return  Divider();
-    }, itemCount: snapshot.data.length);
+    }, itemCount: snapshot.length);
   }
 
 }

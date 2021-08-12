@@ -83,6 +83,7 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.orangeAccent,
         title: Text(argumentValue.videoTitle),
@@ -97,8 +98,7 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
         onTap: (){
           _focusNode.unfocus();
         },
-        child: Flex(
-          direction: Axis.vertical,
+        child: Column(
           children: [
             Expanded(flex: 5,child: Stack(
               alignment: Alignment.center,
@@ -107,7 +107,7 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
               videoView()
             ],)),
             Expanded(flex: 4,child: videoReviews(),),
-            Expanded(flex: 1,child:Row(
+            Expanded(child:Row(
               children: [
                 Expanded(
                   flex: 8,

@@ -12,6 +12,13 @@ class GlobalState with ChangeNotifier{
   List upImageList = [];
   String qiNiuToken ="";
   var userInfo;
+  var dynamicList;
+
+
+  changeDynamicList(value){
+    dynamicList =value;
+    notifyListeners();
+  }
 
   changeUserInfo(value){
     userInfo = value;
@@ -59,8 +66,6 @@ class GlobalState with ChangeNotifier{
     historylist=[];
     notifyListeners();
   }
-
-
 
 
   changdeviceid(value){

@@ -9,6 +9,7 @@ class chatdynamic{
   String ?time;
   int? dyid;
   String ?Dynamic_Id;
+  int ?Dynamic_Type;
   chatdynamic(value){
     this.username = value['Up_name'];
     this.dyid = value['id'];
@@ -20,6 +21,7 @@ class chatdynamic{
     this.imagelist = jsonimage;
     this.time = value['Up_Time'];
     this.Dynamic_Id = value['Dynamic_Id'];
+    this.Dynamic_Type = value['Dynamic_Type'];
   }
 
 }

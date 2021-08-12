@@ -1,8 +1,8 @@
-class userinfomodel{
+class Userinfomodel{
   String ?name;
   String ?userid;
   String ?avator_image;
-  userinfomodel(value){
+  Userinfomodel.fromMap(value){
     name = value['username'];
     userid = value['user_id'];
     avator_image = value['avator_image'];

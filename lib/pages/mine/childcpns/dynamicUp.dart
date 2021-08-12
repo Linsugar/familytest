@@ -25,9 +25,9 @@ class _UpDynamicState extends State<UpDynamic> {
   List imageDynamic = [];
   List upImage=[];
   List titleSpan = [
-    "爱情","娱乐","电竞","美女"
+    "娱乐","电竞","科技","奇文","健康","萌宠"
   ];
-  String currentTitle = "爱情";
+  int currentTitle = 0;
   var stateus =0;
 
 
@@ -43,7 +43,8 @@ void upDynamic()async{
     'Up_addres':context.read<GlobalState>().city,
     'Up_name':userInfo['user_name'],
     'Up_avator':userInfo['avator_image'],
-    'image':jsonEncode(upImage)
+    'image':jsonEncode(upImage),
+    'Dynamic_Type':currentTitle
   });
   var result = await Request.setNetwork('DyImage/',data,token:userInfo['token']);
    print("返回的结果：$result");
@@ -106,7 +107,6 @@ void upDynamic()async{
                           decoration: InputDecoration(hintText: "添加标题",border: InputBorder.none),maxLines: 1,
                         ),
                       )),
-
                       Expanded(flex: 6,child: Container(
                         margin: EdgeInsets.only(top: 10),
                         padding: EdgeInsets.only(left: 5,right: 5),
@@ -136,7 +136,6 @@ void upDynamic()async{
                             imageDynamic.length==4?Text(""):MaterialButton(
                               onPressed: ()async{
                                 var result = await Creamer.GetGrally();
-                                print("得到的 结果：$result");
                                 if(result == null){
                                   return;
                                 }
@@ -159,12 +158,11 @@ void upDynamic()async{
               )),
               Expanded(flex: 3,child: Container(color: Colors.white,child: Column(
                 children: [
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("选择帖子类别"),
-                      Text("${currentTitle}",style: TextStyle(color: Colors.deepOrange,letterSpacing: 2.0,fontWeight: FontWeight.w800),),
+                      Text("选择帖子类别",style: TextStyle(letterSpacing: 1.3),),
+                      Text("${titleSpan[currentTitle]}",style: TextStyle(color: Colors.deepOrange,letterSpacing: 2.0,fontWeight: FontWeight.w800),),
                       ElevatedButton(onPressed: (){
                         showModel();
                       },child: Text("选择"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)),),
@@ -187,10 +185,10 @@ void upDynamic()async{
       return Container(
         height: 150,
         child: ListView.separated(itemBuilder: (context,index){
-          return ListTile(leading: Icon(Icons.account_circle),title: Text("${titleSpan[index]}"),onTap: (){
+          return ListTile(title: Text("${titleSpan[index]}"),onTap: (){
             Navigator.pop(context);
             setState(() {
-              currentTitle = titleSpan[index];
+              currentTitle = index;
             });
           },);
         }, separatorBuilder: (context,index){
