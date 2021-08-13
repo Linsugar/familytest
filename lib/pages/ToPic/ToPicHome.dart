@@ -20,7 +20,6 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
 
   final List<Widget> _tabList = [Text("全部"),Text("娱乐"),Text("电竞"),Text("科技"),Text("奇文"),Text("健康"),Text("萌宠")];
   TabController ?_tabController;
-  TextEditingController ?_textEditingController;
   FocusNode _focusNode = FocusNode();
   ScrollController _scrollController = ScrollController();
   List ? wx;
@@ -32,7 +31,6 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
     _focusNode.unfocus();
     _getVideoContext();
     _tabController = TabController(length: _tabList.length, vsync: this);
-    _textEditingController =TextEditingController();
     super.initState();
     _scrollController.addListener(() {
       _focusNode.unfocus();
@@ -41,12 +39,13 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
 
 //获取视频热点
   _getVideoContext()async{
+    var videoState = Provider.of<homeState>(context,listen: false);
     List<VideoInfo> videoList= [];
     List _res = await Request.getNetwork('videolist/');
     _res.forEach((element) {
       videoList.add(VideoInfo(element));
     });
-    Provider.of<homeState>(context,listen: false).changeVideo(videoList);
+    videoState.changeVideo(videoList);
   }
   //  获取动态
   _getDynamic()async{
@@ -76,7 +75,7 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            headerContent(),
+            videoContent(),
             TabBar(
               labelPadding: EdgeInsets.all(5),
               labelColor: Colors.black,
@@ -99,7 +98,7 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
     );
   }
   //头部内容
-  Widget headerContent(){
+  Widget videoContent(){
     return Container(
       height: 150,
       width: MediaQuery.of(context).size.width,

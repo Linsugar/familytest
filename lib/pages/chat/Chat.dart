@@ -23,6 +23,7 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
   TextEditingController _textEditingController =TextEditingController();
   FocusNode _focusNode =FocusNode();
   int paGeIndex= 0;
+
   @override
   void initState() {
     _focusNode.unfocus();
@@ -91,87 +92,146 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
                 controller: _tabController!,
                 children: [
                   DynamicPage(),
-                  ChatPage(size: _size, headerimag: _headerimag),
+                  ChatPage(_size,_headerimag,context),
               ],
             ))
           ],
         )
     );
   }
-
 }
 
-//聊天
-class ChatPage extends StatelessWidget {
-  const ChatPage({
-    Key? key,
-    required Size size,
-    required String headerimag,
-  }) : _size = size, _headerimag = headerimag,super(key: key);
-
-  final Size _size;
-  final String _headerimag;
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(padding: EdgeInsets.only(top: 10),width: _size.width,height: _size.height,
-        child: Column(
-          children: [
-            Header(),
-            Expanded(
-              child: FutureBuilder(
-                future: Roogyun.getallConversation(),
-                builder: (BuildContext context, AsyncSnapshot snapshot){
-                  print("加载状态：${snapshot.data}");
-                  if(snapshot.connectionState ==ConnectionState.waiting){
-                    return Center(child: CircularProgressIndicator());
-                  }if(snapshot.hasError){
-                    return Center(child: Text("您当前还未与其他人有过聊天哦~"));
-                  }
-                  else{
-                    return Column(
-                      children: [
-                        Expanded(flex: 1,child: ListTile(
-                          key: UniqueKey(),
-                          subtitle: Text("在这里可以与许多不同的朋友一起畅聊生活琐事",overflow: TextOverflow.ellipsis,maxLines: 1,),
-                          leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(_headerimag),),
-                          title: Text("聊天广场"),trailing: MaterialButton(
-                            onPressed: (){
+Widget ChatPage(size,headerimag,context){
+  return SingleChildScrollView(
+    child: Container(padding: EdgeInsets.only(top: 10),width: size.width,height: size.height,
+      child: Column(
+        children: [
+          header(context),
+          Expanded(
+            child: FutureBuilder(
+              future: Roogyun.getallConversation(),
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                print("加载状态：${snapshot.data}");
+                if(snapshot.connectionState ==ConnectionState.waiting){
+                  return Center(child: CircularProgressIndicator());
+                }if(snapshot.hasError){
+                  return Center(child: Text("您当前还未与其他人有过聊天哦~"));
+                }
+                else{
+                  return Column(
+                    children: [
+                      Expanded(flex: 1,child: ListTile(
+                        key: UniqueKey(),
+                        subtitle: Text("在这里可以与许多不同的朋友一起畅聊生活琐事",overflow: TextOverflow.ellipsis,maxLines: 1,),
+                        leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(headerimag),),
+                        title: Text("聊天广场"),trailing: MaterialButton(
+                          onPressed: (){
 //                    print("点击");
 //                    _Amc?.forward();
 //                    Navigator.pushNamed(context,'/chatChild',arguments:{
 //                      'userinfo': snapshot.data
 //                    });
-                              PopupUntil.showToast("当前功能正在开发中~");
-                            },child: Icon(Icons.pan_tool,color: Colors.cyan,)),)),
-                        Expanded(flex:8,child: ListView.separated(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context,index){
-                            return ListTile(
-                              key: UniqueKey(),
-                              subtitle: Text("${snapshot.data[index].user_context}",overflow: TextOverflow.ellipsis,maxLines: 1,),
-                              leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator_image),),
-                              title: Text(snapshot.data[index].name),trailing: MaterialButton(onPressed: (){
-                              print("点击$index");
-                              Navigator.pushNamed(context,'/chatChild',arguments:{
-                                'userinfo': snapshot.data[index]
-                              });
-                            },child: FaIcon(FontAwesomeIcons.commentDots)),);
-                          },separatorBuilder: (context,index){
-                          return Divider();
-                        },))
-                      ],
-                    );
-                  }
-                },
-              ),
-            )
-          ],
-        ),),
-    );
-  }
+                            PopupUntil.showToast("当前功能正在开发中~");
+                          },child: Icon(Icons.pan_tool,color: Colors.cyan,)),)),
+                      Expanded(flex:8,child: ListView.separated(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context,index){
+                          return ListTile(
+                            key: UniqueKey(),
+                            subtitle: Text("${snapshot.data[index].user_context}",overflow: TextOverflow.ellipsis,maxLines: 1,),
+                            leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator_image),),
+                            title: Text(snapshot.data[index].name),trailing: MaterialButton(onPressed: (){
+                            print("点击$index");
+                            Navigator.pushNamed(context,'/chatChild',arguments:{
+                              'userinfo': snapshot.data[index]
+                            });
+                          },child: FaIcon(FontAwesomeIcons.commentDots)),);
+                        },separatorBuilder: (context,index){
+                        return Divider();
+                      },))
+                    ],
+                  );
+                }
+              },
+            ),
+          )
+        ],
+      ),),
+  );
 }
+
+
+//聊天
+//class ChatPage extends StatelessWidget {
+//  const ChatPage({
+//    Key? key,
+//    required Size size,
+//    required String headerimag,
+//  }) : _size = size, _headerimag = headerimag,super(key: key);
+//
+//  final Size _size;
+//  final String _headerimag;
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return SingleChildScrollView(
+//      child: Container(padding: EdgeInsets.only(top: 10),width: _size.width,height: _size.height,
+//        child: Column(
+//          children: [
+//            Header(),
+//            Expanded(
+//              child: FutureBuilder(
+//                future: Roogyun.getallConversation(),
+//                builder: (BuildContext context, AsyncSnapshot snapshot){
+//                  print("加载状态：${snapshot.data}");
+//                  if(snapshot.connectionState ==ConnectionState.waiting){
+//                    return Center(child: CircularProgressIndicator());
+//                  }if(snapshot.hasError){
+//                    return Center(child: Text("您当前还未与其他人有过聊天哦~"));
+//                  }
+//                  else{
+//                    return Column(
+//                      children: [
+//                        Expanded(flex: 1,child: ListTile(
+//                          key: UniqueKey(),
+//                          subtitle: Text("在这里可以与许多不同的朋友一起畅聊生活琐事",overflow: TextOverflow.ellipsis,maxLines: 1,),
+//                          leading: ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.network(_headerimag),),
+//                          title: Text("聊天广场"),trailing: MaterialButton(
+//                            onPressed: (){
+////                    print("点击");
+////                    _Amc?.forward();
+////                    Navigator.pushNamed(context,'/chatChild',arguments:{
+////                      'userinfo': snapshot.data
+////                    });
+//                              PopupUntil.showToast("当前功能正在开发中~");
+//                            },child: Icon(Icons.pan_tool,color: Colors.cyan,)),)),
+//                        Expanded(flex:8,child: ListView.separated(
+//                          itemCount: snapshot.data.length,
+//                          itemBuilder: (context,index){
+//                            return ListTile(
+//                              key: UniqueKey(),
+//                              subtitle: Text("${snapshot.data[index].user_context}",overflow: TextOverflow.ellipsis,maxLines: 1,),
+//                              leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data[index].avator_image),),
+//                              title: Text(snapshot.data[index].name),trailing: MaterialButton(onPressed: (){
+//                              print("点击$index");
+//                              Navigator.pushNamed(context,'/chatChild',arguments:{
+//                                'userinfo': snapshot.data[index]
+//                              });
+//                            },child: FaIcon(FontAwesomeIcons.commentDots)),);
+//                          },separatorBuilder: (context,index){
+//                          return Divider();
+//                        },))
+//                      ],
+//                    );
+//                  }
+//                },
+//              ),
+//            )
+//          ],
+//        ),),
+//    );
+//  }
+//}
 
 //动态页
 class DynamicPage extends StatefulWidget {
@@ -300,35 +360,28 @@ class _DynamicPageState extends State<DynamicPage>{
 }
 
 //聊天头部展示所有用户
-class Header extends StatelessWidget {
-  const Header({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var sPDate =context.watch<GlobalState>().overuser;
-    return Container(
-        height: 80,
-        padding: EdgeInsets.all(5),child:
-     ListView.separated(scrollDirection: Axis.horizontal,itemBuilder: (context,index){
-      return GestureDetector(
-        onTap: (){
-          Navigator.pushNamed(context,'/chatChild',arguments:{
-            "userinfo":sPDate![index]
-          });
-        },
-        child: Container(
-            height: 50,
-            width: 50,
-            margin: EdgeInsets.all(5),decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 2.0),shape:BoxShape.circle ,
-            boxShadow: [BoxShadow(color: Colors.blue,offset: Offset(0.0,1.0))],image: DecorationImage(image: NetworkImage(sPDate![index].avator_image),fit: BoxFit.cover)
-        )),
-      );
-    },itemCount: sPDate!.length,separatorBuilder: (context,index){
-      return SizedBox(width: 10,);
-    },)
+Widget header(context){
+  var sPDate =Provider.of<GlobalState>(context,listen: false).overuser;
+  return Container(
+      height: 80,
+      padding: EdgeInsets.all(5),child:
+  ListView.separated(scrollDirection: Axis.horizontal,itemBuilder: (context,index){
+    return GestureDetector(
+      onTap: (){
+        Navigator.pushNamed(context,'/chatChild',arguments:{
+          "userinfo":sPDate![index]
+        });
+      },
+      child: Container(
+          height: 50,
+          width: 50,
+          margin: EdgeInsets.all(5),decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 2.0),shape:BoxShape.circle ,
+          boxShadow: [BoxShadow(color: Colors.blue,offset: Offset(0.0,1.0))],image: DecorationImage(image: NetworkImage(sPDate![index].avator_image),fit: BoxFit.cover)
+      )),
     );
-  }
+  },itemCount: sPDate!.length,separatorBuilder: (context,index){
+    return SizedBox(width: 10,);
+  },)
+  );
 }
 

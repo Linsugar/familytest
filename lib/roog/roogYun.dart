@@ -64,6 +64,10 @@ static sedMessage(String sendmsg,String pid,context)async{
 static getallConversation()async{
   List<chatmodel> userlist = [];
   List ?conversationList = await RongIMClient.getConversationList([RCConversationType.Private,RCConversationType.Group,RCConversationType.System]);
+
+  if(conversationList == null){
+    return [];
+  }
   print("获取所有的会话：${conversationList}");
 //  接收方
   print("获取所有接收方id：${conversationList[0].targetId}");

@@ -83,7 +83,7 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.orangeAccent,
         title: Text(argumentValue.videoTitle),
@@ -98,37 +98,47 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
         onTap: (){
           _focusNode.unfocus();
         },
-        child: Column(
+        child: Stack(
           children: [
-            Expanded(flex: 5,child: Stack(
-              alignment: Alignment.center,
-              children: [
-              Container(color: Colors.black45,),
-              videoView()
-            ],)),
-            Expanded(flex: 4,child: videoReviews(),),
-            Expanded(child:Row(
-              children: [
-                Expanded(
-                  flex: 8,
-                  child: Card(
-                    child: Center(
-                      child: TextField(
-                        controller: _textEditingController,
-                        focusNode: _focusNode,
-                        decoration: InputDecoration(
-                            prefixIcon:Icon(Icons.search),
-                            border: InputBorder.none
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              color: Colors.white10,
+              child: Column(
+                children: [
+                  Expanded(flex: 5,child: videoView()),
+                  Expanded(flex: 4,child:videoReviews())
+                ],
+              ),
+            ),
+            Positioned(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: Card(
+                          child: Center(
+                            child: TextField(
+                              controller: _textEditingController,
+                              focusNode: _focusNode,
+                              decoration: InputDecoration(
+                                  prefixIcon:Icon(Icons.search),
+                                  border: InputBorder.none
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      Expanded(flex: 2,child: Padding(padding: EdgeInsets.all(3),child: SizedBox(width: double.infinity,height: double.infinity,child: MaterialButton(color: Colors.blue,child: Text("发送"),onPressed: (){
+                        sendVideoReview();
+                      },))))
+                    ],
                   ),
-                ),
-                Expanded(flex: 2,child: Padding(padding: EdgeInsets.all(3),child: SizedBox(width: double.infinity,height: double.infinity,child: MaterialButton(color: Colors.blue,child: Text("发送"),onPressed: (){
-                  sendVideoReview();
-                },))))
-              ],
-            ))
+                ))
           ],
         ),
       ),
@@ -142,6 +152,7 @@ Widget videoReviews(){
       controller: _scrollController,
       itemBuilder: (context,index){
         return Container(
+          margin: EdgeInsets.only(bottom: 50),
           width: double.infinity,
           height: 80,
           child:
