@@ -107,7 +107,8 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
               child: Column(
                 children: [
                   Expanded(flex: 5,child: videoView()),
-                  Expanded(flex: 4,child:videoReviews())
+                  Expanded(flex: 4,child:videoReviews()),
+                  SizedBox(height: 50,)
                 ],
               ),
             ),
@@ -152,7 +153,6 @@ Widget videoReviews(){
       controller: _scrollController,
       itemBuilder: (context,index){
         return Container(
-          margin: EdgeInsets.only(bottom: 50),
           width: double.infinity,
           height: 80,
           child:
