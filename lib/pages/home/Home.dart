@@ -5,7 +5,6 @@ import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:familytest/roog/roogYun.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -32,7 +31,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     _textEditingController = TextEditingController();
     userinfo = Provider.of<GlobalState>(context,listen: false).userInfo;
     _getWxContext();
-    _getVideoContext();
     _getUserInfo();
     tabcontroller  =TabController(length: 4, vsync: this)..addListener(() {
       if(tabcontroller!.animation!.value ==tabcontroller!.index){
@@ -60,16 +58,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
       });
       await ShowAlerDialog(context);
     }
-  }
-
-//获取视频热点
-  _getVideoContext()async{
-    List<VideoInfo> videoList= [];
-    List _res = await Request.getNetwork('videolist/');
-    _res.forEach((element) {
-      videoList.add(VideoInfo(element));
-    });
-    Provider.of<homeState>(context,listen: false).changeVideo(videoList);
   }
 
 //  获取所有的用户
@@ -202,28 +190,6 @@ class _HomePageState extends State<HomePage> {
             ),)),
           Expanded(child: findDoctor(context)),
         ],),
-        Container(
-          height: 100,
-          width: double.infinity,
-          child: Column(children: [
-            Expanded(flex: 15,child: VideoCarousel(context)),
-            Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                for(var i=0;i<4;i++)
-                  Container(
-                    margin: EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: i==context.watch<homeState>().carIndex?Colors.orange:Colors.blueGrey,
-                      borderRadius: BorderRadius.circular(5)
-                    ),
-                    width: 10,height: 10,),
-              ],),
-            )
-          ],),
-        ),
         StaggeredGridView.countBuilder(
          padding: EdgeInsets.all(10),
           shrinkWrap: true,
@@ -263,45 +229,30 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-//首页视频轮播组件
-Widget VideoCarousel(context){
-  List listVideo = Provider.of<homeState>(context).videoList;
-  return  CarouselSlider(
-    options: CarouselOptions(
-      onPageChanged: (int index, CarouselPageChangedReason reason){
-        Provider.of<homeState>(context,listen: false).changindex(index);
-      },
-      aspectRatio: 4.7,
-      viewportFraction: 1.0,
-      enlargeCenterPage: true,
-      scrollDirection: Axis.horizontal,
-      autoPlay: true,
-    ),
-    items: listVideo.map((value) {
-      return Builder(
-        builder: (BuildContext context) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: InkWell(
-              onTap: (){
-                Navigator.pushNamed(context, "/videoWidget",arguments: {'value':value});
-              },
-              child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.symmetric(horizontal: 5.0),
-                  decoration: BoxDecoration(
-                      boxShadow: [BoxShadow(color: Colors.black,spreadRadius: 0.5,blurRadius: 0.9,)],
-                      color: Colors.amber
-                  ),
-                  child: Image(image: NetworkImage(value.videoCover),fit: BoxFit.cover,)
-              ),
-            ),
-          );
-        },
-      );
-    }).toList(),
-  );
-}
+
+
+//Container(
+//height: 100,
+//width: double.infinity,
+//child: Column(children: [
+//Expanded(flex: 15,child: VideoCarousel(context)),
+//Expanded(
+//flex: 1,
+//child: Row(
+//mainAxisAlignment: MainAxisAlignment.center,
+//children: [
+//for(var i=0;i<4;i++)
+//Container(
+//margin: EdgeInsets.all(2),
+//decoration: BoxDecoration(
+//color: i==context.watch<homeState>().carIndex?Colors.orange:Colors.blueGrey,
+//borderRadius: BorderRadius.circular(5)
+//),
+//width: 10,height: 10,),
+//],),
+//)
+//],),
+//),
 
 //病历档案
 Widget archivesWgt(context){

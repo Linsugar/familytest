@@ -1,6 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:familytest/network/requests.dart';
 import 'package:familytest/pages/chat/model/chatdynamic.dart';
+import 'package:familytest/pages/home/model/model.dart';
 import 'package:familytest/provider/grobleState.dart';
+import 'package:familytest/provider/homeState.dart';
 import 'package:familytest/until/CommonUntil.dart';
 import 'package:familytest/until/showtoast.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,6 +30,7 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
     // TODO: implement initState
     _getDynamic();
     _focusNode.unfocus();
+    _getVideoContext();
     _tabController = TabController(length: _tabList.length, vsync: this);
     _textEditingController =TextEditingController();
     super.initState();
@@ -35,6 +39,15 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
     });
   }
 
+//获取视频热点
+  _getVideoContext()async{
+    List<VideoInfo> videoList= [];
+    List _res = await Request.getNetwork('videolist/');
+    _res.forEach((element) {
+      videoList.add(VideoInfo(element));
+    });
+    Provider.of<homeState>(context,listen: false).changeVideo(videoList);
+  }
   //  获取动态
   _getDynamic()async{
     print("进入获取动态");
@@ -57,13 +70,13 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(253, 200, 48, 1),
-        title: Text("话题",),actions: [MaterialButton(onPressed: (){},child: Icon(Icons.account_circle),)],),
+        title: Text("话题",)),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            Expanded(flex: 3,child: headerContent()),
+            headerContent(),
             TabBar(
               labelPadding: EdgeInsets.all(5),
               labelColor: Colors.black,
@@ -90,26 +103,67 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
     return Container(
       height: 150,
       width: MediaQuery.of(context).size.width,
-      child: ListView.separated(scrollDirection: Axis.horizontal,itemCount: 20,separatorBuilder: (context,index){
-        return SizedBox(width: 10,);
-      },itemBuilder: (context,index){
-        return GestureDetector(
-          onTap: (){
-            PopupUntil.showToast("该功能正在开发中");
-//                        Navigator.pushNamed(context, '/childfamily');
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Container(decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('images/idcard.png'),fit: BoxFit.contain
-                )
-            ),width: 230),
-          ),
-        );
-      },),
+      child:Column(children: [
+        SizedBox(height: 5,),
+        VideoCarousel(context),
+        SizedBox(height: 5,),
+          Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for(var i=0;i<4;i++)
+              Container(
+                margin: EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                    color: i==context.watch<homeState>().carIndex?Colors.orange:Colors.blueGrey,
+                    borderRadius: BorderRadius.circular(5)
+                ),
+                width: 10,height: 10,),
+          ],)
+      ],),
     );
   }
+
+  //首页视频轮播组件
+  Widget VideoCarousel(context){
+    List listVideo = Provider.of<homeState>(context).videoList;
+    return  CarouselSlider(
+      options: CarouselOptions(
+        onPageChanged: (int index, CarouselPageChangedReason reason){
+          Provider.of<homeState>(context,listen: false).changindex(index);
+        },
+        aspectRatio: 2.9,
+        viewportFraction: 1.0,
+        enlargeCenterPage: true,
+        scrollDirection: Axis.horizontal,
+        autoPlay: true,
+      ),
+      items: listVideo.map((value) {
+        return Builder(
+          builder: (BuildContext context) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: InkWell(
+                onTap: (){
+                  Navigator.pushNamed(context, "/videoWidget",arguments: {'value':value});
+                },
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+                    decoration: BoxDecoration(
+                        boxShadow: [BoxShadow(color: Colors.black,spreadRadius: 0.5,blurRadius: 0.9,)],
+                        color: Colors.amber
+                    ),
+                    child: Image(image: NetworkImage(value.videoCover),fit: BoxFit.cover,)
+                ),
+              ),
+            );
+          },
+        );
+      }).toList(),
+    );
+  }
+
+
 
 //话题文章
   Widget titleCdk(dataList,index){
