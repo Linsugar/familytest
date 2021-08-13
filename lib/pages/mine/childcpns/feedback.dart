@@ -82,7 +82,16 @@ class feedhistory extends StatelessWidget {
       return result;
     }
     return Scaffold(
-      appBar: AppBar(title: Text("反馈记录"),),
+      appBar: AppBar(flexibleSpace: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(244, 107, 69, 1),
+                Color.fromRGBO(238, 168, 73, 1),
+              ],
+            )
+        ),
+      ),title: Text("反馈记录"),),
       body: FutureBuilder(
         future:_gethistory() ,
         builder: (BuildContext context, AsyncSnapshot snapshot){

@@ -20,7 +20,16 @@ class PhotsState extends State<Photos>{
     // TODO: implement build
 
     return Scaffold(
-      appBar: AppBar(title: Text("我的相册"),),
+      appBar: AppBar(flexibleSpace: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(244, 107, 69, 1),
+                Color.fromRGBO(238, 168, 73, 1),
+              ],
+            )
+        ),
+      ),title: Text("我的相册"),),
       body: Container(
         margin: EdgeInsets.all(10),
         width: PhoneSize.width,

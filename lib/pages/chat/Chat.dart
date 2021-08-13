@@ -55,14 +55,24 @@ class Chatstate extends State<Chat>  with SingleTickerProviderStateMixin{
         appBar: PreferredSize(
           preferredSize:  Size.fromHeight(50),
           child: AppBar(
-            backgroundColor: Colors.white,
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromRGBO(244, 107, 69, 1),
+                    Color.fromRGBO(238, 168, 73, 1),
+                  ]
+                )
+              ),
+            ),
             bottom: TabBar(
               isScrollable: false,
-              labelColor: Colors.orange,
+              labelColor: Colors.white,
               indicatorColor: Colors.orange,
               unselectedLabelColor: Colors.black,
               labelPadding: EdgeInsets.all(10),
               controller: _tabController!,
+
               tabs: [
                 Text("动态"),
                 Text("聊天"),

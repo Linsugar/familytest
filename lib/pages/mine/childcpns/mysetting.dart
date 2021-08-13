@@ -28,8 +28,17 @@ class MySettingState extends State<MySetting>{
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orange,
-        title: Text("个人信息"),actions: [MaterialButton(onPressed: (){},child: Text("保存",style: TextStyle(color: Colors.white),),)],),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(244, 107, 69, 1),
+                  Color.fromRGBO(238, 168, 73, 1),
+                ],
+              )
+          ),
+        ),
+        title: Text("个人信息"),actions: [MaterialButton(onPressed: (){},child: Text("保存"),)],),
       body: FutureBuilder(
         future:getuserdata() ,
         builder: (BuildContext context, AsyncSnapshot snapshot){

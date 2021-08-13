@@ -46,7 +46,16 @@ class _TaskState extends State<Task> with SingleTickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("服务套餐",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),actions: [MaterialButton(onPressed: (){
+        appBar: AppBar(flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(244, 107, 69, 1),
+                  Color.fromRGBO(238, 168, 73, 1),
+                ],
+              )
+          ),
+        ),title: Text("服务套餐"),actions: [MaterialButton(onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (context)=>GetManger()));
         },child: Text("领取记录"),)],),
         body:Container(

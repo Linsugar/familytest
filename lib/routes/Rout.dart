@@ -15,7 +15,7 @@ import 'package:familytest/pages/login/login.dart';
 import 'package:familytest/pages/login/register.dart';
 import 'package:familytest/pages/mine/childcpns/mydynamic.dart';
 import 'package:familytest/pages/mine/childcpns/dynamicUp.dart';
-import 'package:familytest/pages/mine/childcpns/dynamicpn.dart';
+import 'package:familytest/pages/mine/childcpns/MyPhoto.dart';
 import 'package:familytest/pages/mine/childcpns/feedback.dart';
 import 'package:familytest/pages/mine/childcpns/intergcpn.dart';
 import 'package:familytest/pages/mine/childcpns/mysetting.dart';

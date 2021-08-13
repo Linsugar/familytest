@@ -9,11 +9,19 @@ class _AllServicesState extends State<AllServices> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(length: 4, child: Scaffold(
-      appBar: AppBar(title: Text("所有服务"),backgroundColor: Colors.orange,iconTheme: IconThemeData(color: Colors.white),
+      appBar: AppBar(title: Text("所有服务"),flexibleSpace: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(244, 107, 69, 1),
+                Color.fromRGBO(238, 168, 73, 1),
+              ],
+            )
+        ),
+      ),
       bottom: TabBar(
         isScrollable: true,
           indicatorColor: Colors.white,
-          labelStyle: TextStyle(fontSize: 15),
           tabs: [
         Text("康复师"),
         Text("医生管理"),

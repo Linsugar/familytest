@@ -72,8 +72,17 @@ void upDynamic()async{
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),title: Text("发布动态",style: TextStyle(color: Colors.black),),actions: [
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(244, 107, 69, 1),
+                  Color.fromRGBO(238, 168, 73, 1),
+                ],
+              )
+          ),
+        ),
+        title: Text("发布动态"),actions: [
           MaterialButton(onPressed: (){
             upDynamic();
       },child: Text("发表",style: TextStyle(color: Colors.black),),)],),

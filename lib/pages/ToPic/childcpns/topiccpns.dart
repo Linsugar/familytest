@@ -21,8 +21,6 @@ class _TopicCpn extends State<ToPiCpn> {
     super.initState();
   }
 
-
-
   _Manger()async{
     List Mang = [];
     return Mang;
@@ -31,7 +29,17 @@ class _TopicCpn extends State<ToPiCpn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:Text("话题",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),),
+      appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromRGBO(244, 107, 69, 1),
+                    Color.fromRGBO(238, 168, 73, 1),
+                  ],
+                )
+            ),
+          ),title:Text("话题",)),
       body: Container(
         child: FutureBuilder(
           future: _Manger(),

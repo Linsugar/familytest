@@ -29,7 +29,16 @@ class _intergState extends State<interg> {
   Widget build(BuildContext context) {
     var userInfo = context.read<GlobalState>().userInfo;
     return Scaffold(
-      appBar: AppBar(title: Text("我的积分",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),),
+      appBar: AppBar(flexibleSpace: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(244, 107, 69, 1),
+                Color.fromRGBO(238, 168, 73, 1),
+              ],
+            )
+        ),
+      ),title: Text("我的积分",)),
       body:Container(
         child: Flex(
           direction: Axis.vertical,

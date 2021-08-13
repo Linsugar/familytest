@@ -25,7 +25,16 @@ class _FindDoctorState extends State<FindDoctor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(iconTheme:IconThemeData(color: Colors.black),title: Text("找医生",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,),
+      appBar: AppBar(flexibleSpace: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(244, 107, 69, 1),
+                Color.fromRGBO(238, 168, 73, 1),
+              ],
+            )
+        ),
+      ),title: Text("找医生",),backgroundColor: Colors.white,),
       body: Container(
         padding: EdgeInsets.only(left: 10,right: 10,top: 5),
         child:Column(

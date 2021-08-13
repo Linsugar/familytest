@@ -143,8 +143,8 @@ class MyUiState extends State<MyUi>{
                                 leading: FaIcon(FontAwesomeIcons.clipboard),title: Text("服务订单"),
                                 trailing: FaIcon(FontAwesomeIcons.angleRight),),
                               Divider(indent: 20,endIndent: 20,),
-                              ListTile(leading: FaIcon(FontAwesomeIcons.clipboardList),title: Text("发起话题"),trailing: FaIcon(FontAwesomeIcons.angleRight),onTap: (){
-                                PopupUntil.showToast("该功能暂时无法使用");
+                              ListTile(leading: FaIcon(FontAwesomeIcons.clipboardList),title: Text("我的相册"),trailing: FaIcon(FontAwesomeIcons.angleRight),onTap: (){
+                                Navigator.pushNamed(context, "/Photos");
                               },),
                             ],
                           ),

@@ -68,7 +68,16 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(253, 200, 48, 1),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(244, 107, 69, 1),
+                Color.fromRGBO(238, 168, 73, 1),
+              ],
+            )
+          ),
+        ),
         title: Text("话题",)),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -88,7 +97,10 @@ class TopicState extends State<Topic> with SingleTickerProviderStateMixin{
                 controller: _tabController,
                 children: [
                   for(var i=0;i<7;i++)
-                    titleCdk(dataList,i)
+                    AnimatedContainer(
+                      curve: Curves.easeInQuint,
+                      duration: Duration(milliseconds: 500),
+                        child: titleCdk(dataList,i))
                 ],
               ),
             )

@@ -30,7 +30,16 @@ class _webviewcpnsState extends State<webviewcpns> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("${wxcontext.wxtitle}"),),
+      appBar: AppBar(flexibleSpace: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(244, 107, 69, 1),
+                Color.fromRGBO(238, 168, 73, 1),
+              ],
+            )
+        ),
+      ),title: Text("${wxcontext.wxtitle}"),),
       body: WebView(
         javascriptMode: JavascriptMode.unrestricted,
 //        页面加载完成的回调

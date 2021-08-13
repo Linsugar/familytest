@@ -12,7 +12,17 @@ class _ArchivesState extends State<Archives> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(iconTheme:IconThemeData(color: Colors.black),title: Text("病历档案",style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,),
+      appBar: AppBar(
+        flexibleSpace: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(244, 107, 69, 1),
+                Color.fromRGBO(238, 168, 73, 1),
+              ],
+            )
+        ),
+      ),title: Text("病历档案")),
     body: Container(
       child: Column(
         children: [

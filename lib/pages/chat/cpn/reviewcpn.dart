@@ -86,7 +86,16 @@ class _ReviewCpnState extends State<ReviewCpn> {
     List snda = context.watch<homeState>().reviewlist;
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(title: Text("详情"),),
+        appBar: AppBar(  flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(244, 107, 69, 1),
+                  Color.fromRGBO(238, 168, 73, 1),
+                ],
+              )
+          ),
+        ),title: Text("详情"),),
         body: RefreshIndicator(
           onRefresh: (){
             return  _getreview();

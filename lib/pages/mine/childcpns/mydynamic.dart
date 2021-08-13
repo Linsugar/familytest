@@ -40,7 +40,16 @@ class _MyDynamicState extends State<MyDynamic> {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.orange,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromRGBO(244, 107, 69, 1),
+                    Color.fromRGBO(238, 168, 73, 1),
+                  ],
+                )
+            ),
+          ),
           title: Text("动态"),actions: [MaterialButton(onPressed: ()async{
         },
           child: GestureDetector(onTap: (){

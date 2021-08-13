@@ -85,7 +85,16 @@ class _videoWidgetState extends State<videoWidget> with WidgetsBindingObserver{
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.orangeAccent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(244, 107, 69, 1),
+                  Color.fromRGBO(238, 168, 73, 1),
+                ],
+              )
+          ),
+        ),
         title: Text(argumentValue.videoTitle),
         actions: [
           IconButton(icon: Icon(Icons.play_arrow), onPressed: (){
